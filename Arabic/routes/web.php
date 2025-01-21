@@ -11,6 +11,7 @@ use App\Http\Controllers\GrammarController;
 use App\Http\Controllers\PhonemeController;
 use App\Http\Controllers\possiblewordscontroller;
 use App\Http\Controllers\PrefixSuffixController;
+use App\Http\Controllers\RootController;
 use App\Http\Controllers\RootWordController;
 
 /*
@@ -67,6 +68,14 @@ Route::get('/root-words-view2', [RootWordController::class, 'index2'])->name('ro
 Route::post('/rootwords/attach-prefix-suffix', [RootWordController::class, 'attachPrefixesAndSuffixes'])->name('rootwords.attachPrefixSuffix');
 
 Route::get('/info', [RootWordController::class, 'info']);
+
+
+Route::get('roots/import', [RootController::class, 'showForm']);
+Route::post('roots/import', [RootController::class, 'import'])->name('roots.import');
+
+Route::get('roots', [RootController::class, 'index'])->name('roots.index');
+Route::get('/words', [RootController::class, 'indexWords']);
+
 
 
 

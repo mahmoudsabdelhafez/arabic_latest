@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emphatic Arabic Letters</title>
+    <title>Words List</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -72,26 +72,33 @@
 <body>
 
     <div class="container">
-        <h1>أحرف القلقلة حسب الترتيب الأبجدي</h1>
+        <h1>Words List</h1>
 
         <table>
-            <tr>
-                <th>ID</th>
-                <th>Letter</th>
-                <th>Phonetic Representation</th>
-            </tr>
-            @foreach ($emphatic_letters as $letter)
+            <thead>
                 <tr>
-                    <td>{{ $letter->id }}</td>
-                    <td>{{ $letter->letter }}</td>
-                    <td>{{ $letter->phonetic_representation }}</td>
+                    <th>Word</th>
+                    <th>Unvowel Word</th>
+                    <th>Nonormstem</th>
+                    <th>Root Word</th>
                 </tr>
-            @endforeach
+            </thead>
+            <tbody>
+                @foreach ($words as $word)
+                    <tr>
+                        <td>{{ $word->word }}</td>
+                        <td>{{ $word->unvowelword }}</td>
+                        <td>{{ $word->nonormstem }}</td>
+                        <!-- Access the related root's name -->
+                        <td>{{ $word->root->root }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
         </table>
     </div>
 
     <div class="footer">
-        <p>&copy; 2025 Emphatic Arabic Letters. All rights reserved.</p>
+        <p>&copy; 2025 Words List. All rights reserved.</p>
     </div>
 
 </body>

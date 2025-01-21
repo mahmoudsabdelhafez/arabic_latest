@@ -14,6 +14,15 @@
             background-color: white;
         }
 
+        h1 {
+            background-color: #2f4f4f;
+            color: white;
+            padding: 20px;
+            margin: 0;
+            font-size: 36px;
+            text-align: center;
+        }
+
         th, td {
             padding: 15px;
             text-align: center;
