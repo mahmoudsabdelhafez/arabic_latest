@@ -8,8 +8,10 @@ use App\Http\Controllers\ArabicThreeLetterCombinationController;
 use App\Http\Controllers\ArabicFourLetterCombinationController;
 use App\Http\Controllers\EmphaticArabicLetterController;
 use App\Http\Controllers\GrammarController;
+use App\Http\Controllers\PhonemeController;
 use App\Http\Controllers\possiblewordscontroller;
-
+use App\Http\Controllers\PrefixSuffixController;
+use App\Http\Controllers\RootWordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +54,23 @@ Route::get('/upload', [PossibleWordsController::class, 'showUploadForm']);
 Route::post('/import', [PossibleWordsController::class, 'uploadExcel'])->name('upload');
 
 Route::get('/grammar', [GrammarController::class, 'index']); // swabeq and lawaheq routes
+
+Route::get('/prefixes-suffixes', [PrefixSuffixController::class, 'index']); // swabeq and lawaheq routes (updated)
+
+Route::get('/phonemes', [PhonemeController::class, 'index']); // الصوتيات الجديدة كاملة
+
+Route::get('/root-words', [RootWordController::class, 'index'])->name('root-words.index');
+Route::post('/root-words/import', [RootWordController::class, 'import'])->name('root-words.import');
+
+Route::get('/root-words-view2', [RootWordController::class, 'index2'])->name('root-words.index2'); // New index2
+
+Route::post('/rootwords/attach-prefix-suffix', [RootWordController::class, 'attachPrefixesAndSuffixes'])->name('rootwords.attachPrefixSuffix');
+
+Route::get('/info', [RootWordController::class, 'info']);
+
+
+
+
 
 
 

@@ -64,10 +64,13 @@
  
         <a href="{{ url('/arabic-letters') }}">الاحرف العربية</a>
         <a href="{{ url('/arabic-diacritics') }}">التشكيلات</a>
-        <a href="{{ url('/arabic-phonetics') }}">الصوتيات</a>
+        <a href="{{ url('/phonemes') }}">الصوتيات</a>
         <a href="{{ url('/emphatic-arabic-letters') }}">أحرف القلقلة</a>
         <a href="{{ url('/three-letter-combinations') }}">الكلمات الثلاثية</a>
         <a href="{{ url('/four-letter-combinations') }}">الكلمات الرباعية</a>
+        <a href="{{ url('/prefixes-suffixes') }}">السوابق واللواحق</a>
+        <a href="{{ url('/root-words') }}"> الجذور الثلاثية د. حسين </a>
+        <a href="{{ url('/root-words-view2') }}"> الكلمات مع سوابقها ولواحقها</a>
     </div>
 
     <div class="footer">

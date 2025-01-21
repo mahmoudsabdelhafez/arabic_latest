@@ -13,13 +13,13 @@ class EmphaticArabicLettersSeeder extends Seeder
         DB::table('emphatic_arabic_letters')->truncate();
 
         $emphatic_letters = [
+            ['letter' => 'ر', 'phonetic_representation' => 'Ra'], // Ra
             ['letter' => 'ص', 'phonetic_representation' => 'Sad'], // Sad
-            ['letter' => 'ط', 'phonetic_representation' => 'Ta'], // Ta
             ['letter' => 'ض', 'phonetic_representation' => 'Dad'], // Dad
-            ['letter' => 'ق', 'phonetic_representation' => 'Qaf'], // Qaf
+            ['letter' => 'ط', 'phonetic_representation' => 'Ta'], // Ta
             ['letter' => 'ظ', 'phonetic_representation' => 'Dha'], // Dha
-            ['letter' => 'ر', 'phonetic_representation' => 'Ra'], // Ra (emphatic in some dialects)
-            ['letter' => 'ل', 'phonetic_representation' => 'Lam'], // Lam (in some emphatic contexts)
+            ['letter' => 'ق', 'phonetic_representation' => 'Qaf'], // Qaf
+            ['letter' => 'ل', 'phonetic_representation' => 'Lam'], // Lam
         ];
 
         DB::table('emphatic_arabic_letters')->insert($emphatic_letters);
