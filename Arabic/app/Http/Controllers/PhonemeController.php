@@ -14,4 +14,20 @@ class PhonemeController extends Controller
 
         return view('phonemes.index', compact('phonemes'));
     }
+
+
+    public function getPlacesOfArticulation()
+    {
+        // Fetch distinct "place_of_articulation" values
+        $places = Phoneme::select('place_of_articulation')->distinct()->get();
+
+        // Pass the data to the view
+        return view('phonemes.place-of-articulation', compact('places'));
+    }
+
+    public function showByPlace($place)
+    {
+        $letters = Phoneme::where('place_of_articulation', $place)->get();
+        return view('phonemes.show-letter-by-place', compact('letters', 'place'));
+    }
 }

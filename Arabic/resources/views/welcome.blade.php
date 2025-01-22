@@ -31,7 +31,7 @@
             text-align: center;
         }
 
-        /* Main Container (for centering content vertically) */
+        /* Main Container */
         .main-container {
             flex: 1;
             display: flex;
@@ -52,7 +52,7 @@
         }
 
         /* Button Styling */
-        .button-container a {
+        .button {
             text-decoration: none;
             background: linear-gradient(145deg, #4CAF50, #45a049);
             color: white;
@@ -62,17 +62,44 @@
             border-radius: 50px;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            cursor: pointer;
         }
 
-        .button-container a:hover {
+        .button:hover {
             background: linear-gradient(145deg, #45a049, #4CAF50);
             transform: translateY(-2px);
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
         }
 
-        .button-container a:active {
-            background: linear-gradient(145deg, #3c8e3c, #3b8e3b);
-            transform: translateY(2px);
+        /* Dropdown Menu Styling */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 110%; /* Below the button */
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+            z-index: 10;
+            text-align: left;
+            min-width: 200px;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background 0.2s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f0f0f0;
         }
 
         /* Footer Styling */
@@ -104,23 +131,48 @@
 
     <div class="main-container">
         <div class="button-container">
-            <a href="{{ url('/arabic-letters') }}">الاحرف العربية</a>
-            <a href="{{ url('/arabic-diacritics') }}">الحركات</a>
-            <a href="{{ url('/phonemes') }}">الصوتيات</a>
-            <a href="{{ url('/emphatic-arabic-letters') }}">أحرف القلقلة</a>
-            <a href="{{ url('/three-letter-combinations') }}">الكلمات الثلاثية</a>
-            <a href="{{ url('/four-letter-combinations') }}">الكلمات الرباعية</a>
-            <a href="{{ url('/prefixes-suffixes') }}">السوابق واللواحق</a>
-            <a href="{{ url('/root-words') }}"> الجذور الثلاثية د. حسين </a>
-            <a href="{{ url('/root-words-view2') }}"> الجذور الثلاثية مع سوابقها ولواحقها</a>
-            <a href="{{ url('/roots') }}">الجذور الثلاثة 2 - د حسين</a>
-            <a href="{{ url('/words') }}">الجذور الثلاثية مع سوابقها ولواحقها 2</a>
+            <a href="{{ url('/arabic-letters') }}" class="button">الاحرف العربية</a>
+            <a href="{{ url('/arabic-diacritics') }}" class="button">الحركات</a>
+            <a href="{{ url('/emphatic-arabic-letters') }}" class="button">أحرف القلقلة</a>
+            <a href="{{ url('/three-letter-combinations') }}" class="button">الكلمات الثلاثية</a>
+            <a href="{{ url('/four-letter-combinations') }}" class="button">الكلمات الرباعية</a>
+            <a href="{{ url('/prefixes-suffixes') }}" class="button">السوابق واللواحق</a>
+            <a href="{{ url('/root-words') }}" class="button"> الجذور الثلاثية د. حسين </a>
+            <a href="{{ url('/root-words-view2') }}" class="button"> الجذور الثلاثية مع سوابقها ولواحقها</a>
+            <a href="{{ url('/roots') }}" class="button">الجذور الثلاثة 2 - د حسين</a>
+            <a href="{{ url('/words') }}" class="button">الجذور الثلاثية مع سوابقها ولواحقها 2</a>
+            <div class="button" id="phonemes-btn">
+                الصوتيات
+                <div class="dropdown-menu" id="phonemes-dropdown">
+                    <a href="{{ url('/phonemes') }}">All Phonemes</a>
+                    <a href="{{ url('/phonemes/place-of-articulation') }}">Place of Articulation</a>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="footer">
         <p>&copy; 2025 Arabic Language Resources. All rights reserved.</p>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const phonemesBtn = document.getElementById("phonemes-btn");
+            const phonemesDropdown = document.getElementById("phonemes-dropdown");
+
+            // Toggle the dropdown menu visibility on button click
+            phonemesBtn.addEventListener("click", (e) => {
+                e.stopPropagation(); // Prevent click from propagating to the document
+                phonemesDropdown.style.display =
+                    phonemesDropdown.style.display === "block" ? "none" : "block";
+            });
+
+            // Close the dropdown when clicking outside
+            document.addEventListener("click", () => {
+                phonemesDropdown.style.display = "none";
+            });
+        });
+    </script>
 
 </body>
 </html>

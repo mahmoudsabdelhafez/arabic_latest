@@ -59,6 +59,11 @@ Route::get('/grammar', [GrammarController::class, 'index']); // swabeq and lawah
 Route::get('/prefixes-suffixes', [PrefixSuffixController::class, 'index']); // swabeq and lawaheq routes (updated)
 
 Route::get('/phonemes', [PhonemeController::class, 'index']); // الصوتيات الجديدة كاملة
+Route::get('/phonemes/place-of-articulation', [PhonemeController::class, 'getPlacesOfArticulation']); // to show the places of articulation
+Route::get('/phonemes/show-letter-by-place/{place}', [PhonemeController::class, 'showByPlace'])->name('phonemes.showByPlace'); // Filtered view
+
+
+
 
 Route::get('/root-words', [RootWordController::class, 'index'])->name('root-words.index');
 Route::post('/root-words/import', [RootWordController::class, 'import'])->name('root-words.import');

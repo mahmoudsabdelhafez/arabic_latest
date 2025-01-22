@@ -33,7 +33,7 @@ class RootController extends Controller
        Excel::import(new RootImport, storage_path('app/' . $filePath));
 
        // Redirect back with success message
-       return back()->with('success', 'Data imported successfully!');
+       return back()->with('success', 'Data imported successfully!');   
    }
 
 
@@ -50,7 +50,7 @@ class RootController extends Controller
    public function indexWords()
 {
     // Fetch all words with their corresponding root using eager loading
-    $words = Word::with('root')->limit(10000)->get();
+    $words = Word::with('root')->limit(100)->get();
 
     return view('words.index', compact('words'));
 }
