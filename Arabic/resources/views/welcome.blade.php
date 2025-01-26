@@ -141,6 +141,7 @@
             <a href="{{ url('/root-words-view2') }}" class="button"> الجذور الثلاثية مع سوابقها ولواحقها</a>
             <a href="{{ url('/roots') }}" class="button">الجذور الثلاثة 2 - د حسين</a>
             <a href="{{ url('/words') }}" class="button">الجذور الثلاثية مع سوابقها ولواحقها 2</a>
+            <a href="{{ url('/tajweeds') }}" class="button">أحكام التجويد</a>
             <div class="button" id="phonemes-btn">
                 الصوتيات
                 <div class="dropdown-menu" id="phonemes-dropdown">

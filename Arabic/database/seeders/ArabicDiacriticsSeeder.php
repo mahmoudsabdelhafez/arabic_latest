@@ -9,6 +9,9 @@ class ArabicDiacriticsSeeder extends Seeder
 {
     public function run(): void
     {
+
+        DB::table('arabic_diacritics')->truncate();
+
         $diacritics = [
             // Short vowels (Harakats)
             ['diacritic' => 'َ', 'unicode_value' => '064F'], // Fatha
