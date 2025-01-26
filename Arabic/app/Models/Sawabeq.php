@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Sawabeq extends Model
 {
     use HasFactory;
+
+    // العلاقة مع جدول الضمائر
+    public function pronouns()
+    {
+        return $this->belongsToMany(Pronoun::class, 'pronoun_sawabeq', 'sawabeq_id', 'pronoun_id');
+    }
 }

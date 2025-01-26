@@ -20,5 +20,10 @@ class Suffix extends Model
         return $this->belongsToMany(RootWord::class, 'root_word_suffixes')
                     ->withTimestamps();
     }
+
+    public function pronouns()
+    {
+        return $this->belongsToMany(Pronoun::class, 'pronoun_suffix', 'suffix_id', 'pronoun_id');
+    }
     
 }

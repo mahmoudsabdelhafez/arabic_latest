@@ -20,6 +20,9 @@ class SawabeqSeeder extends Seeder
             ['name' => 'لن', 'type' => 'أداة نفي'],
             ['name' => 'هل', 'type' => 'أداة استفهام'],
             ['name' => 'أ', 'type' => 'أداة استفهام'],
+            ['name' => 'ن', 'type' => 'حروف مضارعة'],
+            ['name' => 'ت', 'type' => 'حروف مضارعة'],
+            ['name' => 'ي', 'type' => 'حروف مضارعة'],
         ];
 
         DB::table('sawabeqs')->insert($data);
