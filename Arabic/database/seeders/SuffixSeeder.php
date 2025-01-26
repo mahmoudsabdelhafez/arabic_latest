@@ -14,14 +14,14 @@ class SuffixSeeder extends Seeder
     public function run(): void
     {
         $suffixes = [
-            ['formula' => '-ها', 'usage_meaning' => 'للدلالة على ملكية الغائبة', 'examples_from_quran' => '﴿وَكَانَتْ تَحْتَهُ مَرْأَةٌ صَالِحَةٌ﴾ (التحريم: 11)'],
-            ['formula' => '-هم', 'usage_meaning' => 'للدلالة على جمع الملكية', 'examples_from_quran' => '﴿رَبَّهُمْ﴾ (الكهف: 2)'],
-            ['formula' => '-نا', 'usage_meaning' => 'للدلالة على الملكية أو المتكلمين', 'examples_from_quran' => '﴿إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ﴾ (القدر: 1)'],
-            ['formula' => '-انِ', 'usage_meaning' => 'للمثنى المرفوع', 'examples_from_quran' => '﴿هَذَانِ خَصْمَانِ﴾ (الحج: 19)'],
-            ['formula' => '-ينِ', 'usage_meaning' => 'للمثنى المنصوب أو المجرور', 'examples_from_quran' => '﴿يَكُونَانِ عَلَيْهِمَا شُهَدَاءَ﴾ (المائدة: 106)'],
-            ['formula' => '-ون', 'usage_meaning' => 'لجمع المذكر السالم', 'examples_from_quran' => '﴿يُنفِقُونَ أَمْوَالَهُمْ﴾ (البقرة: 262)'],
-            ['formula' => '-ات', 'usage_meaning' => 'لجمع المؤنث السالم', 'examples_from_quran' => '﴿الْبَاقِيَاتُ الصَّالِحَاتُ﴾ (الكهف: 46)'],
-            ['formula' => '-كَ', 'usage_meaning' => 'للمخاطب المفرد', 'examples_from_quran' => '﴿رَبَّكَ﴾ (الضحى: 6)'],
+            ['formula' => 'ن', 'usage_meaning' => 'للمخاطب  هن المفرد', 'examples_from_quran' => '﴿رَبَّكَ﴾ (الضحى: 6)'],
+            ['formula' => 'ت', 'usage_meaning' => 'للمخاطب الماضي المفرد', 'examples_from_quran' => 'كتبت'],
+            ['formula' => 'تما', 'usage_meaning' => 'للمخاطب الماضي المثنى', 'examples_from_quran' => '﴿رَبَّكَ﴾ (الضحى: 6)'],
+            ['formula' => 'تم', 'usage_meaning' => 'للمخاطب الماضي الجمع', 'examples_from_quran' => 'كتبتم'],
+            ['formula' => 'تن', 'usage_meaning' => 'للمخاطب الماضي الجمع المؤنث', 'examples_from_quran' => 'كتبتن'],
+            ['formula' => 'ا', 'usage_meaning' => 'للمخاطب الأمر المثنا', 'examples_from_quran' => 'اكتبا'],
+            ['formula' => 'وا', 'usage_meaning' => 'للمخاطب الأمر الجمع', 'examples_from_quran' => 'اكتبوا'],
+            ['formula' => 'ي', 'usage_meaning' => 'للمخاطب الأمر المفرد', 'examples_from_quran' => 'اكتبي'],
         ];
 
         DB::table('suffixes')->insert($suffixes);

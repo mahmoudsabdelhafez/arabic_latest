@@ -13,6 +13,7 @@ use App\Http\Controllers\possiblewordscontroller;
 use App\Http\Controllers\PrefixSuffixController;
 use App\Http\Controllers\RootController;
 use App\Http\Controllers\RootWordController;
+use App\Http\Controllers\SuffixController;
 use App\Http\Controllers\TajweedController;
 
 /*
@@ -83,6 +84,12 @@ Route::get('roots', [RootController::class, 'index'])->name('roots.index');
 Route::get('/words', [RootController::class, 'indexWords']);
 
 
+
+// Define the routes for the Laravel application
+Route::get('/verb-suffix', [SuffixController::class, 'index']);
+Route::post('/process-verb', [SuffixController::class, 'processVerb']);
+Route::post('/apply-prefixes', [SuffixController::class, 'applyPrefixesToVerb'])->name('apply-prefixes');
+Route::post('/apply-prefixes-suffixes', [SuffixController::class, 'applyPrefixesAndSuffixesToVerb'])->name('apply-prefixes-suffixes');
 
 // Route for displaying Tajweed rules letters
 Route::get('/tajweed/rules-letters', [TajweedController::class, 'showRulesLetters'])->name('tajweed.rules.letters');
