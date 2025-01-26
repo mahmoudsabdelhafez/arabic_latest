@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('arabic_letters', function (Blueprint $table) {
+        Schema::create('tajweed_categories', function (Blueprint $table) {
             $table->id();
-            $table->char('letter', 1)->collation('utf8mb4_general_ci');
-            $table->string('unicode_value', 10)->collation('utf8mb4_general_ci');
+            $table->string('name');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('arabic_letters');
+        Schema::dropIfExists('tajweed_categories');
     }
 };

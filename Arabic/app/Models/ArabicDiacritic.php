@@ -15,5 +15,14 @@ class ArabicDiacritic extends Model
       // Allow mass assignment for the diacritic and unicode_value fields
       protected $fillable = ['diacritic', 'unicode_value'];
 
+
+      public function tajweedRules()
+      {
+          return $this->belongsToMany(TajweedRule::class, 'tajweed_rules_diacritics', 'diacritic_id', 'tajweed_rule_id')
+                      ->withTimestamps();
+      }
+
+      
+
       
 }

@@ -13,6 +13,7 @@ use App\Http\Controllers\possiblewordscontroller;
 use App\Http\Controllers\PrefixSuffixController;
 use App\Http\Controllers\RootController;
 use App\Http\Controllers\RootWordController;
+use App\Http\Controllers\TajweedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +81,37 @@ Route::post('roots/import', [RootController::class, 'import'])->name('roots.impo
 
 Route::get('roots', [RootController::class, 'index'])->name('roots.index');
 Route::get('/words', [RootController::class, 'indexWords']);
+
+
+
+// Route for displaying Tajweed rules letters
+Route::get('/tajweed/rules-letters', [TajweedController::class, 'showRulesLetters'])->name('tajweed.rules.letters');
+
+// Route for displaying Tajweed rules diacritics
+Route::get('/tajweed/rules-diacritics', [TajweedController::class, 'showRulesDiacritics'])->name('tajweed.rules.diacritics');
+
+Route::get('/tajweeds', [TajweedController::class, 'index'])->name('tajweed.index'); // all tajweed rules
+
+
+Route::get('/ayah', [TajweedController::class, 'ayah']);
+Route::get('/check-tajweed', [TajweedController::class, 'checkTajweed']);
+
+Route::get('add-rule', [TajweedController::class, 'create'])->name('add-rule');
+Route::post('store-tajweed', [TajweedController::class, 'store'])->name('store-tajweed');
+
+
+
+// Show the edit form for a specific rule
+Route::get('/edit-rule/{id}', [TajweedController::class, 'edit'])->name('edit-rule');
+
+// Update the rule
+Route::put('/update-rule/{id}', [TajweedController::class, 'update'])->name('update-rule');
+
+// Delete the rule
+Route::get('/delete-rule/{id}', [TajweedController::class, 'destroy'])->name('delete-rule');
+
+
+
 
 
 
