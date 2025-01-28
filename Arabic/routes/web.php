@@ -117,6 +117,8 @@ Route::put('/update-rule/{id}', [TajweedController::class, 'update'])->name('upd
 // Delete the rule
 Route::get('/delete-rule/{id}', [TajweedController::class, 'destroy'])->name('delete-rule');
 
+Route::get('/phonemes-menu', [PhonemeController::class, 'showMenu'])->name('phonemes-menu'); // show the menu of phonemes
+
 
 
 

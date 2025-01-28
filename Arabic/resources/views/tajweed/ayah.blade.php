@@ -5,17 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ayah Tajweed Checker</title>
     <style>
+        :root {
+            --primary-color: #1a5f7a;
+            --secondary-color: #c7b7a3;
+            --accent-color: #e6d5b8;
+            --text-color: #2b2b2b;
+            --white: #ffffff;
+            --teal: #1abc9c;
+            --green: #4CAF50;
+            --bright-blue: #3498db;
+            --bright-red: #e74c3c;
+        }
+
         body {
             font-family: 'Roboto', Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
+            background-color: #f7f7f7;
             margin: 0;
             padding: 0;
+            color: #333;
         }
 
         header {
-            background-color: #2F4F4F;
-            color: #fff;
+            background-color: var(--primary-color);
+            color: var(--white);
             padding: 20px;
             text-align: center;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -32,14 +44,14 @@
             margin: 40px auto;
             text-align: center;
             padding: 20px;
-            background-color: #fff;
+            background-color: var(--white);
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .ayah {
             font-size: 28px;
-            color: #4CAF50;
+            color: var(--teal);
             cursor: pointer;
             margin: 20px 0;
             transition: transform 0.3s ease, color 0.3s ease;
@@ -47,7 +59,7 @@
 
         .ayah:hover {
             transform: scale(1.05);
-            color: #4a148c;
+            color: var(--bright-blue);
         }
 
         .result {
@@ -59,7 +71,7 @@
 
         .result p {
             background-color: #f1f1f1;
-            border-left: 5px solid #4CAF50;
+            border-left: 5px solid var(--green);
             padding: 10px;
             margin: 10px 0;
             border-radius: 5px;
@@ -68,8 +80,8 @@
         }
 
         .matching-word {
-            background-color: #ffeb3b;
-            color: #333;
+            background-color: var(--bright-blue);
+            color: var(--white);
             font-weight: bold;
             padding: 3px 5px;
             border-radius: 3px;
@@ -78,8 +90,8 @@
         footer {
             margin-top: 50px;
             padding: 20px;
-            background-color: #2F4F4F;
-            color: #fff;
+            background-color: var(--primary-color);
+            color: var(--white);
             text-align: center;
         }
 
@@ -88,9 +100,9 @@
             font-size: 14px;
         }
 
-        .btn-add-rule {
-            background-color: #4CAF50;
-            color: #fff;
+        .btn-back {
+            background-color: var(--green);
+            color: var(--white);
             padding: 10px 20px;
             font-size: 16px;
             border: none;
@@ -100,8 +112,23 @@
             margin-top: 20px;
         }
 
-        .btn-add-rule:hover {
+        .btn-back:hover {
             background-color: #388e3c;
+        }
+
+        /* Style for the input field */
+        .ayah-input {
+            font-size: 20px;
+            padding: 10px;
+            width: 80%;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .ayah-input:focus {
+            border-color: var(--teal);
         }
     </style>
 </head>
@@ -111,13 +138,14 @@
     </header>
 
     <div class="container">
-        <p class="ayah" onclick="checkTajweed(this.innerText)">
-            وَيَطُوفُ عَلَيْهِمْ وِلْدَانٌ مُّخَلَّدُونَ إِذَا رَأَيْتَهُمْ حَسِبْتَهُمْ لُؤْلُؤًا مَّنثُورًا
-        </p>
+        <input type="text" id="ayahInput" class="ayah-input" placeholder="Enter an Ayah here..." />
+        <div class="ayah-container">
+            <!-- The Ayah will appear here after user enters it -->
+        </div>
         <div class="result"></div>
 
-        <!-- Add Rule Button -->
-        <a href="{{ route('add-rule') }}" class="btn-add-rule">Add Rule</a>
+        <!-- Back Button -->
+        <a href="javascript:history.back()" class="btn-back">Back</a>
     </div>
 
     <footer>
@@ -125,6 +153,7 @@
     </footer>
 
     <script>
+        // Function to handle checking Tajweed rules
         function checkTajweed(ayah) {
             fetch(`/check-tajweed?ayah=${encodeURIComponent(ayah)}`)
                 .then(response => response.json())
@@ -138,7 +167,7 @@
                             const highlightedAyah = ayah.replace(new RegExp(match.matching_word, 'g'), `<span class="matching-word">${match.matching_word}</span>`);
                             
                             const ruleInfo = document.createElement('p');
-                            ruleInfo.innerHTML = `
+                            ruleInfo.innerHTML = ` 
                                 <span class="matching-word">${match.matching_word}</span> 
                                 - Expression: ${match.expression} , Rule: ${match.rule_name}<br><br>
                             `;
@@ -153,6 +182,17 @@
                     document.querySelector('.result').textContent = 'An error occurred while fetching Tajweed rules.';
                 });
         }
+
+        // Function to dynamically update the Ayah for checking
+        document.getElementById('ayahInput').addEventListener('input', function() {
+            const ayahInput = this.value.trim();
+            const ayahContainer = document.querySelector('.ayah-container');
+            if (ayahInput) {
+                ayahContainer.innerHTML = `<p class="ayah" onclick="checkTajweed(this.innerText)">${ayahInput}</p>`;
+            } else {
+                ayahContainer.innerHTML = ''; // Clear the ayah if the input is empty
+            }
+        });
     </script>
 </body>
 </html>

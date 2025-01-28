@@ -30,4 +30,10 @@ class PhonemeController extends Controller
         $letters = Phoneme::where('place_of_articulation', $place)->get();
         return view('phonemes.show-letter-by-place', compact('letters', 'place'));
     }
+
+
+    public function showMenu()
+    {
+        return view('phonemes.phonemes-menu');
+    }
 }
