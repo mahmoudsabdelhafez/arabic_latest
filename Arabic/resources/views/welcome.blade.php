@@ -4,130 +4,151 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arabic Language Resources</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* General Styling */
-        body {
-            font-family: 'Amiri', serif;
-            background: linear-gradient(to right, #d3c4e1, #f7f7f7);
-            color: #333;
+        :root {
+            --primary-color: #1a5f7a;
+            --secondary-color: #c7b7a3;
+            --accent-color: #e6d5b8;
+            --text-color: #2b2b2b;
+            --white: #ffffff;
+        }
+
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Amiri', serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            color: var(--text-color);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            height: 100vh;
         }
 
-        /* Header Styling */
+        header {
+            background: var(--primary-color);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%),
+                        linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
+            background-size: 60px 60px;
+            opacity: 0.1;
+        }
+
         h1 {
-            background-color: #2f4f4f;
-            color: #fff;
-            padding: 20px;
-            margin: 0;
-            font-size: 36px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: 'Aref Ruqaa', serif;
+            color: var(--white);
             text-align: center;
+            font-size: 2.5rem;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
-        /* Main Container */
         .main-container {
             flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            flex-direction: column;
+            padding: 3rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        /* Button Container */
         .button-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 50px;
-            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns */
+            gap: 1.5rem;
+            padding: 1rem;
         }
 
-        /* Button Styling */
         .button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-decoration: none;
-            background: linear-gradient(145deg, #4CAF50, #45a049);
-            color: white;
-            padding: 15px 30px;
-            font-size: 18px;
+            background: var(--white);
+            color: var(--primary-color);
+            padding: 1.2rem 1.5rem;
+            font-size: 1.1rem;
             font-weight: bold;
-            border-radius: 50px;
+            border-radius: 12px;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             position: relative;
-            cursor: pointer;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255,255,255,0.3),
+                transparent
+            );
+            transition: 0.5s;
         }
 
         .button:hover {
-            background: linear-gradient(145deg, #45a049, #4CAF50);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: var(--white);
         }
 
-        /* Dropdown Menu Styling */
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 110%; /* Below the button */
-            left: 50%;
-            transform: translateX(-50%);
-            background: #fff;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 10px 0;
-            z-index: 10;
-            text-align: left;
-            min-width: 200px;
+        .button:hover::before {
+            left: 100%;
         }
 
-        .dropdown-menu a {
-            display: block;
-            padding: 10px 15px;
-            color: #333;
-            text-decoration: none;
-            font-size: 16px;
-            transition: background 0.2s ease;
-        }
-
-        .dropdown-menu a:hover {
-            background-color: #f0f0f0;
-        }
-
-        /* Footer Styling */
         .footer {
+            background: var(--primary-color);
+            color: var(--white);
             text-align: center;
-            margin-top: 50px;
-            font-size: 14px;
-            color: #777;
-            padding: 20px;
-            background-color: #333;
-            color: #fff;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
+            padding: 1.5rem;
+            margin-top: auto;
         }
 
-        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .button-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns for medium screens */
+            }
+        }
+
         @media (max-width: 768px) {
             .button-container {
-                flex-direction: column;
-                gap: 15px;
+                grid-template-columns: 1fr; /* 1 column for smaller screens */
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .button::before {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
-
-    <h1>Arabic Language Resources</h1>
+    <header>
+        <h1>Arabic Language Resources</h1>
+    </header>
 
     <div class="main-container">
         <div class="button-container">
@@ -137,11 +158,12 @@
             <a href="{{ url('/three-letter-combinations') }}" class="button">الكلمات الثلاثية</a>
             <a href="{{ url('/four-letter-combinations') }}" class="button">الكلمات الرباعية</a>
             <a href="{{ url('/prefixes-suffixes') }}" class="button">السوابق واللواحق</a>
-            <a href="{{ url('/root-words') }}" class="button"> الجذور الثلاثية د. حسين </a>
-            <a href="{{ url('/root-words-view2') }}" class="button"> الجذور الثلاثية مع سوابقها ولواحقها</a>
+            <a href="{{ url('/root-words') }}" class="button">الجذور الثلاثية د. حسين</a>
+            <a href="{{ url('/root-words-view2') }}" class="button">الجذور الثلاثية مع سوابقها ولواحقها</a>
             <a href="{{ url('/roots') }}" class="button">الجذور الثلاثة 2 - د حسين</a>
             <a href="{{ url('/words') }}" class="button">الجذور الثلاثية مع سوابقها ولواحقها 2</a>
             <a href="{{ url('/tajweeds') }}" class="button">أحكام التجويد</a>
+
             <a href="/phonemecategories" class="button">إضافة مخرج حروف رئيسي</a>
             <a href="/upload" class="button">إضافة صورة مخرج</a>
             <div class="button" id="phonemes-btn">
@@ -151,31 +173,14 @@
                     <a href="{{ url('/phonemes/place-of-articulation') }}">Place of Articulation</a>
                 </div>
             </div>
+
+            <a href="{{ url('/ayah') }}" class="button">مثال على احكام التجويد</a>
+            <a href="{{ url('/phonemes-menu') }}" class="button">الصوتيات</a>
         </div>
     </div>
 
-    <div class="footer">
+    <footer class="footer">
         <p>&copy; 2025 Arabic Language Resources. All rights reserved.</p>
-    </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const phonemesBtn = document.getElementById("phonemes-btn");
-            const phonemesDropdown = document.getElementById("phonemes-dropdown");
-
-            // Toggle the dropdown menu visibility on button click
-            phonemesBtn.addEventListener("click", (e) => {
-                e.stopPropagation(); // Prevent click from propagating to the document
-                phonemesDropdown.style.display =
-                    phonemesDropdown.style.display === "block" ? "none" : "block";
-            });
-
-            // Close the dropdown when clicking outside
-            document.addEventListener("click", () => {
-                phonemesDropdown.style.display = "none";
-            });
-        });
-    </script>
-
+    </footer>
 </body>
 </html>

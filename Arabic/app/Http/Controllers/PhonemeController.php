@@ -43,7 +43,14 @@ class PhonemeController extends Controller
         return redirect()->route('phonemes.index')->with('error', 'No phonemes found for the specified place of articulation.');
     }
 
+
     // Pass the data to the view
     return view('phonemes.show-letter-by-place', compact('letters', 'place'));
+
+
+    public function showMenu()
+    {
+        return view('phonemes.phonemes-menu');
+    }
 }
 }

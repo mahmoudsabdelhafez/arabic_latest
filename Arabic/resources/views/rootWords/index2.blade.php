@@ -22,11 +22,14 @@
         h1 {
             color: #333;
             font-size: 2rem;
+            text-align: center;
+            margin-bottom: 30px;
         }
 
         .card {
             border: 2px solid #f8f9fa;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
         .card-body {
@@ -60,12 +63,27 @@
         .list-group {
             margin-top: 10px;
         }
+
+        /* Optional: Add responsive layout for smaller screens */
+        @media (max-width: 767px) {
+            .card {
+                margin-bottom: 15px;
+            }
+
+            .card-title {
+                font-size: 1.25rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1 class="text-center my-4">Root Words with Prefixes and Suffixes</h1>
+        <h1>Root Words with Prefixes and Suffixes</h1>
 
         <div class="row">
             @foreach ($rootWordsWithDetails as $item)

@@ -40,7 +40,7 @@ class ArabicFourLetterCombinationController extends Controller
     // Display all 3-letter combinations
     public function index()
     {
-        $combinations = ArabicFourLetterCombination::limit(10000)->get();
+        $combinations = ArabicFourLetterCombination::limit(1000)->get();
         return view('four_letter_combinations.index', compact('combinations'));
     }
 }

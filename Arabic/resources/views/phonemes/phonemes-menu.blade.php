@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جميع الكلمات التي تتكون من أربع حروف</title>
+    <title>Phonemes Resources</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -64,41 +64,33 @@
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-        }
-
-        table {
-            width: 100%;
-            margin: 30px auto;
-            border-collapse: collapse;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            background-color: var(--white);
-        }
-
-        th, td {
-            padding: 15px;
             text-align: center;
         }
 
-        th {
-            background-color: var(--primary-color);
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .button {
+            text-decoration: none;
+            background: linear-gradient(145deg, #4CAF50, #45a049);
             color: var(--white);
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
         }
 
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        td {
-            font-size: 16px;
-            color: #555;
-        }
-
-        table, th, td {
-            border: 1px solid #ddd;
+        .button:hover {
+            background: linear-gradient(145deg, #45a049, #4CAF50);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
         }
 
         .footer {
@@ -109,44 +101,34 @@
             margin-top: auto;
         }
 
-        @media (max-width: 1024px) {
-            table {
-                width: 95%;
-            }
-        }
-
         @media (max-width: 768px) {
             h1 {
                 font-size: 2rem;
             }
 
-            table {
-                width: 100%;
+            .button {
+                padding: 12px 24px;
+                font-size: 16px;
             }
         }
+
     </style>
 </head>
 <body>
 
     <header>
-        <h1>جميع الكلمات التي تتكون من أربع حروف</h1>
+        <h1>Phonemes Resources</h1>
     </header>
 
     <div class="container">
-        <table>
-            <tr>
-                <th>Combination</th>
-            </tr>
-            @foreach ($combinations as $combination)
-                <tr>
-                    <td>{{ $combination->combination }}</td>
-                </tr>
-            @endforeach
-        </table>
+        <div class="button-container">
+            <a href="{{ url('/phonemes') }}" class="button">All Phonemes</a>
+            <a href="{{ url('/phonemes/place-of-articulation') }}" class="button">Place of Articulation</a>
+        </div>
     </div>
 
     <div class="footer">
-        <p>&copy; 2025 4-Letter Arabic Combinations. All rights reserved.</p>
+        <p>&copy; 2025 Phonemes Resources. All rights reserved.</p>
     </div>
 
 </body>

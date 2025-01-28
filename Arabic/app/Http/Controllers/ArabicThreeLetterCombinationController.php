@@ -37,7 +37,7 @@ class ArabicThreeLetterCombinationController extends Controller
     // Display all 3-letter combinations
     public function index()
     {
-        $combinations = ArabicThreeLetterCombination::limit(10000)->get();
+        $combinations = ArabicThreeLetterCombination::limit(1000)->get();
         return view('three_letter_combinations.index', compact('combinations'));
     }
 }

@@ -42,6 +42,16 @@
             background-color: #4a148c;
         }
 
+        .btn-back {
+            background-color: #6c757d;
+            color: white;
+            font-weight: bold;
+        }
+
+        .btn-back:hover {
+            background-color: #5a6268;
+        }
+
         footer {
             margin-top: 30px;
             text-align: center;
@@ -51,7 +61,10 @@
 </head>
 <body>
 
+<!-- Back Button -->
 <div class="container">
+    <a class="btn btn-back mb-3" href="javascript:history.back()">← Back</a>
+
     <h1>Add New Tajweed Rule</h1>
 
     <!-- Display Success Message -->

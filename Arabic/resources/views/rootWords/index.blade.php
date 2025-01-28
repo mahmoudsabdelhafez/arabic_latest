@@ -4,30 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الكلمات الصحيحة التي تتكون من ثلاث حروف</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
+        :root {
+            --primary-color: #1a5f7a;
+            --secondary-color: #c7b7a3;
+            --accent-color: #e6d5b8;
+            --text-color: #2b2b2b;
+            --white: #ffffff;
+        }
+
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Amiri', serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: var(--primary-color);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%),
+                        linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
+            background-size: 60px 60px;
+            opacity: 0.1;
         }
 
         h1 {
-            background-color: #2f4f4f;
-            color: white;
-            padding: 20px;
-            margin: 0;
-            font-size: 36px;
+            font-family: 'Aref Ruqaa', serif;
+            color: var(--white);
+            text-align: center;
+            font-size: 2.5rem;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            font-family: 'Aref Ruqaa', serif;
+            color: var(--text-color);
+            font-size: 1.8rem;
+            margin-top: 3rem;
             text-align: center;
         }
 
+        .container {
+            flex: 1;
+            padding: 3rem 1rem;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
         table {
-            width: 80%;
+            width: 100%;
             margin: 30px auto;
             border-collapse: collapse;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            background-color: white;
+            background-color: var(--white);
         }
 
         th, td {
@@ -36,8 +88,8 @@
         }
 
         th {
-            background-color: #4CAF50;
-            color: white;
+            background-color: var(--primary-color);
+            color: var(--white);
         }
 
         tr:nth-child(even) {
@@ -57,27 +109,44 @@
             border: 1px solid #ddd;
         }
 
-        /* Optional: Add a little padding around the page content */
-        .container {
-            padding: 20px;
+        .footer {
+            background: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
         }
 
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            color: #777;
-            
+        @media (max-width: 1024px) {
+            table {
+                width: 95%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            table {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <header>
         <h1>الكلمات الصحيحة التي تتكون من ثلاث حروف</h1>
+    </header>
 
+    <div class="container">
+        <h2>الكلمات الجذرية</h2>
+
+        <!-- Root Words Table -->
         <table>
             <tr>
-                <th>Roots</th>
+                <th>الجذر</th>
             </tr>
             @foreach ($rootWords as $root)
                 <tr>
@@ -88,7 +157,7 @@
     </div>
 
     <div class="footer">
-        <p>&copy; 2025 3-Letter Arabic Combinations. All rights reserved.</p>
+        <p>&copy; 2025 Correct 3-Letter Words. All rights reserved.</p>
     </div>
 
 </body>
