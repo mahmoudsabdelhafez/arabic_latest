@@ -26,5 +26,10 @@ class Phoneme extends Model
         return $this->belongsTo(ArabicLetter::class, 'arabic_letter_id');
     }
 
+    public function category()
+    {
+        return $this->belongsTo(PhonemeCategory::class, 'phoneme_category_id');
+    }
+
     
 }
