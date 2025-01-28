@@ -15,6 +15,8 @@ use App\Http\Controllers\RootController;
 use App\Http\Controllers\RootWordController;
 use App\Http\Controllers\SuffixController;
 use App\Http\Controllers\TajweedController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\PhonemeCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -122,7 +124,13 @@ Route::get('/phonemes-menu', [PhonemeController::class, 'showMenu'])->name('phon
 
 
 
+Route::get('/show', [ImageController::class, 'index'])->name('images.show');
+Route::get('/upload', [ImageController::class, 'upload'])->name('images.upload');
+Route::post('/upload', [ImageController::class, 'store'])->name('upload.store');
 
+
+
+Route::resource('phonemecategories', PhonemeCategoryController::class);
 
 
 
