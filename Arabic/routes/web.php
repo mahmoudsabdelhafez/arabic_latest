@@ -128,7 +128,7 @@ Route::get('/show', [ImageController::class, 'index'])->name('images.show');
 Route::get('/upload', [ImageController::class, 'upload'])->name('images.upload');
 Route::post('/upload', [ImageController::class, 'store'])->name('upload.store');
 
-
+Route::get('/phonemes/place/{place}', [PhonemeController::class, 'getPlaceLetters']);
 
 Route::resource('phonemecategories', PhonemeCategoryController::class);
 

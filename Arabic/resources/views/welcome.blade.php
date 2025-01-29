@@ -166,7 +166,7 @@
 
             <a href="/phonemecategories" class="button">إضافة مخرج حروف رئيسي</a>
             <a href="/upload" class="button">إضافة صورة مخرج</a>
-            
+
 
             <a href="{{ url('/ayah') }}" class="button">مثال على احكام التجويد</a>
             <a href="{{ url('/phonemes-menu') }}" class="button">الصوتيات</a>
