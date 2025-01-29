@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\Phoneme;
 use App\Models\Image;
@@ -11,46 +13,49 @@ class PhonemeController extends Controller
 {
     public function index()
     {
-        $phonemes = Phoneme::all(); // Fetch all phonemes
+        // Fetch all phonemes
+        $phonemes = Phoneme::all();
 
-        return view('phonemes.index', compact(['phonemes']));
+        // Pass phonemes to the view
+        return view('phonemes.index', compact('phonemes'));
     }
-
 
     public function getPlacesOfArticulation()
     {
-        // Fetch distinct "place_of_articulation" values
-        $places = Phoneme::select(['place_of_articulation','phoneme_category_id'])->distinct()->get();
+        // Fetch distinct "place_of_articulation" values along with phoneme_category_id
+        $places = Phoneme::select(['place_of_articulation', 'phoneme_category_id'])->distinct()->get();
+        
+        // Fetch images with related phoneme categories
         $images = Image::with('phonemeCategory')->orderBy('id', 'asc')->get();
-        // dd($places);
-        $categories = PhonemeCategory::all();  // Get all phoneme categories
+        
+        // Fetch all phoneme categories
+        $categories = PhonemeCategory::all();
 
         // Pass the data to the view
-        return view('phonemes.place-of-articulation', compact(['places','images','categories']));
+        return view('phonemes.place-of-articulation', compact('places', 'images', 'categories'));
     }
 
-   
     public function showByPlace($place)
-{
-    // Validate the place input
-    $validatedPlace = filter_var($place, FILTER_SANITIZE_STRING);
-
-    // Fetch phonemes by place of articulation
-    $letters = Phoneme::where('place_of_articulation', $validatedPlace)->get();
-
-    // Check if any phonemes were found
-    if ($letters->isEmpty()) {
-        return redirect()->route('phonemes.index')->with('error', 'No phonemes found for the specified place of articulation.');
+    {
+        // تنظيف المدخلات
+        $validatedPlace = filter_var($place, FILTER_SANITIZE_STRING);
+    
+        // جلب البيانات مع العلاقة
+        $letters = Phoneme::with('arabicLetter')
+                          ->where('place_of_articulation', $validatedPlace)
+                          ->get();
+    
+        if ($letters->isEmpty()) {
+            return response()->json(['error' => 'No phonemes found for the specified place of articulation.'], 404);
+        }
+    
+        return response()->json($letters);
     }
-
-
-    // Pass the data to the view
-    return view('phonemes.show-letter-by-place', compact('letters', 'place'));
-
+    
 
     public function showMenu()
     {
         return view('phonemes.phonemes-menu');
     }
-}
+    
 }

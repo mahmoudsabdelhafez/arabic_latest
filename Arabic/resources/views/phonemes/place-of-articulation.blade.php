@@ -4,136 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Places of Articulation</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
-
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f7f7f7;
-        color: #333;
-        text-align: center;
-    }
-
-    h1 {
-        background-color: #4CAF50;
-        color: white;
-        padding: 20px;
-        margin: 0;
-        text-align: center;
-    }
-
-    .container {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        max-width: 70%;
-        margin: 30px auto;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-    }
-
-    #imageContainer {
-        flex: 6;
-        position: relative;
-        height: 700px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-    }
-
-    .layer {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80%;
-        height: auto;
-        max-height: 100%;
-        filter: grayscale(100%) brightness(0.8);
-        transition: all 0.4s ease;
-        opacity: 0.7;
-    }
-
-    .layer.visible {
-        filter: none;
-        opacity: 1;
-    }
-
-    .first {
-        flex: 4;
-    }
-
-    ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 20px;
-        background: #fafafa;
-    }
-
-    li div {
-        display: flex;
-        justify-content: space-between;
-        padding: 15px;
-        margin: 10px 0;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        background: #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-    }
-
-    li div:hover {
-        background-color: #e8f5e9;
-        transform: translateY(-3px);
-    }
-
-    li div.active {
-        background-color: #e8f5e9;
-        border-color: #4CAF50;
-        box-shadow: 0 4px 8px rgba(76, 175, 80, 0.2);
-    }
-
-    a {
-        text-decoration: none;
-        color: #333;
-        font-weight: bold;
-        display: block;
-        transition: color 0.3s ease;
-    }
-
-    a:hover {
-        color: #4CAF50;
-    }
-
-    .layer-btn,
-    .reset-btn {
-        padding: 12px 24px;
-        font-size: 14px;
-        margin: 10px;
-        cursor: pointer;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        transition: all 0.3s ease;
-        font-weight: bold;
-    }
-
-    .layer-btn:hover,
-    .reset-btn:hover {
-        background-color: #45a049;
-        transform: translateY(-2px);
-    }
-
-    .layer-btn.active {
-        background-color: #2E7D32;
-    }
-
         :root {
             --primary-color: #1a5f7a;
             --secondary-color: #c7b7a3;
@@ -149,7 +20,7 @@
         }
 
         body {
-            font-family: 'Amiri', serif;
+            font-family: 'Amiri', Arial, sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
             color: var(--text-color);
             min-height: 100vh;
@@ -157,14 +28,19 @@
             flex-direction: column;
         }
 
-        header {
+        h1 {
             background: var(--primary-color);
+            color: var(--white);
             padding: 2rem;
+            margin: 0;
+            font-family: 'Aref Ruqaa', serif;
+            text-align: center;
+            font-size: 2.5rem;
             position: relative;
-            overflow: hidden;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
-        header::before {
+        h1::before {
             content: '';
             position: absolute;
             top: 0;
@@ -177,92 +53,179 @@
             opacity: 0.1;
         }
 
-        h1 {
-            font-family: 'Aref Ruqaa', serif;
-            color: var(--white);
-            text-align: center;
-            font-size: 2.5rem;
-            position: relative;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin: 3rem auto;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 90%;
         }
 
-        .container {
-            flex: 1;
-            padding: 3rem 1rem;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
+        #imageContainer {
+            flex: 6;
+            position: relative;
+            height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+        }
+
+        .layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: auto;
+            max-height: 100%;
+            filter: grayscale(100%) brightness(0.8);
+            transition: all 0.4s ease;
+            opacity: 0.7;
+        }
+
+        .layer.visible {
+            filter: none;
+            opacity: 1;
+        }
+
+        .first {
+            flex: 3;
+            background: var(--white);
+        }
+        .sec {
+            flex: 3;
+            background: var(--white);
         }
 
         ul {
             list-style-type: none;
-            padding: 0;
-            text-align: center;
+            margin: 0;
+            padding: 20px;
         }
 
-        li {
-            display: inline-block;
-            background-color: var(--white);
-            margin: 10px;
+        li div {
+            display: flex;
+            justify-content: space-between;
             padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            font-size: 18px;
-            transition: transform 0.2s, background-color 0.2s;
-            cursor: pointer;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: var(--white);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
 
-        li:hover {
+        li div:hover {
             background-color: var(--accent-color);
-            transform: scale(1.05);
+            transform: translateY(-3px);
         }
 
+        li div.active {
+            background-color: var(--secondary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 8px rgba(26, 95, 122, 0.2);
+        }
+
+        li p {
+            margin: 8px 0;
+        }
+        
         a {
             text-decoration: none;
             color: var(--text-color);
+            font-weight: bold;
             display: block;
+            transition: color 0.3s ease;
         }
 
         a:hover {
             color: var(--primary-color);
         }
 
-        .footer {
-            background: var(--primary-color);
+        .layer-btn {
+            padding: 12px 24px;
+            font-size: 14px;
+            margin: 10px;
+            cursor: pointer;
+            background-color: var(--primary-color);
             color: var(--white);
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: auto;
+            border: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .layer-btn:hover {
+            background-color: #156485;
+            transform: translateY(-2px);
+        }
+
+        .sub-places {
+            display: none;
+            margin-top: 10px;
+            padding-left: 20px;
+            border-left: 2px solid var(--secondary-color);
+        }
+
+        .sub-places li {
+            margin: 5px 0;
+        }
+
+        .details {
+            display: inline-block;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            margin-top: 12px;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 18px;
+            transition: transform 0.2s, background-color 0.2s;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
         }
 
         @media (max-width: 1024px) {
-            li {
-                font-size: 16px;
-                padding: 12px;
+            .container {
+                width: 95%;
             }
         }
 
         @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            #imageContainer {
+                height: 400px;
+            }
+
             h1 {
                 font-size: 2rem;
             }
-
-            li {
-                font-size: 14px;
-                padding: 10px;
-            }
         }
 
+        @media (prefers-reduced-motion: reduce) {
+            .layer, li div, .layer-btn {
+                transition: none;
+            }
+        }
     </style>
 </head>
-
 <body>
-
-    <header>
-        <h1>Places of Articulation</h1>
-    </header>
+    <h1>Places of Articulation</h1>
 
     <div class="container">
+    <div class="sec" id="dataContainer">
+            
+            </div>
         <div id="imageContainer">
             @foreach ($images as $index => $image)
             <img class="layer" data-id="{{ $image->phonemeCategory->id }}" src="{{ asset($image->path) }}"
@@ -271,163 +234,102 @@
         </div>
 
         <div class="first">
-            <button class="layer-btn" id="toggleButton" onclick="toggleView()">المخارج الرئيسية</button>
-
-            <ul id="placesList">
-                @foreach ($places as $place)
-                <li>
-                    <div dir="rtl" class="place-item" data-category-id="{{ $place->phoneme_category_id }}">
-                        <a href="#" class="toggle-link" data-category-id="{{ $place->phoneme_category_id }}">
-                            مخرج الصوت في الشكل المجاور
-                        </a>
-                        <a href="{{ route('phonemes.showByPlace', $place->place_of_articulation) }}">
-                            {{ $place->place_of_articulation }}
-                        </a>
-                    </div>
-                </li>
-                @endforeach
-            </ul>
-
-            <ul id="categoriesList" style="display: none;">
+            <ul id="categoriesList">
                 @foreach ($categories as $category)
                 <li>
                     <div class="category-item" data-category-id="{{ $category->id }}">
-                        <a href="#" class="toggle-link" data-category-id="{{ $category->id }}">
+                        <a href="#" class="toggle-category toggle-link" data-category-id="{{ $category->id }}">
                             {{ $category->name }}
                         </a>
                     </div>
+                    <ul class="sub-places" data-category-id="{{ $category->id }}">
+                        @foreach ($places as $place)
+                        @if ($place->phoneme_category_id == $category->id)
+                        <li>
+                            <div dir="rtl" class="place-item" data-category-id="{{ $place->phoneme_category_id }}">
+                                <a href="#" class="show-details" data-url="{{ route('phonemes.showByPlace', $place->place_of_articulation) }}">
+                                    إظهار التفاصبل
+                                </a>
+                                <a href="#" class="show-details" data-url="{{ route('phonemes.showByPlace', $place->place_of_articulation) }}">
+                                                {{ $place->place_of_articulation }}
+                                            </a>
+                            </div>
+                        </li>
+                        @endif
+                        @endforeach
+                    </ul>
                 </li>
                 @endforeach
             </ul>
         </div>
+        
     </div>
 
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Store references to commonly used elements
-    const categoriesList = document.getElementById('categoriesList');
-    const placesList = document.getElementById('placesList');
-    
-    // Track active elements
-    let activeCategory = null;
-    let activePlacesList = null;
-    
-    // Hide places list by default
-    placesList.style.display = 'none';
-    
-    // Handle all category link clicks
-    document.querySelectorAll('.category-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const categoryId = this.dataset.categoryId;
-            
-            // Hide the previous active places list
-            if (activePlacesList) {
-                activePlacesList.style.display = 'none';
-            }
-            
-            // Find the places list associated with the categoryId
-            const newPlacesList = document.querySelector(`.places[data-category-id="${categoryId}"]`);
-            
-            // Toggle active state
-            if (activeCategory !== this) {
-                if (activeCategory) {
-                    activeCategory.classList.remove('active');
-                }
-                this.classList.add('active');
-                activeCategory = this;
-                
-                // Show the new places list
-                if (newPlacesList) {
-                    newPlacesList.style.display = 'block';
-                    activePlacesList = newPlacesList;
-                }
-            } else {
-                this.classList.remove('active');
-                activeCategory = null;
-                activePlacesList = null;
-            }
-        });
-    });
-});
-</script>
-    <!-- <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Store references to commonly used elements
-        const toggleButton = document.getElementById('toggleButton');
-        const placesList = document.getElementById('placesList');
-        const categoriesList = document.getElementById('categoriesList');
-        
-        // Track active elements
-        let activeItem = null;
-        
-        // Handle all toggle link clicks
+        const categoryLinks = document.querySelectorAll('.toggle-category');
+        const subPlaceLists = document.querySelectorAll('.sub-places');
+        let activeCategory = null;
+
+        categoryLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const categoryId = this.dataset.categoryId;
+
+                if (activeCategory && activeCategory !== categoryId) {
+                    document.querySelector(`.sub-places[data-category-id='${activeCategory}']`).style.display = 'none';
+                }
+
+                const subPlaces = document.querySelector(`.sub-places[data-category-id='${categoryId}']`);
+
+                if (subPlaces.style.display === 'block') {
+                    subPlaces.style.display = 'none';
+                    activeCategory = null;
+                } else {
+                    subPlaces.style.display = 'block';
+                    activeCategory = categoryId;
+                }
+            });
+        });
+
         document.querySelectorAll('.toggle-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const categoryId = this.dataset.categoryId;
-                
-                // Remove active class from previous item
-                if (activeItem) {
-                    activeItem.classList.remove('active');
-                }
-                
-                // Find the parent div of the clicked link
-                const parentDiv = this.closest('div');
-                
-                // Toggle active state
-                if (activeItem !== parentDiv) {
-                    parentDiv.classList.add('active');
-                    activeItem = parentDiv;
-                    showLayer(categoryId);
-                } else {
-                    activeItem = null;
-                    hideAllLayers();
-                }
+                const layers = document.querySelectorAll(`.layer[data-id='${categoryId}']`);
+
+                document.querySelectorAll('.layer').forEach(layer => layer.classList.remove('visible'));
+                layers.forEach(layer => layer.classList.add('visible'));
             });
-        });
-
-        function showLayer(categoryId) {
-            // Hide all layers first
-            hideAllLayers();
-            
-            // Show the selected layer
-            const layers = document.querySelectorAll(`.layer[data-id='${categoryId}']`);
-            layers.forEach(layer => layer.classList.add('visible'));
-        }
-
-        function hideAllLayers() {
-            document.querySelectorAll('.layer').forEach(layer => {
-                layer.classList.remove('visible');
-            });
-        }
-
-        // Toggle between views
-        toggleButton.addEventListener('click', function() {
-            const isShowingPlaces = placesList.style.display !== 'none';
-            
-            // Update button text
-            this.textContent = isShowingPlaces ? 'مخارج الحروف' : 'المخارج الرئيسية';
-            
-            // Toggle lists
-            placesList.style.display = isShowingPlaces ? 'none' : 'block';
-            categoriesList.style.display = isShowingPlaces ? 'block' : 'none';
-            
-            // Reset active states
-            if (activeItem) {
-                activeItem.classList.remove('active');
-                activeItem = null;
-            }
-            hideAllLayers();
         });
     });
-    </script> -->
+    document.addEventListener('DOMContentLoaded', function () {
+        
 
-
-    <div class="footer">
-        <p>&copy; 2025 Places of Articulation. All rights reserved.</p>
-    </div>
-
-
+        document.querySelectorAll('.show-details').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                fetch(this.dataset.url)
+                    .then(response => response.json())
+                    .then(data => {
+                        let container = document.querySelector('#dataContainer');
+                        console.log(data);
+                        container.innerHTML = '<ul>' + data.map(letter => `
+                            <li class="details">
+                            <p><strong>Letter:</strong> ${letter.arabic_letter?.letter || 'N/A'}</p>
+                                <p><strong>IPA:</strong> ${letter.ipa}</p>
+                                <p><strong>Type:</strong> ${letter.type}</p>
+                                <p><strong>Manner of Articulation:</strong> ${letter.manner_of_articulation}</p>
+                                <p><strong>Voicing:</strong> ${letter.voicing}</p>
+                                <p><strong>Sound Effects:</strong> ${letter.sound_effects}</p>
+                                <p><strong>Notes:</strong> ${letter.notes || 'N/A'}</p>
+                            </li>
+                        `).join('') + '</ul>';
+                    })
+                    .catch(error => console.error('Error fetching details:', error));
+            });
+        });
+    });
+    </script>
 </body>
 </html>
