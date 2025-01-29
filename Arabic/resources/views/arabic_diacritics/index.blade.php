@@ -129,21 +129,27 @@
 <body>
 
     <header>
-        <h1>التشكيلات</h1>
+        <h1>الحركات</h1>
     </header>
 
     <div class="container">
         <table>
             <tr>
-                <th>ID</th>
-                <th>Diacritic</th>
-                <th>Unicode Value</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Diacritic</th>
+            <th>Unicode Value</th>
+            <th>Effect</th>
+            <th>Description</th>
             </tr>
             @foreach ($diacritics as $diacritic)
                 <tr>
-                    <td>{{ $diacritic->id }}</td>
-                    <td>{{ $diacritic->diacritic }}</td>
-                    <td>{{ $diacritic->unicode_value }}</td>
+                <td>{{ $diacritic->id }}</td>
+                <td>{{ $diacritic->name }}</td>
+                <td>{{ $diacritic->diacritic }}</td>
+                <td>{{ $diacritic->unicode_value }}</td>
+                <td>{{ $diacritic->effect }}</td>
+                <td>{{ $diacritic->description }}</td>
                 </tr>
             @endforeach
         </table>

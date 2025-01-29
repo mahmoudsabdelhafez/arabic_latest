@@ -149,7 +149,7 @@
                 <tr>
                     <td>{{ $letter->id }}</td>
                     <td>{{ $letter->letter }}</td>
-                    <td>{{ $letter->unicode_value }}</td>
+                    <td>{{ $letter->unicode_hex }}</td>
                 </tr>
             @endforeach
         </table>

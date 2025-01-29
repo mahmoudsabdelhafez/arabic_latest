@@ -166,13 +166,7 @@
 
             <a href="/phonemecategories" class="button">إضافة مخرج حروف رئيسي</a>
             <a href="/upload" class="button">إضافة صورة مخرج</a>
-            <div class="button" id="phonemes-btn">
-                الصوتيات
-                <div class="dropdown-menu" id="phonemes-dropdown">
-                    <a href="{{ url('/phonemes') }}">All Phonemes</a>
-                    <a href="{{ url('/phonemes/place-of-articulation') }}">Place of Articulation</a>
-                </div>
-            </div>
+            
 
             <a href="{{ url('/ayah') }}" class="button">مثال على احكام التجويد</a>
             <a href="{{ url('/phonemes-menu') }}" class="button">الصوتيات</a>

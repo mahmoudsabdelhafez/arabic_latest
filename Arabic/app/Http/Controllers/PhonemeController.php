@@ -48,9 +48,9 @@ class PhonemeController extends Controller
     return view('phonemes.show-letter-by-place', compact('letters', 'place'));
 
 
-    public function showMenu()
-    {
-        return view('phonemes.phonemes-menu');
-    }
+}
+public function showMenu()
+{
+    return view('phonemes.phonemes-menu');
 }
 }
