@@ -56,7 +56,7 @@ class PhonemeController extends Controller
    
     
 
-}
+
 public function showMenu()
 {
     return view('phonemes.phonemes-menu');

@@ -24,4 +24,10 @@ class TajweedCategory extends Model
     }
 
 
+    public function rulings()
+{
+    return $this->hasMany(NunSakinahAndTanween::class);
+}
+
+
 }
