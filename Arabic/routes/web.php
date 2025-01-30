@@ -17,6 +17,7 @@ use App\Http\Controllers\SuffixController;
 use App\Http\Controllers\TajweedController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PhonemeCategoryController;
+use App\Http\Controllers\PronounController;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,8 +121,13 @@ Route::put('/update-rule/{id}', [TajweedController::class, 'update'])->name('upd
 Route::get('/delete-rule/{id}', [TajweedController::class, 'destroy'])->name('delete-rule');
 
 Route::get('/phonemes-menu', [PhonemeController::class, 'showMenu'])->name('phonemes-menu'); // show the menu of phonemes
+Route::get('/phonemes-diacritics/{id}', [PhonemeController::class, 'phonemesDiacritics'])->name('phonemes-diacritics'); // show the menu of phonemes
+
+Route::post('/update-phoneme-diacritic', [PhonemeController::class, 'updatePhonemeDiacritic'])->name('update.phoneme.diacritic');
 
 
+
+Route::get('/pronouns', [PronounController::class, 'show']);
 
 
 Route::get('/show', [ImageController::class, 'index'])->name('images.show');

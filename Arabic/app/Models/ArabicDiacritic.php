@@ -22,6 +22,13 @@ class ArabicDiacritic extends Model
                       ->withTimestamps();
       }
 
+      public function arabicLetters()
+      {
+          return $this->belongsToMany(ArabicLetter::class)
+                      ->withPivot('has_meaning', 'nots','is_preposition','used')
+                      ->withTimestamps();
+      }
+
       
 
       
