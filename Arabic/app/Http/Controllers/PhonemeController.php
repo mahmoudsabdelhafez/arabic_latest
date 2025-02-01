@@ -6,10 +6,12 @@ namespace App\Http\Controllers;
 
 use App\Models\ArabicDiacritic;
 use App\Models\ArabicLetter;
+use App\Models\ArabicTool;
 use Illuminate\Http\Request;
 use App\Models\Phoneme;
 use App\Models\Image;
 use App\Models\PhonemeCategory;
+use App\Models\Sawabeq;
 
 class PhonemeController extends Controller
 {
@@ -57,6 +59,18 @@ class PhonemeController extends Controller
     public function showMenu()
     {
         return view('phonemes.phonemes-menu');
+    }
+
+    public function details(Phoneme $phoneme)
+    {
+        $tools = ArabicTool::all();
+        // $letter = ArabicTool::with('arabicLetters')->findOrFail(2);
+        $letter = ArabicLetter::with('arabicTools')->find($phoneme->id);
+
+        // dd($letter->arabicTools); // عرض الأدوات المرتبطة
+
+        // dd($letter);
+        return view('phonemes.phoneme_details', compact(['phoneme','tools','letter']));
     }
 
     public function phonemesDiacritics($id)
@@ -119,4 +133,49 @@ class PhonemeController extends Controller
     return back()->with('success', 'Updated successfully!');
 }
 
+
+public function checkStore(Request $request)
+    {
+        $word = $request->input('word');
+        $firstLetter = mb_substr($word, 0, 1); // استخراج أول حرف من الكلمة
+        $pre = null;
+        // البحث عن الحرف في جدول ArabicLetter
+        $arabicLetter = ArabicLetter::where('letter', $firstLetter)->first();
+        $prefix = Sawabeq::where('name',$firstLetter)->first();
+        if(isset($prefix)){
+            $pre=$prefix->type;
+        }
+        if ($arabicLetter) {
+            // إذا كان الحرف موجودًا في جدول ArabicLetter، نبحث عن الأداة المرتبطة به
+            $tool = $arabicLetter->arabicTools->first(); // أخذ أول أداة مرتبطة بهذا الحرف
+
+            // التحقق إذا كان الحرف مرتبطًا بجدول arabicDiacritics
+            $diacriticNote = $arabicLetter->arabicDiacritics;
+            if (isset($diacriticNote[0])) {
+                // إذا كانت هناك ملاحظة، نعرضها
+                $note = $diacriticNote[0]->pivot->nots;
+            } else {
+                $note = null;
+            }
+
+            
+            // dd($tool);
+            if ($tool) {
+                // إذا كانت هناك أداة مرتبطة بالحرف
+                return view('phonemes.check_letter', compact('tool', 'firstLetter', 'note','pre'));
+            } else {
+                // إذا لم تكن هناك أداة مرتبطة بالحرف
+                return view('phonemes.check_letter', ['error' => 'لا توجد أداة مرتبطة بهذا الحرف.', 'note' => $note,'pre' => $pre ]);
+            }
+        } else {
+            // إذا لم يكن هناك حرف مطابق في جدول ArabicLetter
+            return view('phonemes.check_letter', ['error' => 'لا يوجد حرف مطابق.', 'note' => null ,'pre' => $pre  ]);
+        }
+    
+    }
+public function check()
+    {
+            return view('phonemes.check_letter');
+      
+   }
 }

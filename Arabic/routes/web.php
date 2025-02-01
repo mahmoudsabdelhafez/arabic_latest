@@ -138,10 +138,12 @@ Route::get('/phonemes/place/{place}', [PhonemeController::class, 'getPlaceLetter
 
 Route::resource('phonemecategories', PhonemeCategoryController::class);
 
+Route::post('/ar-tools/store', [ArabicLetterController::class, 'store'])->name('ar-tools.store');
+
+Route::get('/phonemes/{phoneme}/rules',  [PhonemeController::class, 'details'])->name('phoneme.rules.show');
 
 
-
-
-
+Route::get('/check', [PhonemeController::class, 'check']);
+Route::post('/check-phoneme', [PhonemeController::class, 'checkStore'])->name('check.phoneme');
 
 

@@ -31,4 +31,11 @@ class ArabicLetter extends Model
                    ->withPivot('has_meaning', 'nots','is_preposition','used')
                    ->withTimestamps();
    }
+
+   public function arabicTools()
+   {
+       return $this->belongsToMany(ArabicTool::class, 'arabic_tool_letter', 'arabic_letter_id', 'arabic_tool_id')
+       ->withPivot('effect','note')
+       ->withTimestamps();
+   }
 }

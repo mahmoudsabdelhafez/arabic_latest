@@ -247,7 +247,7 @@
                     @foreach ($diacritics as $diacritic)
                     <tr>
                         <td>{{ $diacritic->id }}</td>
-                        <td>{{ $letter->letter }}</td>
+                        <td>{{ $letter->letter }}{{ $diacritic->diacritic }}</td>
                         <td><div style="display:flex; justify-content: space-between;width:100%;height: 100%;">ىـ{{ $diacritic->diacritic }}<span style="text-align :right;">{{ $diacritic->name }}</div></span></td>
                         <td>{{ $diacritic->effect }}{{ $diacritic->effect }}</td>
                         <td>{{ isset($diacritic->arabicLetters->first()->pivot) ? ($diacritic->arabicLetters->first()->pivot->used ? 'Yes' : 'No') : 'Yes' }}</td>

@@ -105,7 +105,7 @@
             flex-wrap: wrap;
         }
 
-        .btn-edit, .btn-delete {
+        .btn-edit, .btn-delete ,.btn-viwe{
             display: inline-block;
             width: 80px;
             padding: 5px;
@@ -117,6 +117,10 @@
             color: white;
         }
 
+        .btn-viwe {
+            background-color:  var(--primary-color);
+            margin-left: 10px;
+        }
         .btn-edit {
             background-color: #4CAF50;
         }
@@ -221,11 +225,14 @@
                     <td>{{ $phoneme->voicing }}</td>
                     <td>{{ $phoneme->sound_effects }}</td>
                     <td>{{ $phoneme->notes }}</td>
-                    <td>
-                            <div class="action-buttons">
-                                <a href="{{ route('phonemes-diacritics', $phoneme->id) }}" class="btn-edit">View</a>
-                            </div>
-                        </td>
+                    <td style="display:flex;">
+                        <div class="action-buttons">
+                            <a href="{{ route('phonemes-diacritics', $phoneme->id) }}" class="btn-edit">View</a>
+                            <a href="{{ route('phoneme.rules.show', $phoneme->id) }}" class="btn-viwe">View</a>
+                        </div>
+                        <div class="action-buttons">
+                       </div>
+                    </td>
                 </tr>
             @endforeach
         </table>
