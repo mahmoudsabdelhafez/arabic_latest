@@ -81,52 +81,54 @@ class PhonemeController extends Controller
         return abort(404, 'Letter not found');
     }
 
+    $tools = ArabicTool::all();
     // جلب جميع الحركات وإضافة العلاقة إن وجدت
     $diacritics = ArabicDiacritic::with(['arabicLetters' => function ($query) use ($id) {
         $query->where('arabic_letter_id', $id)
-              ->withPivot('has_meaning', 'nots', 'is_preposition','used');
+              ->withPivot('usage_meaning', 'effect', 'example');
     }])->get();
+   
 
-    // dd($diacritics);
-
-    return view('phonemes.phonemes_diacritics', compact('letter', 'diacritics'));
+    return view('phonemes.phonemes_diacritics', compact('letter', 'diacritics','tools'));
 }
 
     
     
-    public function updatePhonemeDiacritic(Request $request)
+public function updatePhonemeDiacritic(Request $request)
 {
     // Validate the request data
     $request->validate([
-        'letter_id' => 'required|exists:arabic_letters,id',
-        'diacritic_id' => 'required|exists:arabic_diacritics,id',
-        'used' => 'required|boolean',
-        'has_meaning' => 'required|boolean',
-        'nots' => 'required|string',
-        'is_preposition' => 'required|boolean',
+        'arabic_tool_id' => 'required',
+        'arabic_letter_id' => 'required',
+        'arabic_diacritic_id' => 'nullable',
+        'usage_meaning' => 'nullable|string|max:255',
+        'effect' => 'nullable|string|max:255',
+        'example' => 'nullable|string',
     ]);
 
-    // Find the letter
-    $letter = ArabicLetter::findOrFail($request->letter_id);
+    // Retrieve the Arabic Tool
+    $tool = ArabicTool::findOrFail($request->arabic_tool_id);
 
-    // Check if the pivot record exists
-    $pivot = $letter->arabicDiacritics()->where('arabic_diacritic_id', $request->diacritic_id)->first();
+    // Check if the relationship already exists
+    $existingRecord = $tool->arabicLetters()
+        ->wherePivot('arabic_letter_id', $request->arabic_letter_id)
+        ->first();
 
-    if ($pivot) {
-        // Update the existing pivot
-        $letter->arabicDiacritics()->updateExistingPivot($request->diacritic_id, [
-            'used' => $request->used,
-            'has_meaning' => $request->has_meaning,
-            'nots' => $request->nots,
-            'is_preposition' => $request->is_preposition,
+    if ($existingRecord) {
+        // If exists, update the pivot data
+        $tool->arabicLetters()->updateExistingPivot($request->arabic_letter_id, [
+            'arabic_diacritic_id' => $request->arabic_diacritic_id,
+            'usage_meaning' => $request->usage_meaning,
+            'effect' => $request->effect,
+            'example' => $request->example,
         ]);
     } else {
-        // If pivot doesn't exist, create it
-        $letter->arabicDiacritics()->attach($request->diacritic_id, [
-            'used' => $request->used,
-            'has_meaning' => $request->has_meaning,
-            'nots' => $request->nots,
-            'is_preposition' => $request->is_preposition,
+        // If not exists, attach a new record
+        $tool->arabicLetters()->attach($request->arabic_letter_id, [
+            'arabic_diacritic_id' => $request->arabic_diacritic_id,
+            'usage_meaning' => $request->usage_meaning,
+            'effect' => $request->effect,
+            'example' => $request->example,
         ]);
     }
 
@@ -134,16 +136,20 @@ class PhonemeController extends Controller
 }
 
 
+
 public function checkStore(Request $request)
     {
         $word = $request->input('word');
-        $firstLetter = mb_substr($word, 0, 1); // استخراج أول حرف من الكلمة
+        $Letters = mb_str_split($word);
+        // $firstLetter = mb_substr($word, 2, 2); // استخراج أول حرف من الكلمة
+        if(count($Letters)>=4) {
+            $firstLetter = $Letters[0];
         $pre = null;
         // البحث عن الحرف في جدول ArabicLetter
         $arabicLetter = ArabicLetter::where('letter', $firstLetter)->first();
-        $prefix = Sawabeq::where('name',$firstLetter)->first();
+        $prefix = Sawabeq::where('name',$firstLetter)->get();
         if(isset($prefix)){
-            $pre=$prefix->type;
+            $pre=$prefix;
         }
         if ($arabicLetter) {
             // إذا كان الحرف موجودًا في جدول ArabicLetter، نبحث عن الأداة المرتبطة به
@@ -151,9 +157,14 @@ public function checkStore(Request $request)
 
             // التحقق إذا كان الحرف مرتبطًا بجدول arabicDiacritics
             $diacriticNote = $arabicLetter->arabicDiacritics;
+            // dd($diacriticNote);
             if (isset($diacriticNote[0])) {
+                if($diacriticNote[0]->diacritic == $Letters[1]){
                 // إذا كانت هناك ملاحظة، نعرضها
                 $note = $diacriticNote[0]->pivot->nots;
+                }else{
+                    $note = null;
+                }
             } else {
                 $note = null;
             }
@@ -171,6 +182,10 @@ public function checkStore(Request $request)
             // إذا لم يكن هناك حرف مطابق في جدول ArabicLetter
             return view('phonemes.check_letter', ['error' => 'لا يوجد حرف مطابق.', 'note' => null ,'pre' => $pre  ]);
         }
+    }else{
+        return view('phonemes.check_letter', ['error' => 'لا توجد أحرف زيادة', 'note' => null ,'pre' => null  ]);
+
+    }
     
     }
 public function check()

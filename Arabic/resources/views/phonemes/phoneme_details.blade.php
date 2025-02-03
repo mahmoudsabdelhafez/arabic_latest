@@ -213,7 +213,7 @@
                         <div class="rule-item">
                             <div><strong>الأداة:</strong> {{ $tool->name }}</div>
                             <div><strong>التأثير:</strong> {{ $tool->pivot->effect }}</div>
-                            <div><strong>ملاحظات:</strong> {{ $tool->pivot->note ?? 'لا توجد ملاحظات' }}</div>
+                            <div style="display: flex;"><p><strong>ملاحظات:</strong></p> {{ $tool->pivot->usage_meaning ?? 'لا توجد ملاحظات' }}</div>
                         </div>
                     @endforeach
                 @else

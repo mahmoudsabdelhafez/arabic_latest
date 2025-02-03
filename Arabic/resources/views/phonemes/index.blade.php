@@ -210,7 +210,8 @@
                 <th>Voicing</th>
                 <th>Sound Effects</th>
                 <th>Notes</th>
-                <th></th>
+                <th>With Haraka</th>
+                <th>Rules</th>
             </tr>
             @foreach ($phonemes as $phoneme)
                 <tr>
@@ -225,12 +226,13 @@
                     <td>{{ $phoneme->voicing }}</td>
                     <td>{{ $phoneme->sound_effects }}</td>
                     <td>{{ $phoneme->notes }}</td>
-                    <td style="display:flex;">
+                    <td>
                         <div class="action-buttons">
                             <a href="{{ route('phonemes-diacritics', $phoneme->id) }}" class="btn-edit">View</a>
-                            <a href="{{ route('phoneme.rules.show', $phoneme->id) }}" class="btn-viwe">View</a>
                         </div>
+                    </td><td>
                         <div class="action-buttons">
+                        <a href="{{ route('phoneme.rules.show', $phoneme->id) }}" class="btn-viwe">View</a>
                        </div>
                     </td>
                 </tr>

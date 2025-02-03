@@ -18,6 +18,8 @@ use App\Http\Controllers\TajweedController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PhonemeCategoryController;
 use App\Http\Controllers\PronounController;
+use App\Http\Controllers\DeepInfraController;
+use App\Http\Controllers\QuranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -144,6 +146,10 @@ Route::get('/phonemes/{phoneme}/rules',  [PhonemeController::class, 'details'])-
 
 
 Route::get('/check', [PhonemeController::class, 'check']);
-Route::post('/check-phoneme', [PhonemeController::class, 'checkStore'])->name('check.phoneme');
+Route::post('/check', [PhonemeController::class, 'checkStore'])->name('check.phoneme');
 
 
+Route::post('/deepinfra-chat', [DeepInfraController::class, 'chatWithDeepInfra'])->name('deepinfra-chat');
+
+Route::get('/search', [QuranController::class, 'search']);
+Route::get('/quran', [QuranController::class, 'show']);

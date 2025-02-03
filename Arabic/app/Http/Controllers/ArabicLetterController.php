@@ -24,6 +24,14 @@ class ArabicLetterController extends Controller
 
     public function store(Request $request)
     {
+        
+        // Attaching to the pivot table with additional data, including diacritic_id
+        // $tool->arabicLetters()->attach($letter->id, [
+        //     'arabic_diacritic_id' => $diacritic->id,
+        //     'usage_meaning' => 'Used for diacritic marking',
+        //     'effect' => 'Affects vowel sound',
+        //     'example' => 'Example sentence with diacritic'
+        // ]);
         // dd($request);
         // التحقق من البيانات المدخلة
         $request->validate([
@@ -39,7 +47,7 @@ class ArabicLetterController extends Controller
         // ربط الحرف بالأداة عبر الجدول الوسيط مع إدراج التأثير والملاحظة
         $tool->arabicLetters()->attach($request->letter_id, [
             'effect' => $request->effect,
-            'note' => $request->note,
+            'usage_meaning' => $request->note,
         ]);
 
         // إعادة التوجيه مع رسالة نجاح

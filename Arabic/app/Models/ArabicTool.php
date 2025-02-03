@@ -19,7 +19,13 @@ class ArabicTool extends Model
 
     public function arabicLetters()
     {
-        return $this->belongsToMany(ArabicLetter::class, 'arabic_tool_letter', 'arabic_tool_id', 'arabic_letter_id')->withPivot('effect','note')
-        ->withTimestamps();
+        return $this->belongsToMany(ArabicLetter::class, 'arabic_tools_leters_diacritics')
+                    ->withPivot('usage_meaning', 'effect', 'example');
+    }
+
+    public function arabicDiacritics()
+    {
+        return $this->belongsToMany(ArabicDiacritic::class, 'arabic_tools_leters_diacritics')
+                    ->withPivot('usage_meaning', 'effect', 'example');
     }
 }

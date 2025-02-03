@@ -9,10 +9,12 @@
         rel="stylesheet">
     <style>
     :root {
-        --primary-color: #2c4c7c;
-        --primary-light: #e8f0fe;
-        --secondary-color: #e9b384;
-        --text-color: #333333;
+            --accent-color: #e6d5b8;
+            --white: #ffffff;
+            --primary-color: #1a5f7a;
+            --primary-light: #e8f0fe;
+        --secondary-color: #c7b7a3;
+        --text-color: #2b2b2b;
         --border-color: #e0e7ff;
         --success-color: #34d399;
         --error-color: #ef4444;
@@ -258,15 +260,16 @@
                 @endif
                 @if(isset($note))
                 <div class="tool-info">
-                    <p><strong>ملاحظة:</strong> {{ $note }}</p>
+                    <p><strong>تصاريف أخرى:</strong> {{ $note }}</p>
                 </div>
 
                 @endif
                 @if(isset($pre))
+                @foreach($pre as $prefix)
                 <div class="tool-info">
-                    <p><strong>ملاحظة:</strong> {{ $pre }}</p>
+                    <p><strong>ملاحظة:</strong> {{ $prefix->type }}</p>
                 </div>
-
+                @endforeach
                 @endif
             </section>
         </main>

@@ -26,16 +26,15 @@ class ArabicLetter extends Model
    }
 
    public function arabicDiacritics()
-   {
-       return $this->belongsToMany(ArabicDiacritic::class)
-                   ->withPivot('has_meaning', 'nots','is_preposition','used')
-                   ->withTimestamps();
-   }
+{
+    return $this->belongsToMany(ArabicDiacritic::class, 'arabic_tools_leters_diacritics')
+                ->withPivot('usage_meaning', 'effect', 'example');
+}
 
    public function arabicTools()
    {
-       return $this->belongsToMany(ArabicTool::class, 'arabic_tool_letter', 'arabic_letter_id', 'arabic_tool_id')
-       ->withPivot('effect','note')
+       return $this->belongsToMany(ArabicTool::class, 'arabic_tools_leters_diacritics')
+                ->withPivot('usage_meaning', 'effect', 'example')
        ->withTimestamps();
    }
 }
