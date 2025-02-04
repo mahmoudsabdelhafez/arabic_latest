@@ -22,6 +22,17 @@ class ArabicDiacritic extends Model
                       ->withTimestamps();
       }
 
+      public function arabicLetters()
+{
+    return $this->belongsToMany(ArabicLetter::class, 'arabic_tools_leters_diacritics')
+                ->withPivot('usage_meaning', 'effect', 'example');
+}
+
+      public function arabicTools()
+      {
+          return $this->belongsToMany(ArabicTool::class, 'arabic_tools_leters_diacritics')
+                      ->withPivot('usage_meaning', 'effect', 'example');
+      }
       
 
       

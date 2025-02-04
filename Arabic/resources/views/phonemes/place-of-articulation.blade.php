@@ -241,14 +241,17 @@
                         <a href="#" class="toggle-category toggle-link" data-category-id="{{ $category->id }}">
                             {{ $category->name }}
                         </a>
+                        <a href="#" class="toggle-category toggle-link" data-category-id="{{ $category->id }}">
+                        {{ $category->arabic_name }}
+                        </a>
                     </div>
                     <ul class="sub-places" data-category-id="{{ $category->id }}">
                         @foreach ($places as $place)
                         @if ($place->phoneme_category_id == $category->id)
                         <li>
                             <div dir="rtl" class="place-item" data-category-id="{{ $place->phoneme_category_id }}">
-                                <a href="#" class="show-details" data-url="{{ route('phonemes.showByPlace', $place->place_of_articulation) }}">
-                                    إظهار التفاصبل
+                                <a href="#" class="show-details" style="text-align: right;" data-url="{{ route('phonemes.showByPlace', $place->place_of_articulation) }}">
+                                {{ $place->articulation_arabic_name }}
                                 </a>
                                 <a href="#" class="show-details" data-url="{{ route('phonemes.showByPlace', $place->place_of_articulation) }}">
                                                 {{ $place->place_of_articulation }}
@@ -275,7 +278,8 @@
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const categoryId = this.dataset.categoryId;
-
+                let container = document.querySelector('#dataContainer');
+                container.innerHTML ='';
                 if (activeCategory && activeCategory !== categoryId) {
                     document.querySelector(`.sub-places[data-category-id='${activeCategory}']`).style.display = 'none';
                 }
