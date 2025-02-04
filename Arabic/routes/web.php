@@ -17,6 +17,8 @@ use App\Http\Controllers\SuffixController;
 use App\Http\Controllers\TajweedController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PhonemeCategoryController;
+use App\Http\Controllers\RefugeBasmalaController;
+use App\Http\Controllers\TajweedCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -131,6 +133,27 @@ Route::post('/upload', [ImageController::class, 'store'])->name('upload.store');
 Route::get('/phonemes/place/{place}', [PhonemeController::class, 'getPlaceLetters']);
 
 Route::resource('phonemecategories', PhonemeCategoryController::class);
+
+
+
+// ========= all ahkam tajwedd ==============
+Route::get('/tajweed/menu', [TajweedCategoryController::class, 'menu'])->name('tajweedcategories.menu');
+Route::get('/tajweed-concept', [TajweedCategoryController::class, 'showConcept'])->name('tajweed.concept');
+
+Route::get('/tajweedcategories', [TajweedCategoryController::class, 'index'])->name('tajweedcategories.index');
+Route::get('/tajweedcategories/{id}', [TajweedCategoryController::class, 'show'])->name('tajweedcategories.show');
+
+Route::get('/tajweed-rule/{id}', [TajweedCategoryController::class, 'showRule'])->name('tajweed.rule');
+
+// Route::get('/tajweedcategory/rule/{id}', [TajweedCategoryController::class, 'ruleDetails'])->name('tajweedcategory.ruleDetails');
+
+// Route::get('tajweed-categories/{id}', [TajweedCategoryController::class, 'show'])->name('tajweedcategory.show');
+// Route::get('rule-details/{id}', [TajweedCategoryController::class, 'ruleDetails'])->name('tajweedcategory.ruleDetails');
+
+
+Route::get('/refuge-basmala', [RefugeBasmalaController::class, 'index']);
+
+
 
 
 

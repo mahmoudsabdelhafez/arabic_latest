@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('tajweed_rules_letters', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tajweed_rule_id')->constrained('tajweed_rules')->onDelete('cascade'); // Foreign key to Tajweed rules
-            $table->foreignId('letter_1_id')->constrained('letters')->onDelete('cascade'); // Foreign key to Letters table
             $table->foreignId('letter_2_id')->nullable()->constrained('arabic_letters')->onDelete('cascade');
             $table->timestamps();
         });
