@@ -48,49 +48,93 @@
             background-size: 60px 60px;
             opacity: 0.1;
         }
+        a {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
 
-        h1 {
+        }
+
+        h1, h2 {
             font-family: 'Aref Ruqaa', serif;
             color: var(--white);
             text-align: center;
-            font-size: 2.5rem;
             position: relative;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
-        .container {
+        h1 { font-size: 2.5rem; }
+        h2 { 
+            color: var(--primary-color);
+            margin: 2rem 0 1rem;
+            font-size: 1.8rem;
+        }
+
+        .main-container {
             flex: 1;
             padding: 3rem 1rem;
-            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            text-align: center;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            background: var(--white);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            padding: 1rem;
         }
 
         .button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-decoration: none;
-            background: linear-gradient(145deg, #4CAF50, #45a049);
-            color: var(--white);
-            padding: 15px 30px;
-            font-size: 18px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            color: var(--primary-color);
+            padding: 1.2rem 1.5rem;
+            font-size: 1.1rem;
             font-weight: bold;
-            border-radius: 50px;
+            border-radius: 12px;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255,255,255,0.3),
+                transparent
+            );
+            transition: 0.5s;
         }
 
         .button:hover {
-            background: linear-gradient(145deg, #45a049, #4CAF50);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .button:hover::before {
+            left: 100%;
         }
 
         .footer {
@@ -101,17 +145,7 @@
             margin-top: auto;
         }
 
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-
-            .button {
-                padding: 12px 24px;
-                font-size: 16px;
-            }
-        }
-
+      
     </style>
 </head>
 <body>
@@ -119,14 +153,16 @@
     <header>
         <h1>Phonemes Resources</h1>
     </header>
-
+    <div class="main-container">
+    <section class="section">
     <div class="container">
         <div class="button-container">
             <a href="{{ url('/phonemes') }}" class="button">All Phonemes</a>
             <a href="{{ url('/phonemes/place-of-articulation') }}" class="button">Place of Articulation</a>
         </div>
     </div>
-
+    </section>
+    </div>
     <div class="footer">
         <p>&copy; 2025 Phonemes Resources. All rights reserved.</p>
     </div>

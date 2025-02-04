@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phonemes</title>
+    <title>جميع أحرف اللغة العربية</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -67,7 +67,7 @@
         }
 
         table {
-            width: 100%;
+            width: 100%; /* Changed to full width */
             margin: 30px auto;
             border-collapse: collapse;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -77,64 +77,6 @@
         th, td {
             padding: 15px;
             text-align: center;
-        }
-
-        .btn-add-rule {
-            display: inline-block;
-            width: 200px;
-            margin: 10px;
-            background-color: #2F4F4F;
-            color: white;
-            padding: 10px;
-            font-size: 18px;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-add-rule:hover {
-            background-color: #4a148c;
-        }
-
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn-edit, .btn-delete ,.btn-viwe{
-            display: inline-block;
-            width: 80px;
-            padding: 5px;
-            margin: 2px 0;
-            font-size: 14px;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            color: white;
-        }
-
-        .btn-viwe {
-            background-color:  var(--primary-color);
-            margin-left: 10px;
-        }
-        .btn-edit {
-            background-color: #4CAF50;
-        }
-
-        .btn-edit:hover {
-            background-color: #388e3c;
-        }
-
-        .btn-delete {
-            background-color: #f44336;
-        }
-
-        .btn-delete:hover {
-            background-color: #d32f2f;
         }
 
         th {
@@ -193,55 +135,28 @@
 <body>
 
     <header>
-        <h1>Phonemes</h1>
+        <h1>الضمائر في اللغة العربية</h1>
     </header>
 
     <div class="container">
         <table>
             <tr>
                 <th>ID</th>
-                <th>Letter</th>
-                <th>ipa</th>
-                <th>unicode_hex</th>
-                <th>Unicode Decimal</th>
-                <th>Type</th>
-                <th>Place of Articulation</th>
-                <th>Manner of Articulation</th>
-                <th>Voicing</th>
-                <th>Sound Effects</th>
-                <th>Notes</th>
-                <th>With Haraka</th>
-                <th>Rules</th>
+                <th>Pronoun</th>
+                <th>Definition</th>
             </tr>
-            @foreach ($phonemes as $phoneme)
+            @foreach ($pronouns as $pronoun)
                 <tr>
-                    <td>{{ $phoneme->id }}</td>
-                    <td>{{ $phoneme->arabicLetter->letter }}</td>
-                    <td>{{ $phoneme->ipa }}</td>
-                    <td>{{ $phoneme->arabicLetter->unicode_hex }}</td>
-                    <td>{{ $phoneme->arabicLetter->unicode_decimal }}</td>
-                    <td>{{ $phoneme->type }}</td>
-                    <td>{{ $phoneme->place_of_articulation }}</td>
-                    <td>{{ $phoneme->manner_of_articulation }}</td>
-                    <td>{{ $phoneme->voicing }}</td>
-                    <td>{{ $phoneme->sound_effects }}</td>
-                    <td>{{ $phoneme->notes }}</td>
-                    <td>
-                        <div class="action-buttons">
-                            <a href="{{ route('phonemes-diacritics', $phoneme->id) }}" class="btn-edit">View</a>
-                        </div>
-                    </td><td>
-                        <div class="action-buttons">
-                        <a href="{{ route('phoneme.rules.show', $phoneme->id) }}" class="btn-viwe">View</a>
-                       </div>
-                    </td>
+                    <td>{{ $pronoun->id }}</td>
+                    <td>{{ $pronoun->pronoun }}</td>
+                    <td>{{ $pronoun->definition }}</td>
                 </tr>
             @endforeach
         </table>
     </div>
 
     <div class="footer">
-        <p>&copy; 2025 Phonemes. All rights reserved.</p>
+        <p>&copy; 2025 Arabic Letters. All rights reserved.</p>
     </div>
 
 </body>

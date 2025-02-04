@@ -17,6 +17,9 @@ use App\Http\Controllers\SuffixController;
 use App\Http\Controllers\TajweedController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PhonemeCategoryController;
+use App\Http\Controllers\PronounController;
+use App\Http\Controllers\DeepInfraController;
+use App\Http\Controllers\QuranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,8 +123,13 @@ Route::put('/update-rule/{id}', [TajweedController::class, 'update'])->name('upd
 Route::get('/delete-rule/{id}', [TajweedController::class, 'destroy'])->name('delete-rule');
 
 Route::get('/phonemes-menu', [PhonemeController::class, 'showMenu'])->name('phonemes-menu'); // show the menu of phonemes
+Route::get('/phonemes-diacritics/{id}', [PhonemeController::class, 'phonemesDiacritics'])->name('phonemes-diacritics'); // show the menu of phonemes
+
+Route::post('/update-phoneme-diacritic', [PhonemeController::class, 'updatePhonemeDiacritic'])->name('update.phoneme.diacritic');
 
 
+
+Route::get('/pronouns', [PronounController::class, 'show']);
 
 
 Route::get('/show', [ImageController::class, 'index'])->name('images.show');
@@ -132,10 +140,16 @@ Route::get('/phonemes/place/{place}', [PhonemeController::class, 'getPlaceLetter
 
 Route::resource('phonemecategories', PhonemeCategoryController::class);
 
+Route::post('/ar-tools/store', [ArabicLetterController::class, 'store'])->name('ar-tools.store');
+
+Route::get('/phonemes/{phoneme}/rules',  [PhonemeController::class, 'details'])->name('phoneme.rules.show');
 
 
+Route::get('/check', [PhonemeController::class, 'check']);
+Route::post('/check', [PhonemeController::class, 'checkStore'])->name('check.phoneme');
 
 
+Route::post('/deepinfra-chat', [DeepInfraController::class, 'chatWithDeepInfra'])->name('deepinfra-chat');
 
-
-
+Route::get('/search', [QuranController::class, 'search']);
+Route::get('/quran', [QuranController::class, 'show']);

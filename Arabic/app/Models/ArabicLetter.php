@@ -24,4 +24,17 @@ class ArabicLetter extends Model
    {
        return $this->belongsToMany(TajweedRule::class, 'tajweed_rules_letters', 'letter_2_id', 'tajweed_rule_id');
    }
+
+   public function arabicDiacritics()
+{
+    return $this->belongsToMany(ArabicDiacritic::class, 'arabic_tools_leters_diacritics')
+                ->withPivot('usage_meaning', 'effect', 'example');
+}
+
+   public function arabicTools()
+   {
+       return $this->belongsToMany(ArabicTool::class, 'arabic_tools_leters_diacritics')
+                ->withPivot('usage_meaning', 'effect', 'example')
+       ->withTimestamps();
+   }
 }
