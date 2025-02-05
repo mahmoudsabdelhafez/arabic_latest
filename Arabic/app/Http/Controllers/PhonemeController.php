@@ -7,11 +7,20 @@ namespace App\Http\Controllers;
 use App\Models\ArabicDiacritic;
 use App\Models\ArabicLetter;
 use App\Models\ArabicTool;
+use App\Models\Conditional;
+use App\Models\Detail;
+use App\Models\Exception as ModelsException;
+use App\Models\Explanation;
 use Illuminate\Http\Request;
 use App\Models\Phoneme;
 use App\Models\Image;
+use App\Models\Negative;
 use App\Models\PhonemeCategory;
+use App\Models\Preposition;
 use App\Models\Sawabeq;
+use App\Models\Tool;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class PhonemeController extends Controller
 {
@@ -63,14 +72,16 @@ class PhonemeController extends Controller
 
     public function details(Phoneme $phoneme)
     {
-        $tools = ArabicTool::all();
+        $tools = Tool::all();
         // $letter = ArabicTool::with('arabicLetters')->findOrFail(2);
         $letter = ArabicLetter::with('arabicTools')->find($phoneme->id);
 
+        $rule = $this->search($letter->letter);
+
         // dd($letter->arabicTools); // عرض الأدوات المرتبطة
 
-        // dd($letter);
-        return view('phonemes.phoneme_details', compact(['phoneme','tools','letter']));
+        // dd($rule);
+        return view('phonemes.phoneme_details', compact(['phoneme','tools','letter','rule']));
     }
 
     public function phonemesDiacritics($id)
@@ -81,7 +92,12 @@ class PhonemeController extends Controller
         return abort(404, 'Letter not found');
     }
 
-    $tools = ArabicTool::all();
+    $rule = $this->search($letter->letter);
+
+    // dd($rule);
+    // $tools = ArabicTool::all();
+    $tools = Tool::all();
+        // dd($tools);
     // جلب جميع الحركات وإضافة العلاقة إن وجدت
     $diacritics = ArabicDiacritic::with(['arabicLetters' => function ($query) use ($id) {
         $query->where('arabic_letter_id', $id)
@@ -89,55 +105,41 @@ class PhonemeController extends Controller
     }])->get();
    
 
+    return view('phonemes.phonemes_diacritics', compact('letter', 'diacritics','tools','rule'));
 
-    return view('phonemes.phonemes_diacritics', compact('letter', 'diacritics','tools'));
 }
 
     
     
 public function updatePhonemeDiacritic(Request $request)
 
-
-public function showMenu()
-
 {
     // Validate the request data
-    $request->validate([
-        'arabic_tool_id' => 'required',
-        'arabic_letter_id' => 'required',
-        'arabic_diacritic_id' => 'nullable',
-        'usage_meaning' => 'nullable|string|max:255',
-        'effect' => 'nullable|string|max:255',
-        'example' => 'nullable|string',
-    ]);
-
-    // Retrieve the Arabic Tool
-    $tool = ArabicTool::findOrFail($request->arabic_tool_id);
-
-    // Check if the relationship already exists
-    $existingRecord = $tool->arabicLetters()
-        ->wherePivot('arabic_letter_id', $request->arabic_letter_id)
-        ->first();
-
-    if ($existingRecord) {
-        // If exists, update the pivot data
-        $tool->arabicLetters()->updateExistingPivot($request->arabic_letter_id, [
-            'arabic_diacritic_id' => $request->arabic_diacritic_id,
-            'usage_meaning' => $request->usage_meaning,
-            'effect' => $request->effect,
-            'example' => $request->example,
+    
+        $request->validate([
+            'arabic_tool_id' => 'required|integer',
+            'english_name' => 'required|string|max:255',
+            'arabic_letter_id' => 'required',
+            'arabic_diacritic_id' => 'nullable',
+            'semantic_function' => 'required|string|max:255',
+            'grammatical_function' => 'required|string|max:255',
+            'example' => 'required|string',
+            'description' => 'nullable|string',
         ]);
-    } else {
-        // If not exists, attach a new record
-        $tool->arabicLetters()->attach($request->arabic_letter_id, [
-            'arabic_diacritic_id' => $request->arabic_diacritic_id,
-            'usage_meaning' => $request->usage_meaning,
-            'effect' => $request->effect,
+        $table = Tool::findOrFail($request->arabic_tool_id);
+        $table = strtolower($table->name).'s';
+        DB::table($table)->insert([
+            'tool_id' => $request->arabic_tool_id,
+            'english_name' => $request->english_name,
+            'name' => $request->arabic_letter_id . $request->arabic_diacritic_id,
+            'semantic_function' => $request->semantic_function,
+            'grammatical_function' => $request->grammatical_function,
             'example' => $request->example,
+            'description' => $request->description,
         ]);
-    }
 
-    return back()->with('success', 'Updated successfully!');
+        return redirect()->back()->with('success', 'تم تحديث البيانات بنجاح!');
+    
 }
 
 
@@ -198,4 +200,20 @@ public function check()
             return view('phonemes.check_letter');
       
    }
+
+   public function search($query)
+    {
+
+        // Search in multiple tables using raw queries
+        $results = [
+            'table1' => Conditional::where('name', 'LIKE', "$query")->get(),
+            'table2' => Detail::where('name', 'LIKE', "$query")->get(),
+            'table3' => Negative::where('name', 'LIKE', "$query")->get(),
+            'table4' => ModelsException::where('name', 'LIKE', "$query")->get(),
+            'table5' => Explanation::where('name', 'LIKE', "$query")->get(),
+            'table6' => Preposition::where('name', 'LIKE', "$query")->get(),
+        ];
+
+        return response()->json($results);
+    }
 }

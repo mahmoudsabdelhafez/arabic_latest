@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -7,45 +6,52 @@ use Illuminate\Support\Facades\Http;
 
 class DeepInfraController extends Controller
 {
-public function chatWithDeepInfra(Request $request)
-{
-    // Validate input data
-    $request->validate([
-        'arabic_letter' => 'required',
-        'effect' => 'nullable',
-    ]);
+    public function chatWithDeepInfra(Request $request)
+    {
+        // Validate input data
+        $request->validate([
+            'arabic_letter_id' => 'required',
+            'arabic_diacritic_id' => 'required'
+        ]);
 
-    // Concatenate effect and Arabic letter
-    $text = trim($request->effect . ' ' . $request->arabic_letter);
-    
-    // Get API token from .env
-    $token = env('DEEPINFRA_TOKEN');
+        // Example input text (you can modify based on request data)
+        $text = 'ب حرف جر';  
 
-    // Make sure the token exists
-    if (!$token) {
-        return response()->json(['error' => 'Missing DeepInfra API token'], 500);
-    }
+        // Get API token from .env file
+        $token = 'vrnurh2a8iNitno93ay53mCUtNMB68Wm';
 
-    try {
-        // Make the API request
-        $response = Http::withToken($token)
-            ->withHeaders(['Content-Type' => 'application/json'])
-            ->post('https://api.deepinfra.com/v1/openai/chat/completions', [
-                'model' => 'Qwen/Qwen2.5-72B-Instruct',
-                'messages' => [
-                    ['role' => 'user', 'content' => 'Give me a description of ' . $text]
-                ]
-            ]);
-
-        // Check if API request was successful
-        if ($response->successful()) {
-            return response()->json($response->json());
-        } else {
-            return response()->json(['error' => 'DeepInfra API error', 'details' => $response->body()], $response->status());
+        if (!$token) {
+            return response()->json(['error' => 'Missing DeepInfra API token'], 500);
         }
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Request failed', 'message' => $e->getMessage()], 500);
-    }
-}
 
+        try {
+            // Make the API request
+            $response = Http::withToken($token)
+                ->withHeaders(['Content-Type' => 'application/json'])
+                ->withOptions(['verify' => false]) // Disable SSL verification if needed
+                ->post('https://api.deepinfra.com/v1/openai/chat/completions', [
+                    'model' => 'Qwen/Qwen2.5-72B-Instruct',
+                    'messages' => [
+                        ['role' => 'user', 'content' => 'اعطيني شرح مختصر ومفيد عن : ' . $text]
+                    ]
+                ]);
+
+            // Check if API request was successful
+            if ($response->successful()) {
+                $data = $response->json();
+
+                // Extract the actual message content
+                $message = $data['choices'][0]['message']['content'] ?? 'لم يتم العثور على شرح';
+
+                return response()->json(['description' => $message]);
+            } else {
+                return response()->json([
+                    'error' => 'DeepInfra API error',
+                    'details' => $response->json()
+                ], $response->status());
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Request failed', 'message' => $e->getMessage()], 500);
+        }
+    }
 }

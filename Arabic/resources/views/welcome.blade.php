@@ -179,6 +179,16 @@
             </div>
         </section>
 
+        <section class="section">
+            <h2>التجويد والصوتيات</h2>
+            <div class="button-container">
+                <a href="{{ url('/tajweeds') }}" class="button">أحكام التجويد</a>
+                <a href="{{ url('/ayah') }}" class="button">مثال على أحكام التجويد</a>
+                <a href="{{ url('/phonemes-menu') }}" class="button">الصوتيات</a>
+                <a href="{{ url('/emphatic-arabic-letters') }}" class="button">أحرف القلقلة</a>
+                <a href="{{ url('/quran') }}" class="button">البحث في المصحف</a>
+            </div>
+        </section>
         <!-- القسم الثاني: تركيب الكلمات -->
         <section class="section">
             <h2>تركيب الكلمات</h2>
