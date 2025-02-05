@@ -17,14 +17,13 @@ use App\Http\Controllers\SuffixController;
 use App\Http\Controllers\TajweedController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PhonemeCategoryController;
-<<<<<<< HEAD
+
 use App\Http\Controllers\RefugeBasmalaController;
 use App\Http\Controllers\TajweedCategoryController;
-=======
+
 use App\Http\Controllers\PronounController;
 use App\Http\Controllers\DeepInfraController;
 use App\Http\Controllers\QuranController;
->>>>>>> 3ce5be62c6aa19f69c2c17a90ffe2e2de162d895
 
 /*
 |--------------------------------------------------------------------------
@@ -150,7 +149,6 @@ Route::post('/ar-tools/store', [ArabicLetterController::class, 'store'])->name('
 Route::get('/phonemes/{phoneme}/rules',  [PhonemeController::class, 'details'])->name('phoneme.rules.show');
 
 
-<<<<<<< HEAD
 // ========= all ahkam tajwedd ==============
 Route::get('/tajweed/menu', [TajweedCategoryController::class, 'menu'])->name('tajweedcategories.menu');
 Route::get('/tajweed-concept', [TajweedCategoryController::class, 'showConcept'])->name('tajweed.concept');
@@ -172,10 +170,8 @@ Route::get('/refuge-basmala', [RefugeBasmalaController::class, 'index']);
 
 
 
-=======
 Route::get('/check', [PhonemeController::class, 'check']);
 Route::post('/check', [PhonemeController::class, 'checkStore'])->name('check.phoneme');
->>>>>>> 3ce5be62c6aa19f69c2c17a90ffe2e2de162d895
 
 
 Route::post('/deepinfra-chat', [DeepInfraController::class, 'chatWithDeepInfra'])->name('deepinfra-chat');
