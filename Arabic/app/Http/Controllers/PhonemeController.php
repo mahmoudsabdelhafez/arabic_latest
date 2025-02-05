@@ -105,20 +105,13 @@ class PhonemeController extends Controller
     }])->get();
    
 
-<<<<<<< HEAD
     return view('phonemes.phonemes_diacritics', compact('letter', 'diacritics','tools','rule'));
-=======
 
-    return view('phonemes.phonemes_diacritics', compact('letter', 'diacritics','tools'));
->>>>>>> 6e3babc8d3040dba592d9b9ad785c91807e6861d
 }
 
     
     
 public function updatePhonemeDiacritic(Request $request)
-
-
-public function showMenu()
 
 {
     // Validate the request data
