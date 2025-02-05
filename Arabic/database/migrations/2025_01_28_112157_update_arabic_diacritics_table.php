@@ -30,7 +30,6 @@ return new class extends Migration
             $table->dropColumn(['name', 'description']);
 
             // Optional: Re-add the 'created_at' and 'updated_at' columns if they were dropped
-            $table->timestamps();
         });
     }
 };

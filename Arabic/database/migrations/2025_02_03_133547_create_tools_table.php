@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tajweed_rules_letters', function (Blueprint $table) {
+        Schema::create('tools', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tajweed_rule_id')->constrained('tajweed_rules')->onDelete('cascade'); // Foreign key to Tajweed rules
-            $table->foreignId('letter_2_id')->nullable()->constrained('arabic_letters')->onDelete('cascade');
+            $table->string('name', 255); // Name Column
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tajweed_rules_letters');
+        Schema::dropIfExists('tools');
     }
 };

@@ -234,6 +234,94 @@
         margin-bottom: 1.5rem;
     }
     </style>
+    <style>
+.loader-container {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+
+.brain-loader {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  background: 
+    linear-gradient(90deg, #4F46E5 50%, transparent 50%),
+    linear-gradient(90deg, #818CF8 50%, transparent 50%),
+    linear-gradient(90deg, #C7D2FE 50%, transparent 50%);
+  background-size: 200% 100%;
+  background-position: 200% 0;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+  position: relative;
+}
+
+.brain-loader::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2'%3E%3Cpath d='M9.5 2a2.5 2.5 0 0 1 2.5 2.5c0 .63-.24 1.2-.63 1.63.31.4.5.9.5 1.46a2.5 2.5 0 0 1-2.5 2.5c-.63 0-1.2-.24-1.63-.63-.4.31-.9.5-1.46.5a2.5 2.5 0 0 1-2.5-2.5c0-.63.24-1.2.63-1.63-.31-.4-.5-.9-.5-1.46a2.5 2.5 0 0 1 2.5-2.5c.63 0 1.2.24 1.63.63.4-.31.9-.5 1.46-.5zM16.5 6a2.5 2.5 0 0 1 2.5 2.5c0 .63-.24 1.2-.63 1.63.31.4.5.9.5 1.46a2.5 2.5 0 0 1-2.5 2.5c-.63 0-1.2-.24-1.63-.63-.4.31-.9.5-1.46.5a2.5 2.5 0 0 1-2.5-2.5c0-.63.24-1.2.63-1.63-.31-.4-.5-.9-.5-1.46a2.5 2.5 0 0 1 2.5-2.5c.63 0 1.2.24 1.63.63.4-.31.9-.5 1.46-.5z'/%3E%3C/svg%3E") center/60% no-repeat;
+}
+
+.thinking-dots::after {
+  content: '';
+  animation: dots 1.5s steps(5, end) infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); background-position: 200% 0; }
+  50% { transform: scale(1.1); background-position: 100% 0; }
+  100% { transform: scale(1); background-position: 0% 0; }
+}
+
+@keyframes dots {
+  0%, 20% { content: '.'; }
+  40% { content: '..'; }
+  60% { content: '...'; }
+  80% { content: '....'; }
+  100% { content: '.....'; }
+}
+
+.messages {
+  margin-top: 1rem;
+}
+
+.message {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: #6B7280;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
 </head>
 
 <body>
@@ -266,7 +354,6 @@
                             </div>
                         </td>
                         <td>{{ $diacritic->effect }}</td>
-
                         <td dir="rtl">
                             {{ isset($diacritic->arabicLetters->first()->pivot) ? $diacritic->arabicLetters->first()->pivot->usage_meaning : '' }}
                         </td>
@@ -279,76 +366,54 @@
                     <tr id="edit_form_{{ $diacritic->id }}" style="display: none;">
                         <td colspan="9">
                             <div class="edit-form">
-                                <form action="{{ route('update.phoneme.diacritic') }}" method="POST">
+                                <form action="{{ route('update.phoneme.diacritic') }}" method="POST" dir="rtl"
+                                    style="text-align: start;" onsubmit="handleSubmit(event)">
                                     @csrf
                                     <div class="grid">
                                         <div class="form-group">
-                                            <label for="arabic_tool_id">Arabic Tool</label>
+                                            <label for="arabic_tool_id">الأداة :</label>
                                             <select name="arabic_tool_id" required>
-                                                <option value="">Select a Tool</option>
+                                                <option value="">اختر نوع الأداة</option>
                                                 @foreach($tools as $tool)
-                                                <option value="{{ $tool->id }}" {{ isset($diacritic->arabicTools->first()->id) && 
-                                   $diacritic->arabicTools->first()->id == $tool->id ? 'selected' : '' }}>
-                                                    {{ $tool->name }}
+                                                <option value="{{ $tool->id }}">
+                                                    {{ $tool->arabic_name }}
                                                 </option>
                                                 @endforeach
                                             </select>
+                                            <label for="english_name" style="margin-top: 15px;">اللفظ بالإنجليزية
+                                                :</label>
+                                            <input type="text" id="english_name" name="english_name" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="hidden" name="arabic_letter_id" value="{{ $letter->id }}">
+                                            <input type="hidden" name="arabic_letter_id" value="{{ $letter->letter }}">
                                             <input type="hidden" name="arabic_diacritic_id"
-                                                value="{{ $diacritic->id }}">
-                                            <label for="effect">Effect</label>
-                                            <select name="effect" required>
-                                                <option value="">اختر التأثير</option>
-                                                <option value="لا تأثير"
-                                                    {{ isset($diacritic->arabicLetters->first()->pivot) && $diacritic->arabicLetters->first()->pivot->effect == 'لا تأثير' ? 'selected' : '' }}>
-                                                    لا تأثير</option>
-                                                <option value="النصب"
-                                                    {{ isset($diacritic->arabicLetters->first()->pivot) && $diacritic->arabicLetters->first()->pivot->effect == 'النصب' ? 'selected' : '' }}>
-                                                    تغيير الحركة الإعرابية - النصب</option>
-                                                <option value="الجزم"
-                                                    {{ isset($diacritic->arabicLetters->first()->pivot) && $diacritic->arabicLetters->first()->pivot->effect == 'الجزم' ? 'selected' : '' }}>
-                                                    تغيير الحركة الإعرابية - الجزم</option>
-                                                <option value="الرفع"
-                                                    {{ isset($diacritic->arabicLetters->first()->pivot) && $diacritic->arabicLetters->first()->pivot->effect == 'الرفع' ? 'selected' : '' }}>
-                                                    تغيير الحركة الإعرابية - الرفع</option>
-                                                <option value="الجر"
-                                                    {{ isset($diacritic->arabicLetters->first()->pivot) && $diacritic->arabicLetters->first()->pivot->effect == 'الجر' ? 'selected' : '' }}>
-                                                    تغيير الحركة الإعرابية - الجر</option>
-                                                <option value="حذف حرف النون"
-                                                    {{ isset($diacritic->arabicLetters->first()->pivot) && $diacritic->arabicLetters->first()->pivot->effect == 'حذف حرف النون' ? 'selected' : '' }}>
-                                                    حذف حرف النون</option>
-                                                <option value="حذف حرف العلة"
-                                                    {{ isset($diacritic->arabicLetters->first()->pivot) && $diacritic->arabicLetters->first()->pivot->effect == 'حذف حرف العلة' ? 'selected' : '' }}>
-                                                    حذف حرف العلة</option>
-                                            </select>
+                                                value="{{ $diacritic->diacritic }}">
+                                            <label for="effect">الوظيفة الدلالية :</label>
+                                            <input type="text" id="semantic_function" name="semantic_function" required>
+
+                                            <label for="grammatical_function" style="margin-top: 15px;">الوظيفة النحوية
+                                                :</label>
+                                            <input type="text" id="grammatical_function" name="grammatical_function"
+                                                required>
                                         </div>
+
                                     </div>
                                     <div class="form-group">
-                                        <label for="usage_meaning">Usage Meaning</label>
-                                        <input type="text" name="usage_meaning" placeholder="Enter usage meaning"
-                                            value="{{ isset($diacritic->arabicLetters->first()->pivot) ? $diacritic->arabicLetters->first()->pivot->usage_meaning : '' }}">
+                                        <label for="usage_meaning">مثال :</label>
+                                        <textarea id="example" name="example" rows="3" required></textarea>
                                     </div>
-                                    
+                                    <div class="form-group">
+                                        <label for="example">شرح</label>
+                                        <textarea name="description" rows="3"></textarea>
+                                            <button class="btn" id="ai" type="button">إستخدم الذكاء الإصطناعي</button>
+                                    </div>
                                     <div style="text-align: right;">
                                         <button type="button" class="button"
                                             onclick="hideEditForm({{ $diacritic->id }})">Cancel</button>
                                         <button type="submit" class="button button-primary">Save Changes</button>
                                     </div>
                                 </form>
-                                <form id="diacriticForm">
-                                        <input type="text" name="arabic_letter" value="{{ $letter->letter }}">
-                                        <input type="text" name="effect"
-                                            value="{{ isset($diacritic->arabicLetters->first()->pivot) ? $diacritic->arabicLetters->first()->pivot->effect : '' }}">
-                                        <button type="submit" class="button button-primary">Description</button>
-                                    </form>
-
-                                    <div class="form-group">
-                                        <label for="example">Example</label>
-                                        <textarea name="example" rows="3"></textarea>
-                                    </div>
-
+                                <div id="toast"></div>
                             </div>
                         </td>
                     </tr>
@@ -363,86 +428,112 @@
     </div>
 
     <div id="toast" class="toast"></div>
+    
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-    $(document).ready(function() {
-        $('#diacriticForm').on('submit', function(e) {
-            e.preventDefault(); // Prevent default form submission
+<div id="aiLoader" class="loader-container" style="display: none;">
+  <div class="loader-content">
+    <div class="brain-loader"></div>
+    <h3 class="thinking-dots" style="color: #4F46E5; margin: 0;">AI is thinking</h3>
+    <div class="messages">
+      <p class="message" style="animation-delay: 0.5s">Analyzing language patterns...</p>
+      <p class="message" style="animation-delay: 1.5s">Generating linguistic insights...</p>
+      <p class="message" style="animation-delay: 2.5s">Crafting detailed explanation...</p>
+    </div>
+  </div>
+</div>
 
-            let formData = $(this).serialize(); // Serialize form data
-
-            $.ajax({
-                url: "{{ route('deepinfra-chat') }}", // Laravel route
-                type: "POST",
-                data: formData,
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token for security
-                },
-                success: function(response) {
-                    alert('Updated successfully!');
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                    alert('An error occurred. Please try again.');
-                }
-            });
+<script>
+document.getElementById('ai').addEventListener('click', async function() {
+    const loader = document.getElementById('aiLoader');
+    loader.style.display = 'flex';
+    
+    try {
+        const response = await fetch("{{ route('deepinfra-chat') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+            },
+            body: JSON.stringify({
+                arabic_letter_id: document.querySelector('input[name="arabic_letter_id"]').value,
+                arabic_diacritic_id: document.querySelector('input[name="arabic_diacritic_id"]').value
+            })
         });
+
+        const data = await response.json();
+
+        if (data.description) {
+            document.querySelector('textarea[name="description"]').value = data.description;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    } finally {
+        loader.style.display = 'none';
+    }
+});
+</script>
+    <script>
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        function handleSubmit(event) {
+            event.preventDefault(); // Prevent form submission
+            let formData = new FormData(event.target); // Collect form data
+
+            fetch("{{ route('deepinfra-chat') }}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}", // Send CSRF token with the request
+                    },
+                    body: formData, // Send form data as POST body
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        showToast("An error occurred: " + data.error, "error");
+                    } else {
+                        showToast("Updated successfully!");
+                    }
+                })
+                .catch(error => {
+                    showToast("An error occurred. Please try again.", "error");
+                });
+        }
+
+        // Ensure the form is selected and event listener is attached
+        const form = document.getElementById("your-form-id");
+        if (form) {
+            form.addEventListener("submit", handleSubmit);
+        }
+
+        // Function to show toast notifications
+        function showToast(message, type = "success") {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+
+            setTimeout(() => {
+                toast.className = "toast";
+            }, 3000);
+        }
+        window.showEditForm = function(diacriticId) {
+            document.querySelectorAll('[id^="edit_form_"]').forEach(form => form.style.display = "none");
+            document.getElementById(`edit_form_${diacriticId}`).style.display = "table-row";
+        };
+
+        window.hideEditForm = function(diacriticId) {
+            document.getElementById(`edit_form_${diacriticId}`).style.display = "none";
+        };
+    });
+
+
+    document.addEventListener("keydown", function(e) {
+        if (e.key === "Escape") {
+            document.querySelectorAll('[id^="edit_form_"]').forEach(form => form.style.display = "none");
+        }
     });
     </script>
 
-    <script>
-    function showEditForm(diacriticId) {
-        document.querySelectorAll('[id^="edit_form_"]').forEach(form => {
-            form.style.display = 'none';
-        });
-        document.getElementById(`edit_form_${diacriticId}`).style.display = 'table-row';
-    }
-
-    function hideEditForm(diacriticId) {
-        document.getElementById(`edit_form_${diacriticId}`).style.display = 'none';
-    }
-
-    function showToast(message, type = 'success') {
-        const toast = document.getElementById('toast');
-        toast.textContent = message;
-        toast.className = `toast ${type} show`;
-
-        setTimeout(() => {
-            toast.className = 'toast';
-        }, 3000);
-    }
-
-    async function handleSubmit(event) {
-        event.preventDefault();
-        const form = event.target;
-        const formData = new FormData(form);
-
-        try {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData
-            });
-
-            if (response.ok) {
-                showToast('Changes saved successfully!');
-                location.reload();
-            } else {
-                throw new Error('Failed to save changes');
-            }
-        } catch (error) {
-            showToast(error.message, 'error');
-        }
-    }
-
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            document.querySelectorAll('[id^="edit_form_"]').forEach(form => {
-                form.style.display = 'none';
-            });
-        }
-    });
-    </script>
 </body>
 
 </html>
