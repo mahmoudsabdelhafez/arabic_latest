@@ -26,6 +26,8 @@ use App\Http\Controllers\PronounController;
 use App\Http\Controllers\DeepInfraController;
 use App\Http\Controllers\LinkingToolControlller;
 use App\Http\Controllers\QuranController;
+use App\Http\Controllers\ClassificationController;
+
 use App\Http\Controllers\SemanticLogicalEffectController;
 use App\Http\Controllers\SyntacticEffectController;
 
@@ -194,6 +196,12 @@ Route::post('/deepinfra-chat', [DeepInfraController::class, 'chatWithDeepInfra']
 Route::get('/search', [QuranController::class, 'search']);
 Route::get('/quran', [QuranController::class, 'show']);
 
+
+Route::resource('linkingtool', LinkingToolControlller::class);
+
+
+Route::resource('classifications', ClassificationController::class);
+
 // after 5/2/2025 ===============================================================
 
 
@@ -213,5 +221,6 @@ Route::resource('linkingtool', LinkingToolControlller::class);
 Route::get('contextual_conditions/create', [ContextualConditionController::class, 'create'])->name('contextual_conditions.create');
 Route::get('contextual_conditions/show-table/{toolName}', [ContextualConditionController::class, 'showTableRows']);
 Route::post('contextual_conditions/store', [ContextualConditionController::class, 'store'])->name('contextual_conditions.store');
+
 
 

@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>البحث في القرآن الكريم</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap"
@@ -78,8 +79,7 @@
     }
 
     .container {
-        max-width: 1000px;
-        margin: 40px 10%;
+        max-width: 1300px;
         padding: 20px;
     }
 
@@ -298,6 +298,46 @@
         background: var(--primary-color);
         color: var(--white);
     }
+    @keyframes modalSlideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .modal-overlay {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-out;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .button-loader {
+            display: none;
+            animation: spin 1s linear infinite;
+        }
+
+        .button.loading .button-text {
+            display: none;
+        }
+
+        .button.loading .button-loader {
+            display: inline-block;
+        }
     </style>
 </head>
 
@@ -376,6 +416,64 @@
                 @endforeach
             </tbody>
         </table>
+        <div id="formModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div class="modal-content search-container" style="width: 90%; max-width: 500px; position: relative; animation: modalSlideIn 0.3s ease-out;">
+            <button onclick="closeModal()" class="close-button" style="position: absolute; top: 15px; left: 15px; background: none; border: none; cursor: pointer; padding: 5px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <h2 style="color: var(--primary-color); font-family: 'Aref Ruqaa', serif; font-size: 1.5rem; margin: 0 0 20px 0; text-align: center;">
+                إضافة أداة جديدة
+            </h2>
+
+            <div id="errorMessages" style="display: none; background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 20px; border-radius: 8px;">
+                <ul></ul>
+            </div>
+
+            <form id="toolForm" onsubmit="submitForm(event)">
+                @csrf
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" 
+                           id="name" 
+                           name="name" 
+                           required
+                           style="background: var(--white);">
+                </div>
+
+                <div class="form-group">
+                    <label for="arabic_name">الاسم بالعربية:</label>
+                    <input type="text" 
+                           id="arabic_name" 
+                           name="arabic_name"
+                           required
+                           style="background: var(--white);">
+                </div>
+
+                <div style="display: flex; justify-content: space-between; margin-top: 20px; gap: 10px;">
+                    <button type="submit" class="button button-primary" style="flex: 1;">
+                        <span class="button-text">حفظ</span>
+                        <span class="button-loader" style="display: none;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 1s linear infinite;">
+                                <line x1="12" y1="2" x2="12" y2="6"></line>
+                                <line x1="12" y1="18" x2="12" y2="22"></line>
+                                <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                                <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                                <line x1="2" y1="12" x2="6" y2="12"></line>
+                                <line x1="18" y1="12" x2="22" y2="12"></line>
+                                <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                                <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+                            </svg>
+                        </span>
+                    </button>
+                    <button type="button" onclick="closeModal()" class="button" style="flex: 1;">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
         @if($tools->isEmpty())
         <div style="text-align: center; padding: 30px; color: var(--text-color);">
             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 15px; display: block; color: var(--primary-color);">
@@ -423,7 +521,88 @@
     </div>
 
 
+    <script>
+        function openModal() {
+            const modal = document.getElementById('formModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+            document.body.style.overflow = 'hidden';
+        }
 
+        function closeModal() {
+            const modal = document.getElementById('formModal');
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 300);
+            resetForm();
+        }
+
+        function resetForm() {
+            document.getElementById('toolForm').reset();
+            document.getElementById('errorMessages').style.display = 'none';
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            const form = event.target;
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.classList.add('loading');
+
+            fetch('{{ route('linkingtool.store') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    name: form.name.value,
+                    arabic_name: form.arabic_name.value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    showErrors(data.errors);
+                }
+            })
+            .catch(error => {
+                showErrors(['An error occurred. Please try again.']);
+            })
+            .finally(() => {
+                submitButton.classList.remove('loading');
+            });
+        }
+
+        function showErrors(errors) {
+            const errorDiv = document.getElementById('errorMessages');
+            const errorList = errorDiv.querySelector('ul');
+            errorList.innerHTML = '';
+            errors.forEach(error => {
+                const li = document.createElement('li');
+                li.textContent = error;
+                errorList.appendChild(li);
+            });
+            errorDiv.style.display = 'block';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('formModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
 </body>
 
 </html>
