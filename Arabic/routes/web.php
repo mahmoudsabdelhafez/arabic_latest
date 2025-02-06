@@ -6,6 +6,7 @@ use App\Http\Controllers\ArabicLetterController;
 use App\Http\Controllers\ArabicPhoneticController;
 use App\Http\Controllers\ArabicThreeLetterCombinationController;
 use App\Http\Controllers\ArabicFourLetterCombinationController;
+use App\Http\Controllers\ContextualConditionController;
 use App\Http\Controllers\EmphaticArabicLetterController;
 use App\Http\Controllers\GrammarController;
 use App\Http\Controllers\PhonemeController;
@@ -23,9 +24,11 @@ use App\Http\Controllers\TajweedCategoryController;
 
 use App\Http\Controllers\PronounController;
 use App\Http\Controllers\DeepInfraController;
+use App\Http\Controllers\LinkingToolControlller;
 use App\Http\Controllers\QuranController;
 use App\Http\Controllers\SemanticLogicalEffectController;
 use App\Http\Controllers\SyntacticEffectController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -174,16 +177,22 @@ Route::get('/refuge-basmala', [RefugeBasmalaController::class, 'index']);
 
 
 
+
+Route::get('/check', [PhonemeController::class, 'check']);
+Route::post('/check', [PhonemeController::class, 'checkStore'])->name('check.phoneme');
+
+
 Route::get('/check', [PhonemeController::class, 'check']);
 Route::post('/check', [PhonemeController::class, 'checkStore'])->name('check.phoneme');
 
 
 
 Route::post('/deepinfra-chat', [DeepInfraController::class, 'chatWithDeepInfra'])->name('deepinfra-chat');
+// Route::post('/linkingtool/store', [LinkingToolControlller::class, 'store'])->name('linkingtool.store');
 
+// Route::get('/linkingtool', [LinkingToolControlller::class, 'index']);
 Route::get('/search', [QuranController::class, 'search']);
 Route::get('/quran', [QuranController::class, 'show']);
-
 
 // after 5/2/2025 ===============================================================
 
@@ -194,3 +203,15 @@ Route::post('/syntactic-effects', [SyntacticEffectController::class, 'store'])->
 
 Route::get('/semantic-logical-effects/create', [SemanticLogicalEffectController::class, 'create'])->name('semantic-logical-effects.create');
 Route::post('/semantic-logical-effects', [SemanticLogicalEffectController::class, 'store'])->name('semantic-logical-effects.store');
+
+Route::resource('linkingtool', LinkingToolControlller::class);
+
+// Route::resource('contextual_conditions', ContextualConditionController::class);
+
+
+
+Route::get('contextual_conditions/create', [ContextualConditionController::class, 'create'])->name('contextual_conditions.create');
+Route::get('contextual_conditions/show-table/{toolName}', [ContextualConditionController::class, 'showTableRows']);
+Route::post('contextual_conditions/store', [ContextualConditionController::class, 'store'])->name('contextual_conditions.store');
+
+

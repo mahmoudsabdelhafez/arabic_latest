@@ -13,6 +13,11 @@ class Exception extends Model
 
     public function tool()
     {
-        return $this->belongsTo(Tool::class);
+        return $this->belongsTo(Linking_tool::class);
+    }
+
+    public function contextualConditions()
+    {
+        return $this->morphMany(ContextualCondition::class, 'tool');
     }
 }
