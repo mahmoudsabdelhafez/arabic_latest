@@ -13,7 +13,7 @@
                 <tr>
                     <td>{{ $row->name }}</td>
                     <td>
-                        <button class="add-contextual-condition" data-row-id="{{ $row->id }}" data-table-name="{{ $toolName }}">
+                        <button class="add-contextual-condition" data-row-id="{{ $linkingTool->id }}" data-table-name="{{ $toolName }}">
                             Add Contextual Condition
                         </button>
                     </td>

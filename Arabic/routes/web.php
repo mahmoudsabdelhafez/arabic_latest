@@ -30,7 +30,7 @@ use App\Http\Controllers\ClassificationController;
 
 use App\Http\Controllers\SemanticLogicalEffectController;
 use App\Http\Controllers\SyntacticEffectController;
-
+use App\Http\Controllers\ToolsInformationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -226,3 +226,7 @@ Route::post('contextual_conditions/store', [ContextualConditionController::class
 
 
 Route::get('/classification-view', [PhonemeController::class, 'ruleDetails'])->name('classification.ruleDetails');
+
+Route::get('tool_information/create', [ToolsInformationController::class, 'create'])->name('tool_information.create');
+Route::get('tool_information/show-table/{toolName}', [ToolsInformationController::class, 'showTableRows']);
+Route::post('tool_information/store', [ToolsInformationController::class, 'store'])->name('tool_information.store');

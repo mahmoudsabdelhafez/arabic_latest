@@ -29,5 +29,9 @@ class Detail extends Model
     public function semanticLogicalEffect()
     {
         return $this->belongsTo(SemanticLogicalEffect::class, 'semantic_logical_effects');
+
+    public function toolsInformations()
+    {
+        return $this->morphMany(ToolsInformation::class, 'tool');
     }
 }
