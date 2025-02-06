@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exception', function (Blueprint $table) {
+        Schema::create('negatives', function (Blueprint $table) {
             $table->id(); // Primary Key (Auto Increment)
             $table->string('name', 255); // الأداة
             $table->string('english_name', 255); // الاسم بالإنجليزي
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exception');
+        Schema::dropIfExists('negatives');
     }
 };

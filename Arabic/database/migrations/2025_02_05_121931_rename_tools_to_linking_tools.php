@@ -11,19 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tajweed_categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->timestamps();
-        });
+        Schema::rename('tools', 'linking_tools');
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+     public function down(): void
     {
-        Schema::dropIfExists('tajweed_categories');
+        Schema::rename('linking_tools', 'tools');
     }
 };
