@@ -393,8 +393,15 @@
 
                                             <label for="grammatical_function" style="margin-top: 15px;">الوظيفة النحوية
                                                 :</label>
-                                            <input type="text" id="grammatical_function" name="grammatical_function"
-                                                required>
+                                                <select name="grammatical_function" required>
+                                                <option value="">اختر الوظيفة النحوية</option>
+                                                @foreach($syntactic_effect as $tool)
+                                                <option value="{{ $tool->id }}">
+                                                    {{ $tool->result_case }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                                
                                         </div>
 
                                     </div>

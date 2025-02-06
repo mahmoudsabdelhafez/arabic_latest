@@ -224,3 +224,5 @@ Route::post('contextual_conditions/store', [ContextualConditionController::class
 
 
 
+
+Route::get('/classification-view', [PhonemeController::class, 'ruleDetails'])->name('classification.ruleDetails');

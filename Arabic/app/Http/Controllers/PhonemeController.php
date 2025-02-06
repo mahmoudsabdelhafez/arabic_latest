@@ -18,6 +18,8 @@ use App\Models\Negative;
 use App\Models\PhonemeCategory;
 use App\Models\Preposition;
 use App\Models\Sawabeq;
+use App\Models\Synchronization;
+use App\Models\SyntacticEffect;
 use App\Models\Tool;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -78,8 +80,6 @@ class PhonemeController extends Controller
 
         $tables = $this->search($letter->letter);
 
-        $rule = Classification::where('subtool_name', $letter->letter)->get();
-
         // dd($letter->arabicTools); // عرض الأدوات المرتبطة
 
         // dd($rule);
@@ -99,6 +99,8 @@ class PhonemeController extends Controller
     // dd($rule);
     // $tools = ArabicTool::all();
     $tools = Linking_tool::all();
+
+    $syntactic_effect = SyntacticEffect::all();
         // dd($tools);
     // جلب جميع الحركات وإضافة العلاقة إن وجدت
     $diacritics = ArabicDiacritic::with(['arabicLetters' => function ($query) use ($id) {
@@ -107,7 +109,7 @@ class PhonemeController extends Controller
     }])->get();
    
 
-    return view('phonemes.phonemes_diacritics', compact('letter', 'diacritics','tools','rule'));
+    return view('phonemes.phonemes_diacritics', compact('letter', 'diacritics','tools','rule','syntactic_effect'));
 }
 
     
@@ -209,27 +211,56 @@ public function checkStore(Request $request)
     }
 
     $tables = [
-        'Conditionals' => Conditional::where('name', 'LIKE', "$query")->orWhere('name', 'LIKE', "$query%ِ")
-        ->orWhere('name', 'LIKE', "$query%َ")
-        ->orWhere('name', 'LIKE', "$query%ُ")->get(),
-        'Details' => Detail::where('name', 'LIKE', "$query")->orWhere('name', 'LIKE', "$query%ِ")
-        ->orWhere('name', 'LIKE', "$query%َ")
-        ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+        'Conditionals' => Conditional::where('name', 'LIKE', "$query")
+                                       ->orWhere('name', 'LIKE', "$query%ِ")
+                                       ->orWhere('name', 'LIKE', "$query%َ")
+                                       ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+
+        'Details' => Detail::where('name', 'LIKE', "$query")
+                             ->orWhere('name', 'LIKE', "$query%ِ")
+                             ->orWhere('name', 'LIKE', "$query%َ")
+                             ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+
         'Negatives' => Negative::where('name', 'LIKE', "$query")
                                  ->orWhere('name', 'LIKE', "$query%ِ")
                                  ->orWhere('name', 'LIKE', "$query%َ")
                                  ->orWhere('name', 'LIKE', "$query%ُ")->get(),
-        'Model Exceptions' => ModelsException::where('name', 'LIKE', "$query")->get(),
-        'Explanations' => Explanation::where('name', 'LIKE', "$query")->orWhere('name', 'LIKE', "$query%ِ")
-        ->orWhere('name', 'LIKE', "$query%َ")
-        ->orWhere('name', 'LIKE', "$query%ُ")->get(),
-        'Prepositions' => Preposition::where('name', 'LIKE', "$query")->orWhere('name', 'LIKE', "$query%ِ")
-        ->orWhere('name', 'LIKE', "$query%َ")
-        ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+
+        'Model Exceptions' => ModelsException::where('name', 'LIKE', "$query")
+                                               ->orWhere('name', 'LIKE', "$query%ِ")
+                                               ->orWhere('name', 'LIKE', "$query%َ")
+                                               ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+
+        'Explanations' => Explanation::where('name', 'LIKE', "$query")
+                                       ->orWhere('name', 'LIKE', "$query%ِ")
+                                       ->orWhere('name', 'LIKE', "$query%َ")
+                                       ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+
+        'Prepositions' => Preposition::where('name', 'LIKE', "$query")
+                                       ->orWhere('name', 'LIKE', "$query%ِ")
+                                       ->orWhere('name', 'LIKE', "$query%َ")
+                                       ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+        'Synchronization' => Synchronization::where('name', 'LIKE', "$query")
+                                       ->orWhere('name', 'LIKE', "$query%ِ")
+                                       ->orWhere('name', 'LIKE', "$query%َ")
+                                       ->orWhere('name', 'LIKE', "$query%ُ")->get(),
     ];
     return $tables;
 
-    // return view('search_results', compact('query', 'tables'));
 }
+
+public function ruleDetails(Request $request)
+    {
+    
+    $letter = $request->input('letter'); // Get the letter from the query parameters
+    $linking_tool_id = $request->input('linking_tool_id'); // Get the linking_tool_id from the query parameters
+
+    // Retrieve the data from the database
+    $rules = Classification::where('subtool_name', $letter)
+                           ->where('linking_tool_id', $linking_tool_id)
+                           ->get();  
+
+        return view('phonemes.rule_details', compact(['letter','rules']));
+    }
 
 }

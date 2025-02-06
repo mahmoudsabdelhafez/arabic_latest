@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Connector extends Model
+class Synchronization extends Model
 {
     use HasFactory;
 
@@ -16,13 +16,8 @@ class Connector extends Model
         return $this->belongsTo(Linking_tool::class);
     }
 
-    public function syntacticEffect()
+    public function contextualConditions()
     {
-        return $this->belongsTo(SyntacticEffect::class, 'syntactic_effects');
-    }
-
-    public function semanticLogicalEffect()
-    {
-        return $this->belongsTo(SemanticLogicalEffect::class, 'semantic_logical_effects');
+        return $this->morphMany(ContextualCondition::class, 'tool');
     }
 }
