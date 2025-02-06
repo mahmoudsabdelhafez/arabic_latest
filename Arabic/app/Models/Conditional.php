@@ -16,6 +16,15 @@ class Conditional extends Model
         return $this->belongsTo(Linking_tool::class);
     }
 
+    public function syntacticEffect()
+    {
+        return $this->belongsTo(SyntacticEffect::class, 'syntactic_effects');
+    }
+
+    public function semanticLogicalEffect()
+    {
+        return $this->belongsTo(SemanticLogicalEffect::class, 'semantic_logical_effects');
+    }
 
     public function contextualConditions()
     {
