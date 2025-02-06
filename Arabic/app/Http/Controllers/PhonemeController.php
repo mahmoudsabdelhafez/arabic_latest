@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-namespace App\Http\Controllers;
-
 use App\Models\ArabicDiacritic;
 use App\Models\ArabicLetter;
 use App\Models\ArabicTool;
@@ -14,6 +12,7 @@ use App\Models\Explanation;
 use Illuminate\Http\Request;
 use App\Models\Phoneme;
 use App\Models\Image;
+use App\Models\Linking_tool;
 use App\Models\Negative;
 use App\Models\PhonemeCategory;
 use App\Models\Preposition;
@@ -72,7 +71,7 @@ class PhonemeController extends Controller
 
     public function details(Phoneme $phoneme)
     {
-        $tools = Tool::all();
+        $tools = Linking_tool::all();
         // $letter = ArabicTool::with('arabicLetters')->findOrFail(2);
         $letter = ArabicLetter::with('arabicTools')->find($phoneme->id);
 
@@ -80,7 +79,7 @@ class PhonemeController extends Controller
 
         // dd($letter->arabicTools); // عرض الأدوات المرتبطة
 
-        // dd($rule);
+        dd($rule);
         return view('phonemes.phoneme_details', compact(['phoneme','tools','letter','rule']));
     }
 
@@ -96,7 +95,7 @@ class PhonemeController extends Controller
 
     // dd($rule);
     // $tools = ArabicTool::all();
-    $tools = Tool::all();
+    $tools = Linking_tool::all();
         // dd($tools);
     // جلب جميع الحركات وإضافة العلاقة إن وجدت
     $diacritics = ArabicDiacritic::with(['arabicLetters' => function ($query) use ($id) {
@@ -106,13 +105,11 @@ class PhonemeController extends Controller
    
 
     return view('phonemes.phonemes_diacritics', compact('letter', 'diacritics','tools','rule'));
-
 }
 
     
     
 public function updatePhonemeDiacritic(Request $request)
-
 {
     // Validate the request data
     
@@ -126,10 +123,10 @@ public function updatePhonemeDiacritic(Request $request)
             'example' => 'required|string',
             'description' => 'nullable|string',
         ]);
-        $table = Tool::findOrFail($request->arabic_tool_id);
+        $table = Linking_tool::findOrFail($request->arabic_tool_id);
         $table = strtolower($table->name).'s';
         DB::table($table)->insert([
-            'tool_id' => $request->arabic_tool_id,
+            'linking_tool_id' => $request->arabic_tool_id,
             'english_name' => $request->english_name,
             'name' => $request->arabic_letter_id . $request->arabic_diacritic_id,
             'semantic_function' => $request->semantic_function,
@@ -195,14 +192,15 @@ public function checkStore(Request $request)
     }
     
     }
-public function check()
-    {
-            return view('phonemes.check_letter');
-      
+
+   public function check()
+   {
+        return view('phonemes.check_letter');
    }
 
    public function search($query)
     {
+
 
         // Search in multiple tables using raw queries
         $results = [
