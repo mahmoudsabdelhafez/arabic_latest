@@ -20,5 +20,10 @@ class Preposition extends Model
     {
         return $this->morphMany(ContextualCondition::class, 'tool');
     }
+
+    public function toolsInformations()
+    {
+        return $this->morphMany(ToolsInformation::class, 'tool');
+    }
 }
 

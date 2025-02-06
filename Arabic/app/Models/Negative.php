@@ -16,8 +16,14 @@ class Negative extends Model
         return $this->belongsTo(Linking_tool::class);
     }
 
+
     public function contextualConditions()
     {
         return $this->morphMany(ContextualCondition::class, 'tool');
+    }
+
+    public function toolsInformations()
+    {
+        return $this->morphMany(ToolsInformation::class, 'tool');
     }
 }
