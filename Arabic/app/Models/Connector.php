@@ -13,6 +13,16 @@ class Connector extends Model
 
     public function tool()
     {
-        return $this->belongsTo(Tool::class);
+        return $this->belongsTo(Linking_tool::class);
+    }
+
+    public function syntacticEffect()
+    {
+        return $this->belongsTo(SyntacticEffect::class, 'syntactic_effects');
+    }
+
+    public function semanticLogicalEffect()
+    {
+        return $this->belongsTo(SemanticLogicalEffect::class, 'semantic_logical_effects');
     }
 }

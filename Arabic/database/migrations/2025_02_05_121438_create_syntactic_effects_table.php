@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('applied_on'); // Field to specify what the effect applies to
             $table->string('result_case'); // Field for the resulting case
             $table->text('context_condition')->nullable(); // Context condition (optional)
-            $table->integer('priority_order')->default(1); // Priority order with a default value
+            $table->text('priority_order')->nullable(); // Priority order with a default value
             $table->text('notes')->nullable(); // Additional notes (optional)
             $table->timestamps(); // Created_at & Updated_at timestamps
         });

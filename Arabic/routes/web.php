@@ -224,6 +224,9 @@ Route::post('contextual_conditions/store', [ContextualConditionController::class
 
 
 
+
+Route::get('/classification-view', [PhonemeController::class, 'ruleDetails'])->name('classification.ruleDetails');
+
 Route::get('tool_information/create', [ToolsInformationController::class, 'create'])->name('tool_information.create');
 Route::get('tool_information/show-table/{toolName}', [ToolsInformationController::class, 'showTableRows']);
 Route::post('tool_information/store', [ToolsInformationController::class, 'store'])->name('tool_information.store');

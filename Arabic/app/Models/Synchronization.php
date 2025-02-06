@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Detail extends Model
+class Synchronization extends Model
 {
     use HasFactory;
 
@@ -19,19 +19,5 @@ class Detail extends Model
     public function contextualConditions()
     {
         return $this->morphMany(ContextualCondition::class, 'tool');
-    }
-
-    public function syntacticEffect()
-    {
-        return $this->belongsTo(SyntacticEffect::class, 'syntactic_effects');
-    }
-
-    public function semanticLogicalEffect()
-    {
-        return $this->belongsTo(SemanticLogicalEffect::class, 'semantic_logical_effects');
-
-    public function toolsInformations()
-    {
-        return $this->morphMany(ToolsInformation::class, 'tool');
     }
 }
