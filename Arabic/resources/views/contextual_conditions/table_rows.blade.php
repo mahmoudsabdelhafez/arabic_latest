@@ -58,7 +58,7 @@
 </div>
 
 <script>
-  document.querySelectorAll('.add-contextual-condition').forEach(button => {
+ document.querySelectorAll('.add-contextual-condition').forEach(button => {
     button.addEventListener('click', function() {
         const rowId = this.getAttribute('data-row-id');
         const tableName = this.getAttribute('data-table-name');
@@ -67,8 +67,8 @@
         document.getElementById('row_id').value = rowId;
         document.getElementById('table_name').value = tableName;
         
-        // Set the tool_id (tool id is based on the row clicked)
-        const toolId = this.getAttribute('data-tool-id'); // Pass tool_id from the button attribute or dynamically from the server
+        // Set the tool_id from the selected row (this should be the id of the row clicked)
+        const toolId = rowId;  // Tool ID is now the ID of the clicked row in the table
         document.getElementById('linking_tool_id').value = toolId;
 
         // Optionally set tool_type if needed
