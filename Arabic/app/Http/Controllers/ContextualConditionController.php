@@ -70,7 +70,7 @@ class ContextualConditionController extends Controller
         ]);
     
         // Ensure tool_id is passed from the form data
-        $toolId = $request->input('linking_tool_id'); // Get the linking tool id from the form
+        $toolId = $request->input('row_id'); // Get the linking tool id from the form
     
         // Here, tool_id corresponds to the selected row's id from the table
         $request->merge([
@@ -85,7 +85,7 @@ class ContextualConditionController extends Controller
             'syntactic_context' => $request->input('syntactic_context'),
             'semantic_context' => $request->input('semantic_context'),
             'outcome_effect' => $request->input('outcome_effect'),
-            'tool_id' => $request->input('tool_id'),  // Store the dynamic tool_id here
+            'tool_id' => $request->input('row_id'),  // Store the dynamic tool_id here
         ]);
     
         return redirect()->route('contextual_conditions.create')->with('success', 'Contextual condition created successfully.');

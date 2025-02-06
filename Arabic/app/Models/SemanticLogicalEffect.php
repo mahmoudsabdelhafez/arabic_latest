@@ -14,8 +14,8 @@ class SemanticLogicalEffect extends Model
     protected $table = 'semantic_logical_effects';
 
     protected $fillable = [
-        'typical_relation_1',
-        'typical_relation_2',
+        'typical_relation',
+        'nisbah_type',
         'semantic_roles',
         'conditions',
         'notes'

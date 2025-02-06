@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
-        // الدلالات المنطقية 
-
     /**
      * Run the migrations.
      */
@@ -16,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('semantic_logical_effects', function (Blueprint $table) {
             $table->id();
-            $table->string('typical_relation_1'); // First typical relation
-            $table->string('typical_relation_2'); // Second typical relation
-            $table->text('semantic_roles'); // Semantic roles
-            $table->text('conditions')->nullable(); // Conditions (optional)
-            $table->text('notes')->nullable(); // Notes (optional)
+            $table->string('typical_relation'); // Stores the typical relation
+            $table->string('nisbah_type'); // Stores the nisbah type
+            $table->text('semantic_roles'); // Stores semantic roles
+            $table->text('conditions')->nullable(); // Stores conditions (optional)
+            $table->text('notes')->nullable(); // Stores notes (optional)
             $table->timestamps();
         });
     }
