@@ -21,6 +21,7 @@ use App\Http\Controllers\PronounController;
 use App\Http\Controllers\DeepInfraController;
 use App\Http\Controllers\LinkingToolControlller;
 use App\Http\Controllers\QuranController;
+use App\Http\Controllers\ClassificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -158,3 +159,6 @@ Route::get('/search', [QuranController::class, 'search']);
 Route::get('/quran', [QuranController::class, 'show']);
 
 Route::resource('linkingtool', LinkingToolControlller::class);
+
+
+Route::resource('classifications', ClassificationController::class);

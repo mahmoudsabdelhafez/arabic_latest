@@ -21,17 +21,20 @@ class LinkingToolControlller extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|max:255',
-            'arabic_name' => 'required|max:255'
-        ]);
+{
+    $validated = $request->validate([
+        'name' => 'required|max:255',
+        'arabic_name' => 'required|max:255'
+    ]);
 
-        Linking_tool::create($validated);
+    Linking_tool::create($validated);
 
-        return redirect()->route('linkingtool.index')
-            ->with('success', 'Tool added successfully.');
+    if ($request->expectsJson()) {
+        return response()->json(['success' => true]);
     }
+
+    return redirect()->back()->with('success', 'Tool added successfully.');
+}
 
     public function edit(Linking_tool $linkingtool)
     {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ArabicDiacritic;
 use App\Models\ArabicLetter;
 use App\Models\ArabicTool;
+use App\Models\Classification;
 use App\Models\Conditional;
 use App\Models\Detail;
 use App\Models\Exception as ModelsException;
@@ -75,12 +76,14 @@ class PhonemeController extends Controller
         // $letter = ArabicTool::with('arabicLetters')->findOrFail(2);
         $letter = ArabicLetter::with('arabicTools')->find($phoneme->id);
 
-        $rule = $this->search($letter->letter);
+        $tables = $this->search($letter->letter);
+
+        $rule = Classification::where('subtool_name', $letter->letter)->get();
 
         // dd($letter->arabicTools); // عرض الأدوات المرتبطة
 
-        dd($rule);
-        return view('phonemes.phoneme_details', compact(['phoneme','tools','letter','rule']));
+        // dd($rule);
+        return view('phonemes.phoneme_details', compact(['phoneme','tools','letter','tables']));
     }
 
     public function phonemesDiacritics($id)
@@ -199,19 +202,34 @@ public function checkStore(Request $request)
    }
 
    public function search($query)
-    {
+{
 
-
-        // Search in multiple tables using raw queries
-        $results = [
-            'table1' => Conditional::where('name', 'LIKE', "$query")->get(),
-            'table2' => Detail::where('name', 'LIKE', "$query")->get(),
-            'table3' => Negative::where('name', 'LIKE', "$query")->get(),
-            'table4' => ModelsException::where('name', 'LIKE', "$query")->get(),
-            'table5' => Explanation::where('name', 'LIKE', "$query")->get(),
-            'table6' => Preposition::where('name', 'LIKE', "$query")->get(),
-        ];
-
-        return response()->json($results);
+    if (!$query) {
+        return redirect()->back()->with('error', 'Please enter a search term.');
     }
+
+    $tables = [
+        'Conditionals' => Conditional::where('name', 'LIKE', "$query")->orWhere('name', 'LIKE', "$query%ِ")
+        ->orWhere('name', 'LIKE', "$query%َ")
+        ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+        'Details' => Detail::where('name', 'LIKE', "$query")->orWhere('name', 'LIKE', "$query%ِ")
+        ->orWhere('name', 'LIKE', "$query%َ")
+        ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+        'Negatives' => Negative::where('name', 'LIKE', "$query")
+                                 ->orWhere('name', 'LIKE', "$query%ِ")
+                                 ->orWhere('name', 'LIKE', "$query%َ")
+                                 ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+        'Model Exceptions' => ModelsException::where('name', 'LIKE', "$query")->get(),
+        'Explanations' => Explanation::where('name', 'LIKE', "$query")->orWhere('name', 'LIKE', "$query%ِ")
+        ->orWhere('name', 'LIKE', "$query%َ")
+        ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+        'Prepositions' => Preposition::where('name', 'LIKE', "$query")->orWhere('name', 'LIKE', "$query%ِ")
+        ->orWhere('name', 'LIKE', "$query%َ")
+        ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+    ];
+    return $tables;
+
+    // return view('search_results', compact('query', 'tables'));
+}
+
 }
