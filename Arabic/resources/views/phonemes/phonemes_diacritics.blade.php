@@ -388,13 +388,27 @@
                                             <input type="hidden" name="arabic_letter_id" value="{{ $letter->letter }}">
                                             <input type="hidden" name="arabic_diacritic_id"
                                                 value="{{ $diacritic->diacritic }}">
-                                            <label for="effect">الوظيفة الدلالية :</label>
-                                            <input type="text" id="semantic_function" name="semantic_function" required>
+                                            <label for="semantic_logical_effects">الوظيفة الدلالية :</label>
+                                            <select name="semantic_logical_effects" required>
+                                                <option value="">اختر الوظيفة الدلالية</option>
+                                                @foreach($Semantic_logical_effect as $tool)
+                                                <option value="{{ $tool->id }}">
+                                                {{ $tool->typical_relation  }}، {{ $tool->nisbah_type  }}
+                                                </option>
+                                                @endforeach
+                                            </select>
 
-                                            <label for="grammatical_function" style="margin-top: 15px;">الوظيفة النحوية
+                                            <label for="syntactic_effects" style="margin-top: 15px;">الوظيفة النحوية
                                                 :</label>
-                                            <input type="text" id="grammatical_function" name="grammatical_function"
-                                                required>
+                                                <select name="syntactic_effects" required>
+                                                <option value="">اختر الوظيفة النحوية</option>
+                                                @foreach($syntactic_effect as $tool)
+                                                <option value="{{ $tool->id }}">
+                                                    {{ $tool->result_case }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                                
                                         </div>
 
                                     </div>
