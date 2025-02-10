@@ -16,8 +16,8 @@ class SemanticLogicalEffectController extends Controller
     {
         // Validate input
         $request->validate([
-            'typical_relation_1' => 'required|string|max:255',
-            'typical_relation_2' => 'required|string|max:255',
+            'typical_relation' => 'required|string|max:255',
+            'nisbah_type' => 'required|string|max:255',
             'semantic_roles' => 'required|string',
             'conditions' => 'nullable|string',
             'notes' => 'nullable|string',

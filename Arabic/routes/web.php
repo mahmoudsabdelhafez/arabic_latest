@@ -196,6 +196,17 @@ Route::post('/deepinfra-chat', [DeepInfraController::class, 'chatWithDeepInfra']
 Route::get('/search', [QuranController::class, 'search']);
 Route::get('/quran', [QuranController::class, 'show']);
 
+// mahmoud ------------------------------------------
+Route::get('/analyze-search', [QuranController::class, 'analyzeSearchResults']);
+Route::get('/analysis/{query}', [QuranController::class, 'showAnalysisResults']); // New route
+
+Route::get('/analyze-ayah-results/{ayaId}', [QuranController::class, 'analyzeAyahResults'])->name('analyzeAyahResults');
+
+
+// mahmoud ------------------------------------------
+
+
+
 
 Route::resource('linkingtool', LinkingToolControlller::class);
 

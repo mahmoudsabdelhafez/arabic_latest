@@ -202,6 +202,132 @@
             font-size: 1.2rem;
         }
 
+        .ayah-analysis-btn {
+    padding: 10px 20px;
+    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+    color: var(--white);
+    font-family: 'Aref Ruqaa', serif;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    text-align: center;
+    margin-top: 15px;
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+#analysis-btn {
+    padding: 12px 25px;
+    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+    color: var(--white);
+    font-family: 'Aref Ruqaa', serif;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    display: block;
+    margin: 20px auto; /* Center the button horizontally */
+    width: fit-content;
+    text-align: center;
+}
+
+#analysis-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+#analysis-btn:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#analysis-btn:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(35, 75, 110, 0.2);
+}
+
+/* Container for the text that will be shown */
+.analysis-text-container {
+    display: none;  /* Initially hidden */
+    margin-top: 20px;
+    padding: 20px;
+    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+    color: var(--white);
+    font-family: 'Aref Ruqaa', serif;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-size: 1.2rem;
+    line-height: 1.8;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.analysis-text-container.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.analysis-text-container h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.analysis-text-container p {
+    margin-top: 10px;
+    font-size: 1.2rem;
+}
+
+.analysis-result {
+            background-color: #f4f4f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .analysis-result h4 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .analysis-result p {
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+
+.ayah-analysis-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.ayah-analysis-btn:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.ayah-analysis-btn:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(35, 75, 110, 0.2);
+}
+
+
         .footer {
             background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
             color: var(--white);
@@ -232,10 +358,12 @@
 </head>
 <body>
     <header>
+        
         <h1>البحث في القرآن الكريم</h1>
     </header>
 
     <div class="container">
+        
         <div class="search-container">
             <input 
                 type="text" 
@@ -244,7 +372,15 @@
                 autocomplete="off"
             >
         </div>
+       <!-- Add this button inside your container before the search bar -->
+<button id="analysis-btn" class="pagination-btn">
+    تحليل
+</button>
+<div id="analysis-text-container" class="analysis-text-container"></div>
+
+
         <div class="loader" id="loader"></div>
+        <div id="ayah-analyze-results"></div>
         <ul id="results"></ul>
         <div id="pagination"></div>
     </div>
@@ -254,93 +390,187 @@
     </footer>
 
     <script>
-        let searchTimeout;
-        let currentQuery = '';
+      let searchTimeout;
+let currentQuery = '';
+let searchResults = []; // Store the original search results
 
-        function highlightText(text, query) {
-            if (!query) return text;
-            const regex = new RegExp(`(${query})`, 'gi');
-            return text.replace(regex, '<span class="highlight">$1</span>');
+function highlightText(text, query) {
+    if (!query) return text;
+    const regex = new RegExp(`(${query})`, 'gi');
+    return text.replace(regex, '<span class="highlight">$1</span>');
+}
+
+function applyAnalysis(results) {
+    // Replace 'ب' with 'ا'
+    let modifiedResults = results.map(aya => {
+        let modifiedText = aya.text.replace(/ٰ/g, 'ا');
+        
+        // Replace characters with shadda and diacritic
+        modifiedText = replaceShadda(modifiedText);
+
+          // Remove all sukoons from the text
+          modifiedText = removeSukoon(modifiedText);
+
+
+        
+        return {
+            ...aya,
+            text: modifiedText
+        };
+    });
+
+    return modifiedResults;
+}
+
+function replaceShadda(text) {
+    // Regular expression to match characters followed by shadda
+    return text.replace(/([^\s])ّ/g, (match, p1) => {
+        // Duplicate the consonant and add the diacritic (vowel)
+        // Example: "دُّ" -> "ددُ"
+        return p1 + p1 + match.slice(2); // p1 is the consonant, match.slice(1) is the diacritic
+    });
+}
+
+
+function removeSukoon(text) {
+    // Remove all sukoons (ْ) from the text
+    return text.replace(/ْ/g, '');
+}
+
+function fetchResults(query, page = 1) {
+    if (query === '') return;
+    
+    $('#loader').show();
+    $('#results, #pagination').empty();
+
+    $.ajax({
+        url: '/search',
+        type: 'GET',
+        data: { query: query, page: page },
+        success: function(response) {
+            $('#loader').hide();
+            searchResults = response.data; // Store the original search results
+
+            if (searchResults.length === 0) {
+                $('#results').html('<div class="no-results">لا توجد نتائج</div>');
+                return;
+            }
+
+            displayResults(searchResults); // Display the results as usual
+        },
+        error: function() {
+            $('#loader').hide();
+            $('#results').html('<div class="no-results">حدث خطأ في البحث</div>');
         }
+    });
+}
 
-        function fetchResults(query, page = 1) {
-            if (query === '') return;
-            
-            $('#loader').show();
+function displayResults(results) {
+    $('#results').empty();
+
+    results.forEach(aya => {
+        const highlightedText = highlightText(aya.text, currentQuery);
+        $('#results').append(`
+            <li>
+                <div class="sura-name">${aya.sura_name}</div>
+                <span class="aya-number">آية ${aya.aya}</span>
+                <div class="aya-text">${highlightedText}</div>
+                <button class="ayah-analysis-btn" data-query="${aya.text}" data-aya-id="${aya.index}">تحليل الاية</button>
+                                        <div class="analysis-result" id="analysis-result-${aya.index}"></div>
+
+
+            </li>
+        `);
+    });
+}
+
+$(document).ready(function() {
+    // Handle search input
+    $('#search').on('input', function() {
+        const query = $(this).val().trim();
+        
+        clearTimeout(searchTimeout);
+        
+        if (query === currentQuery) return;
+        currentQuery = query;
+
+        if (query.length === 0) {
             $('#results, #pagination').empty();
-
-            $.ajax({
-                url: '/search',
-                type: 'GET',
-                data: { query: query, page: page },
-                success: function(response) {
-                    $('#loader').hide();
-                    console.log(response.data);
-
-                    if (response.data.length === 0) {
-                        $('#results').html('<div class="no-results">لا توجد نتائج</div>');
-                        return;
-                    }
-                    response.data.forEach(aya => {
-                        const highlightedText = highlightText(aya.text, query);
-                        $('#results').append(`
-                            <li>
-                                <div class="sura-name">${aya.sura_name}</div>
-                                <span class="aya-number">آية ${aya.aya}</span>
-                                <div class="aya-text">${highlightedText}</div>
-                            </li>
-                        `);
-                    });
-
-                    // Pagination Controls
-                    const paginationHtml = [];
-                    
-                    if (response.prev_page_url) {
-                        paginationHtml.push(`
-                            <button class="pagination-btn" 
-                                onclick="fetchResults('${query}', ${response.current_page - 1})">
-                                السابق
-                            </button>
-                        `);
-                    }
-
-                    if (response.next_page_url) {
-                        paginationHtml.push(`
-                            <button class="pagination-btn" 
-                                onclick="fetchResults('${query}', ${response.current_page + 1})">
-                                التالي
-                            </button>
-                        `);
-                    }
-
-                    $('#pagination').html(paginationHtml.join(''));
-                },
-                error: function() {
-                    $('#loader').hide();
-                    $('#results').html('<div class="no-results">حدث خطأ في البحث</div>');
-                }
-            });
+            return;
         }
 
-        $(document).ready(function() {
-            $('#search').on('input', function() {
-                const query = $(this).val().trim();
-                
-                clearTimeout(searchTimeout);
-                
-                if (query === currentQuery) return;
-                currentQuery = query;
+        searchTimeout = setTimeout(() => {
+            fetchResults(query);
+        }, 300);
+    });
+    
 
-                if (query.length === 0) {
-                    $('#results, #pagination').empty();
-                    return;
-                }
+    // Handle the "تحليل" button click
+    $('#analysis-btn').on('click', function() {
+        if (searchResults.length === 0) return;
 
-                searchTimeout = setTimeout(() => {
-                    fetchResults(query);
-                }, 300);
-            });
-        });
+                // Show the analysis text container with a smooth animation
+                $('#analysis-text-container').addClass('show').html(`
+            <h3>تحليل نتائج البحث</h3>
+            <p> تم استبدال الألف الخنجرية بالألف العادية , تم استبدال الشدة وحركتها بحرف ساكن وحرف متحرك , تمت ازالة جميع اشارات السكون</p>
+        `);
+
+
+        const modifiedResults = applyAnalysis(searchResults); // Apply analysis (replace ب with ا and shadda transformation)
+        displayResults(modifiedResults); // Display the modified results
+    });
+});
+
+
+// =========== ayah analysis button handling ===========
+$(document).on('click', '.ayah-analysis-btn', function () {
+    const query = $(this).data('query');
+    const ayaId = $(this).data('aya-id');
+
+    $('#loader').show();
+    $('#analysis-result-' + ayaId).empty();
+
+    $.ajax({
+        url: '/analyze-ayah-results/' + ayaId,
+        type: 'GET',
+        data: { query: query, aya_id: ayaId },
+        success: function (response) {
+            $('#loader').hide();
+            const analysisContainer = $('#analysis-result-' + ayaId);
+            const results = response.results || [];
+            if (results.length === 0) {
+                analysisContainer.html('<p>لا توجد نتائج للتحليل.</p>');
+            } else {
+                let resultHtml = '';
+                results.forEach(result => {
+                    // Render each match name and all words that match it
+                    const matchedWords = result.matched_words.join(', '); // Combine words into a comma-separated list
+                    resultHtml += `
+                        <div>
+                            <h4>${result.name} : في كلمة (${matchedWords})</h4>
+                            <p>${result.table}</p>
+                            <p></p>
+                        </div>
+                    `;
+                });
+                analysisContainer.html(resultHtml);
+            }
+            analysisContainer.fadeIn();
+        },
+        error: function () {
+            $('#loader').hide();
+            alert('حدث خطأ أثناء تحليل الآية');
+        }
+    });
+});
+
+
+
+// =========== ayah analysis button handling ===========
+
+
+
+
     </script>
 </body>
 </html>

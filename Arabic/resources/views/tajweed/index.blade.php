@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tajweeds Table</title>
+    <title>تطبيقات قواعد التجويد</title>
+    
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- External CSS (Move to tables.css later) -->
+    <!-- <link rel="stylesheet" href="tables.css"> -->
+
     <style>
         :root {
             --primary-color: #1a5f7a;
@@ -12,12 +18,6 @@
             --accent-color: #e6d5b8;
             --text-color: #2b2b2b;
             --white: #ffffff;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
         }
 
         body {
@@ -32,111 +32,95 @@
         header {
             background: var(--primary-color);
             padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%),
-                        linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
-            background-size: 60px 60px;
-            opacity: 0.1;
-        }
-
-        h1 {
-            font-family: 'Aref Ruqaa', serif;
-            color: var(--white);
             text-align: center;
-            font-size: 2.5rem;
-            position: relative;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            color: var(--white);
         }
 
         .container {
             flex: 1;
-            padding: 3rem 1rem;
-            width: 100%;
+            padding: 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
+        /* Table Styling */
+        .table-container {
+            width: 100%;
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 30px auto;
+        }
+
+        .table-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .table-header {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            font-family: 'Aref Ruqaa', serif;
+        }
+
         table {
             width: 100%;
-            margin: 30px auto;
             border-collapse: collapse;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            background-color: var(--white);
+            background: var(--white);
         }
 
         th, td {
             padding: 15px;
             text-align: center;
+            font-size: 1.3rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
         }
 
         th {
-            background-color: var(--primary-color);
-            color: var(--white);
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background: rgba(242, 242, 242, 0.9);
+            font-family: 'Aref Ruqaa', serif;
         }
 
         tr:hover {
-            background-color: #f1f1f1;
+            background: rgba(58, 126, 113, 0.15);
         }
 
-        td {
-            font-size: 16px;
-            color: #555;
+        tr:hover td {
+            border-right: 3px solid var(--secondary-color);
         }
 
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        .btn-add-rule {
+        /* Buttons */
+        .btn {
             display: inline-block;
-            width: 200px;
-            margin: 10px;
-            background-color: #2F4F4F;
-            color: white;
-            padding: 10px;
-            font-size: 18px;
+            padding: 10px 15px;
+            font-size: 1.2rem;
             text-align: center;
-            text-decoration: none;
             border-radius: 5px;
-            transition: background-color 0.3s ease;
+            color: var(--white);
+            text-decoration: none;
+            transition: 0.3s ease;
         }
 
-        .btn-add-rule:hover {
+        .btn-add {
+            background-color: #2F4F4F;
+        }
+
+        .btn-add:hover {
             background-color: #4a148c;
         }
 
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
+        .btn-back {
+            background-color: #4CAF50;
         }
 
-        .btn-edit, .btn-delete {
-            display: inline-block;
-            width: 80px;
-            padding: 5px;
-            margin: 2px 0;
-            font-size: 14px;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            color: white;
+        .btn-back:hover {
+            background-color: #388e3c;
         }
 
         .btn-edit {
@@ -155,6 +139,14 @@
             background-color: #d32f2f;
         }
 
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
         .footer {
             background: var(--primary-color);
             color: var(--white);
@@ -163,19 +155,28 @@
             margin-top: auto;
         }
 
-        @media (max-width: 1024px) {
-            table {
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
                 width: 95%;
+                padding: 1rem;
+            }
+
+            th, td {
+                padding: 12px;
+                font-size: 1.1rem;
             }
         }
 
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
+        @media (max-width: 480px) {
+            th, td {
+                padding: 10px;
+                font-size: 1rem;
             }
 
-            table {
-                width: 100%;
+            .btn {
+                font-size: 1rem;
+                padding: 8px 12px;
             }
         }
     </style>
@@ -193,43 +194,46 @@
             </div>
         @endif
 
-        <!-- Add Rule and Back Buttons (side by side) -->
+        <!-- Add Rule and Back Buttons -->
         <div style="text-align: center; margin: 20px 0;">
-            <a href="{{ route('add-rule') }}" class="btn-add-rule">Add Rule</a>
-            <a href="{{ url('/') }}" class="btn-add-rule" style="background-color: #4CAF50;">Back</a>
+            <a href="{{ route('add-rule') }}" class="btn btn-add">إضافة قاعدة</a>
+            <a href="{{ url('/') }}" class="btn btn-back">العودة</a>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>الوصف</th>
-                    <th>الآية المثال</th>
-                    <th>الحروف</th>
-                    <th>اسم القاعدة</th>
-                    <th>الإجراءات</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($tajweeds as $tajweed)
+        <div class="table-container">
+            <div class="table-header">جدول قواعد التجويد</div>
+            <table>
+                <thead>
                     <tr>
-                        <td>{{ $tajweed->description }}</td>
-                        <td>{{ $tajweed->example_ayah }}</td>
-                        <td>{{ $tajweed->expression }}</td>
-                        <td>{{ $tajweed->rule_name }}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <a href="{{ route('edit-rule', $tajweed->id) }}" class="btn-edit">Edit</a>
-                                <a href="{{ route('delete-rule', $tajweed->id) }}" class="btn-delete" onclick="return confirm('Are you sure you want to delete this rule?')">Delete</a>
-                            </div>
-                        </td>
+                        <th>الوصف</th>
+                        <th>الآية المثال</th>
+                        <th>الحروف</th>
+                        <th>اسم القاعدة</th>
+                        <th>الإجراءات</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach($tajweeds as $tajweed)
+                        <tr>
+                            <td>{{ $tajweed->description }}</td>
+                            <td>{{ $tajweed->example_ayah }}</td>
+                            <td>{{ $tajweed->expression }}</td>
+                            <td>{{ $tajweed->rule_name }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{{ route('edit-rule', $tajweed->id) }}" class="btn btn-edit">تعديل</a>
+                                    <a href="{{ route('delete-rule', $tajweed->id) }}" class="btn btn-delete" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه القاعدة؟')">حذف</a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="footer">
-        <p>&copy; 2025 Tajweeds. All rights reserved.</p>
+        <p>&copy; 2025 Tajweeds. جميع الحقوق محفوظة.</p>
     </div>
 
 </body>

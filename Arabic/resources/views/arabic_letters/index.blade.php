@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #1a5f7a;
-            --secondary-color: #c7b7a3;
-            --accent-color: #e6d5b8;
+            --primary-color: #234B6E;
+            --secondary-color: #3A7E71;
+            --accent-color: #C17B3F;
             --text-color: #2b2b2b;
             --white: #ffffff;
+            --gradient-start: #234B6E;
+            --gradient-end: #3A7E71;
         }
 
         * {
@@ -27,137 +29,161 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.8;
         }
 
         header {
-            background: var(--primary-color);
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
             padding: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%),
-                        linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
-            background-size: 60px 60px;
-            opacity: 0.1;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         h1 {
-            font-family: 'Aref Ruqaa', serif;
             color: var(--white);
-            text-align: center;
             font-size: 2.5rem;
-            position: relative;
+            font-family: 'Aref Ruqaa', serif;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
         .container {
-            flex: 1;
-            padding: 3rem 1rem;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
+            width: 50%;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .table-container {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .table-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .table-header {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            font-family: 'Aref Ruqaa', serif;
         }
 
         table {
-            width: 100%; /* Changed to full width */
-            margin: 30px auto;
+            width: 100%;
             border-collapse: collapse;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            background-color: var(--white);
+            background: var(--white);
         }
 
         th, td {
             padding: 15px;
             text-align: center;
+            font-size: 1.3rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
         }
 
         th {
-            background-color: var(--primary-color);
-            color: var(--white);
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background: rgba(242, 242, 242, 0.9);
+            font-family: 'Aref Ruqaa', serif;
         }
 
         tr:hover {
-            background-color: #f1f1f1;
+            background: rgba(58, 126, 113, 0.15);
         }
 
-        td {
-            font-size: 16px;
-            color: #555;
-        }
-
-        table, th, td {
-            border: 1px solid #ddd;
+        tr:hover td {
+            border-right: 3px solid var(--secondary-color);
         }
 
         .footer {
-            background: var(--primary-color);
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
             color: var(--white);
             text-align: center;
-            padding: 1.5rem;
+            padding: 2rem;
+            width: 100%;
             margin-top: auto;
-        }
-
-        @media (max-width: 1024px) {
-            table {
-                width: 95%;
-            }
+            font-family: 'Aref Ruqaa', serif;
         }
 
         @media (max-width: 768px) {
+            .container {
+                width: 80%;
+            }
+
             h1 {
                 font-size: 2rem;
             }
 
-            table {
-                width: 100%;
+            .table-header {
+                font-size: 1.3rem;
+                padding: 15px;
+            }
+
+            th, td {
+                padding: 12px;
+                font-size: 1.1rem;
             }
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            .button::before {
-                display: none;
+        @media (max-width: 480px) {
+            .container {
+                width: 95%;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .table-header {
+                font-size: 1.2rem;
+                padding: 12px;
+            }
+
+            th, td {
+                padding: 10px;
+                font-size: 1rem;
             }
         }
     </style>
 </head>
 <body>
-
     <header>
         <h1>جميع أحرف اللغة العربية</h1>
     </header>
 
     <div class="container">
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Letter</th>
-                <th>Unicode</th>
-            </tr>
-            @foreach ($letters as $letter)
+        <div class="table-container">
+            <div class="table-header">
+                الحروف العربية
+            </div>
+            <table>
                 <tr>
-                    <td>{{ $letter->id }}</td>
-                    <td>{{ $letter->letter }}</td>
-                    <td>{{ $letter->unicode_hex }}</td>
+                    <th>ID</th>
+                    <th>الحرف</th>
+                    <th>Unicode</th>
                 </tr>
-            @endforeach
-        </table>
+                @foreach ($letters as $letter)
+                    <tr>
+                        <td>{{ $letter->id }}</td>
+                        <td>{{ $letter->letter }}</td>
+                        <td>{{ $letter->unicode_hex }}</td>
+                    </tr>
+                @endforeach
+            </table>
+        </div>
     </div>
 
-    <div class="footer">
-        <p>&copy; 2025 Arabic Letters. All rights reserved.</p>
-    </div>
-
+    <footer class="footer">
+        <p>جميع الحقوق محفوظة © ٢٠٢٥ موارد اللغة العربية</p>
+    </footer>
 </body>
 </html>
