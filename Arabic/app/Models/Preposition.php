@@ -9,7 +9,7 @@ class Preposition extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'english_name', 'tool_id', 'grammatical_function', 'semantic_function', 'example', 'description'];
+    protected $fillable = ['name', 'english_name', 'tool_id', 'syntactic_effects', 'semantic_logical_effects', 'example', 'description'];
 
     public function tool()
     {
@@ -24,6 +24,16 @@ class Preposition extends Model
     public function toolsInformations()
     {
         return $this->morphMany(ToolsInformation::class, 'tool');
+    }
+
+    public function syntacticEffect()
+    {
+        return $this->belongsTo(SyntacticEffect::class, 'syntactic_effects');
+    }
+
+    public function semanticLogicalEffect()
+    {
+        return $this->belongsTo(SemanticLogicalEffect::class, 'semantic_logical_effects');
     }
 }
 

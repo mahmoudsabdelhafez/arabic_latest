@@ -32,6 +32,12 @@ use App\Http\Controllers\SemanticLogicalEffectController;
 use App\Http\Controllers\SyntacticEffectController;
 use App\Http\Controllers\ToolsInformationController;
 
+use App\Http\Controllers\WordTypeController;
+use App\Http\Controllers\ExampleController;
+use App\Http\Controllers\GrammarRuleController;
+use App\Http\Controllers\BeautyOfLanguageController;
+use App\Http\Controllers\ArabicLanguageController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,9 +49,7 @@ use App\Http\Controllers\ToolsInformationController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ArabicLanguageController::class, 'index']);
 
 Route::get('/arabic-letters', [ArabicLetterController::class, 'index']);
 
@@ -220,7 +224,10 @@ Route::resource('linkingtool', LinkingToolControlller::class);
 
 Route::get('contextual_conditions/create', [ContextualConditionController::class, 'create'])->name('contextual_conditions.create');
 Route::get('contextual_conditions/show-table/{toolName}', [ContextualConditionController::class, 'showTableRows']);
+Route::get('contextual_conditions/index', [ContextualConditionController::class, 'index'])->name('contextual_conditions.index');
 Route::post('contextual_conditions/store', [ContextualConditionController::class, 'store'])->name('contextual_conditions.store');
+Route::post('contextual_conditions/destroy/{id}', [ContextualConditionController::class, 'destroy'])->name('contextual_conditions.destroy');
+Route::post('contextual_conditions/update/{id}', [ContextualConditionController::class, 'update'])->name('contextual_conditions.update');
 
 
 
@@ -230,3 +237,18 @@ Route::get('/classification-view', [PhonemeController::class, 'ruleDetails'])->n
 Route::get('tool_information/create', [ToolsInformationController::class, 'create'])->name('tool_information.create');
 Route::get('tool_information/show-table/{toolName}', [ToolsInformationController::class, 'showTableRows']);
 Route::post('tool_information/store', [ToolsInformationController::class, 'store'])->name('tool_information.store');
+Route::post('tool_information/update/{id}', [ToolsInformationController::class, 'update']);
+Route::delete('tool_information/destroy/{id}', [ToolsInformationController::class, 'destroy'])->name('tool_information.destroy');
+Route::put('tool_information/update/{id}', [ToolsInformationController::class, 'update'])->name('tool_information.update');
+// Route::resource('tool_information', ToolsInformationController::class);s
+Route::delete('/delete-rule/{id}/{linking_tool_id}', [PhonemeController::class, 'destroy'])->name('delete.rule');
+
+
+Route::resource('word-types', WordTypeController::class);
+Route::resource('examples', ExampleController::class);
+Route::resource('grammar-rules', GrammarRuleController::class);
+Route::resource('beauty-of-language', BeautyOfLanguageController::class);
+
+Route::get('/harf/{id}', [ArabicLanguageController::class, 'tools'])->name('harf.show');
+// Route::get('/conditionals/{tool_id}/{id}', [ArabicLanguageController::class, 'show'])->name('conditionals.show');
+Route::get('/conditionals/show', [ArabicLanguageController::class, 'show'])->name('conditionals.show');
