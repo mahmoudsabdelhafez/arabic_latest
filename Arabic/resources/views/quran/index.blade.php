@@ -244,7 +244,7 @@
                 autocomplete="off"
             >
         </div>
-        <div class="loader" id="loader"></div>
+        <div class="loader" id="loader" style="display: none;"></div>
         <ul id="results"></ul>
         <div id="pagination"></div>
     </div>
@@ -253,9 +253,9 @@
         <p>© جميع الحقوق محفوظة للقرآن الكريم</p>
     </footer>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         let searchTimeout;
-        let currentQuery = '';
 
         function highlightText(text, query) {
             if (!query) return text;
@@ -264,72 +264,63 @@
         }
 
         function fetchResults(query, page = 1) {
-            if (query === '') return;
-            
-            $('#loader').show();
-            $('#results, #pagination').empty();
+    if (!query.trim()) return;
 
-            $.ajax({
-                url: '/search',
-                type: 'GET',
-                data: { query: query, page: page },
-                success: function(response) {
-                    $('#loader').hide();
-                    console.log(response.data);
+    $('#loader').show();
+    $('#results, #pagination').empty();
+    $('#total-count').remove(); // حذف أي عدد سابق
 
-                    if (response.data.length === 0) {
-                        $('#results').html('<div class="no-results">لا توجد نتائج</div>');
-                        return;
-                    }
-                    response.data.forEach(aya => {
-                        const highlightedText = highlightText(aya.text, query);
-                        $('#results').append(`
-                            <li>
-                                <div class="sura-name">${aya.sura_name}</div>
-                                <span class="aya-number">آية ${aya.aya}</span>
-                                <div class="aya-text">${highlightedText}</div>
-                            </li>
-                        `);
-                    });
+    $.ajax({
+        url: '/search',
+        type: 'GET',
+        data: { query: query, page: page },
+        success: function(response) {
+            $('#loader').hide();
 
-                    // Pagination Controls
-                    const paginationHtml = [];
-                    
-                    if (response.prev_page_url) {
-                        paginationHtml.push(`
-                            <button class="pagination-btn" 
-                                onclick="fetchResults('${query}', ${response.current_page - 1})">
-                                السابق
-                            </button>
-                        `);
-                    }
+            // ✅ عرض العدد الكلي للنتائج
+            $('.search-container').append(`<div id="total-count"> عدد النتائج: ${response.total_count}</div>`);
 
-                    if (response.next_page_url) {
-                        paginationHtml.push(`
-                            <button class="pagination-btn" 
-                                onclick="fetchResults('${query}', ${response.current_page + 1})">
-                                التالي
-                            </button>
-                        `);
-                    }
+            if (response.results.length === 0) {
+                $('#results').html('<div class="no-results">لا توجد نتائج</div>');
+                return;
+            }
 
-                    $('#pagination').html(paginationHtml.join(''));
-                },
-                error: function() {
-                    $('#loader').hide();
-                    $('#results').html('<div class="no-results">حدث خطأ في البحث</div>');
-                }
+            response.results.forEach(aya => {
+                const highlightedText = highlightText(aya.text, query);
+                $('#results').append(`
+                    <li>
+                        <div class="sura-name">${aya.sura_name}</div>
+                        <span class="aya-number">آية ${aya.aya}</span>
+                        <div class="aya-text">${highlightedText}</div>
+                    </li>
+                `);
             });
+
+            let paginationHtml = '';
+
+            if (response.prev_page_url) {
+                paginationHtml += `<button class="pagination-btn" onclick="fetchResults('${query}', ${response.current_page - 1})">السابق</button>`;
+            }
+
+            if (response.next_page_url) {
+                paginationHtml += `<button class="pagination-btn" onclick="fetchResults('${query}', ${response.current_page + 1})">التالي</button>`;
+            }
+
+            $('#pagination').html(paginationHtml);
+        },
+        error: function() {
+            $('#loader').hide();
+            $('#results').html('<div class="no-results">حدث خطأ في البحث</div>');
         }
+    });
+}
+
 
         $(document).ready(function() {
             $('#search').on('input', function() {
                 const query = $(this).val().trim();
                 
                 clearTimeout(searchTimeout);
-                
-                if (query === currentQuery) return;
-                currentQuery = query;
 
                 if (query.length === 0) {
                     $('#results, #pagination').empty();
@@ -343,4 +334,5 @@
         });
     </script>
 </body>
+
 </html>

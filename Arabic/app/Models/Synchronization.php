@@ -9,7 +9,7 @@ class Synchronization extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'english_name', 'tool_id', 'grammatical_function', 'semantic_function', 'example', 'description'];
+    protected $fillable = ['name', 'english_name', 'tool_id', 'syntactic_effects', 'semantic_logical_effects', 'example', 'description'];
 
     public function tool()
     {

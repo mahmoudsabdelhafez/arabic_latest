@@ -126,7 +126,20 @@
         box-shadow: 0 0 0 3px rgba(35, 75, 110, 0.1);
         outline: none;
     }
-
+    .button {
+        display: inline-block;
+        text-decoration: none;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+        color: var(--primary-color);
+        padding: 0.8rem 1.2rem;
+        font-size: 1rem;
+        font-weight: bold;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border: 2px solid transparent;
+        cursor: pointer;
+    }
     .btn {
         padding: 0.75rem 1.5rem;
         border: none;
@@ -268,26 +281,55 @@
                         <tr>
                             <th>الرقم</th>
                             <th>الاسم</th>
+                            <th>التصنيفات</th>
+                            <th>جدول البيانات</th>
+                            <th>الشروط السياقية</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($results as $item)
-                        <tr>
-                            <td>{{ $item->id }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>
-                                <!-- Button to pass letter and linking_tool_id -->
-                                <form action="{{ route('classification.ruleDetails') }}" method="GET">
-                                    <!-- Replace with the actual value of letter and linking_tool_id -->
-                                    <input type="hidden" name="letter" value="{{ $item->name }}"> <!-- Example letter value -->
-                                    <input type="hidden" name="linking_tool_id" value="{{ $item->linking_tool_id }}">
-                                    <!-- Example linking_tool_id value -->
-                                    <button type="submit">View Classification</button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
+    @foreach($results as $item)
+    <tr>
+        <td>{{ $item->id }}</td>
+        <td>{{ $item->name }}</td>
+        <td>
+            <form action="{{ route('classification.ruleDetails') }}" method="GET">
+                <input type="hidden" name="letter" value="{{ $item->name }}">
+                <input type="hidden" name="tool_id" value="{{ $item->id }}">
+                <input type="hidden" name="linking_tool_id" value="{{ $item->linking_tool_id }}">
+                <button class="button" type="submit">عرض التصنيفات</button>
+            </form>
+        </td>
+        <td>
+            <form action="{{ url('tool_information/show-table', $item->linking_tool_id) }}" method="GET">
+                <input type="hidden" name="letter" value="{{ $item->id }}">
+                <input type="hidden" name="linking_tool_id" value="{{ $item->linking_tool_id }}">
+                <button class="button" type="submit">عرض الشروط</button>
+            </form>
+        </td>
+        <td>
+            <form action="{{ url('contextual_conditions/index') }}" method="GET">
+                <input type="hidden" name="letter" value="{{ $item->name }}">
+                <input type="hidden" name="tool_id" value="{{ $item->id }}">
+                <input type="hidden" name="linking_tool_id" value="{{ $item->linking_tool_id }}">
+                <button class="button" type="submit">عرض السياقية</button>
+            </form>
+        </td>
+        <td>
+            <!-- DELETE Button with linking_tool_id -->
+            <form action="{{ route('delete.rule', ['id' => $item->id, 'linking_tool_id' => $item->linking_tool_id]) }}" 
+                  method="POST" 
+                  onsubmit="return confirmDelete(event, this);">
+                @csrf
+                @method('DELETE')
+                <input type="hidden" name="linking_tool_id" value="{{ $item->linking_tool_id }}">
+                <button type="submit" class="btn btn-danger">حذف</button>
+            </form>
+        </td>
+    </tr>
+    @endforeach
+</tbody>
+
+                    
                 </table>
                 @endif
                 @endforeach
@@ -333,14 +375,27 @@
                     <input type="hidden" name="arabic_letter_id" value="{{ $letter->letter }}">
 
                     <div class="form-group">
-                        <label for="semantic_function">الوظيفة الدلالية :</label>
-                        <input type="text" id="semantic_function" name="semantic_function" required>
+                        <label for="semantic_logical_effects">الوظيفة الدلالية :</label>
+                                            <select name="semantic_logical_effects" required>
+                                                <option value="">اختر الوظيفة الدلالية</option>
+                                                @foreach($Semantic_logical_effect as $tool)
+                                                <option value="{{ $tool->id }}">
+                                                    {{ $tool->typical_relation  }}، {{ $tool->nisbah_type  }}
+                                                </option>
+                                                @endforeach
+                                            </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="grammatical_function">الوظيفة النحوية :</label>
-                        <input type="text" id="grammatical_function" name="grammatical_function" required>
-                    </div>
+                        <label for="syntactic_effects">الوظيفة النحوية :</label>
+                        <select name="syntactic_effects" required>
+                                                <option value="">اختر الوظيفة النحوية</option>
+                                                @foreach($syntactic_effect as $tool)
+                                                <option value="{{ $tool->id }}">
+                                                    {{ $tool->result_case }}
+                                                </option>
+                                                @endforeach
+                                            </select>                    </div>
 
                     <div class="form-group">
                         <label for="example">مثال :</label>
@@ -384,8 +439,97 @@
     <footer class="footer">
         <p>© جميع الحقوق محفوظة </p>
     </footer>
-
     <script>
+    function handleSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+
+        // Validate required fields
+        const requiredFields = form.querySelectorAll('[required]');
+        let isValid = true;
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                isValid = false;
+                field.classList.add('error');
+            } else {
+                field.classList.remove('error');
+            }
+        });
+
+        if (!isValid) {
+            showToast("يرجى ملء جميع الحقول المطلوبة", "error");
+            return;
+        }
+
+        // Disable submit button to prevent multiple submissions
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.classList.add('btn-loading');
+
+        fetch("{{ route('update.phoneme.diacritic') }}", {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+            },
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) {
+                showToast("حدث خطأ: " + data.error, "error");
+            } else {
+                showToast("تم التحديث بنجاح!");
+                // Optional: Redirect or refresh page
+                window.location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showToast("حدث خطأ. يرجى المحاولة مرة أخرى.", "error");
+        })
+        .finally(() => {
+            // Re-enable submit button
+            submitButton.disabled = false;
+            submitButton.classList.remove('btn-loading');
+        });
+    }
+
+    function showToast(message, type = "success") {
+        // Create toast element if it doesn't exist
+        let toast = document.getElementById("toast");
+        if (!toast) {
+            toast = document.createElement("div");
+            toast.id = "toast";
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 15px;
+                border-radius: 8px;
+                color: white;
+                z-index: 1000;
+                transition: opacity 0.3s;
+            `;
+            document.body.appendChild(toast);
+        }
+
+        toast.textContent = message;
+        toast.style.backgroundColor = type === "success" ? "#4CAF50" : "#F44336";
+        toast.style.opacity = "1";
+
+        setTimeout(() => {
+            toast.style.opacity = "0";
+        }, 3000);
+    }
+
+    // AI Assistant Button Logic
     document.getElementById('ai').addEventListener('click', async function() {
         const loader = document.getElementById('aiLoader');
         loader.style.display = 'flex';
@@ -398,10 +542,8 @@
                     "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
                 },
                 body: JSON.stringify({
-                    arabic_letter_id: document.querySelector(
-                        'input[name="arabic_letter_id"]').value,
-                    arabic_diacritic_id: document.querySelector(
-                        'input[name="arabic_diacritic_id"]').value
+                    arabic_letter_id: document.querySelector('input[name="arabic_letter_id"]').value,
+                    // Add other necessary data here
                 })
             });
 
@@ -409,54 +551,36 @@
 
             if (data.description) {
                 document.querySelector('textarea[name="description"]').value = data.description;
+            } else {
+                showToast("لم يتم إنشاء وصف", "error");
             }
         } catch (error) {
             console.error('Error:', error);
+            showToast("حدث خطأ أثناء استدعاء الذكاء الاصطناعي", "error");
         } finally {
             loader.style.display = 'none';
         }
     });
 
-    function handleSubmit(event) {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-
-        fetch("{{ route('update.phoneme.diacritic') }}", {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    showToast("حدث خطأ: " + data.error, "error");
-                } else {
-                    showToast("تم التحديث بنجاح!");
-                }
-            })
-            .catch(error => {
-                showToast("حدث خطأ. يرجى المحاولة مرة أخرى.", "error");
-            });
-    }
-
-    function showToast(message, type = "success") {
-        // Create toast element if it doesn't exist
-        let toast = document.getElementById("toast");
-        if (!toast) {
-            toast = document.createElement("div");
-            toast.id = "toast";
-            document.body.appendChild(toast);
+    // Add additional styles for error states
+    const styleTag = document.createElement('style');
+    styleTag.textContent = `
+        input:invalid, select:invalid, textarea:invalid {
         }
-
-        toast.textContent = message;
-        toast.className = `toast ${type} show`;
-
-        setTimeout(() => {
-            toast.className = "toast";
-        }, 3000);
+        
+        .btn-loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+    `;
+    document.head.appendChild(styleTag);
+    function confirmDelete(event, form) {
+    event.preventDefault(); // Prevent default form submission
+    if (confirm("هل أنت متأكد أنك تريد حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء!")) {
+        form.submit(); // Submit the form if confirmed
     }
+}
+
     </script>
 </body>
 

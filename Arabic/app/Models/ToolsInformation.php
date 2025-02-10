@@ -16,7 +16,7 @@ class ToolsInformation extends Model
     protected $fillable = [
         'linking_tool_id',
         'tool_id',
-        'tool_name',
+        'tool_type',
         'short_label',
         'classification_id',
         'morphological_form',
