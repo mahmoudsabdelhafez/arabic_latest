@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id(); // Primary Key (Auto Increment)
             $table->string('name', 255); // الأداة
             $table->string('english_name', 255); // الاسم بالإنجليزي
-            $table->foreignId('linking_tool_id')->constrained('linking_tool')->onDelete('cascade');
+            $table->foreignId('linking_tool_id')->constrained('linking_tools')->onDelete('cascade');
             $table->string('grammatical_function', 255); // الوظيفة النحوية
             $table->string('semantic_function', 255); // الوظيفة الدلالية
             $table->text('example'); // مثال
