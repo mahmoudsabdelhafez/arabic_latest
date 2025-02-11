@@ -148,7 +148,7 @@
             @foreach ($pronouns as $pronoun)
                 <tr>
                     <td>{{ $pronoun->id }}</td>
-                    <td>{{ $pronoun->pronoun }}</td>
+                    <td>{{ $pronoun->name }}</td>
                     <td>{{ $pronoun->definition }}</td>
                 </tr>
             @endforeach

@@ -29,7 +29,7 @@ class ArabicLanguageController extends Controller
     {
         $tableName = Linking_tool::findOrFail($id);
         $table = strtolower($tableName->name).'s';
-        $conditionals = DB::table($table)
+        $conditionals = DB::table(table: $table)
         ->select(
             "{$table}.*",
         )
@@ -151,6 +151,6 @@ class ArabicLanguageController extends Controller
 //     // Redirect back to the show page with a success message
 //     return redirect()->route('tools.show', ['linking_tool_id' => $request->linking_tool_id, 'tool_id' => $request->tool_id])
 //                      ->with('success', 'Tool and related data updated successfully');
-// }
+// }
 
 }

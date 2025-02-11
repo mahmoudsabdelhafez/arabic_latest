@@ -8,6 +8,7 @@ use App\Models\Exception;
 use App\Models\Explanation;
 use App\Models\Negative;
 use App\Models\Preposition;
+use App\Models\Pronoun;
 use Illuminate\Http\Request;
 use App\Models\Quran;
 
@@ -79,6 +80,7 @@ public function analyzeAyahResults(Request $request)
         'أدوات الاستثناء' => Exception::class,
         'أدوات التوضيح' => Explanation::class,
         'أدوات الجر' => Preposition::class,
+        'الضمائر' => Pronoun::class,
     ];
 
     // Loop through each word to check for matches
