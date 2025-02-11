@@ -10,7 +10,7 @@ class GrammarRuleController extends Controller
     public function index()
     {
         $grammarRules = GrammarRule::all();
-        return response()->json($grammarRules);
+        return view('arabic_discrption.grammars', compact('grammarRules'));
     }
 
     public function show($id)
@@ -30,7 +30,7 @@ class GrammarRuleController extends Controller
         ]);
 
         $grammarRule = GrammarRule::create($validated);
-        return response()->json($grammarRule, 201);
+        return back()->with('success', 'Grammar rule added successfully!');
     }
 
     public function update(Request $request, $id)

@@ -29,7 +29,7 @@ class ArabicLanguageController extends Controller
     {
         $tableName = Linking_tool::findOrFail($id);
         $table = strtolower($tableName->name).'s';
-        $conditionals = DB::table($table)
+        $conditionals = DB::table(table: $table)
         ->select(
             "{$table}.*",
         )
