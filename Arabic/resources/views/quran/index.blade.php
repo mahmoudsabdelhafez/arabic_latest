@@ -557,7 +557,8 @@ $(document).on('click', '.ayah-analysis-btn', function () {
             }
             analysisContainer.fadeIn();
         },
-        error: function () {
+        error: function (response) {
+            console.log(response);
             $('#loader').hide();
             alert('حدث خطأ أثناء تحليل الآية');
         }

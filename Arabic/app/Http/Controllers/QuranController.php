@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CausalReasoning;
+use App\Models\ComparisonSimile;
+use App\Models\ConclusionInference;
 use App\Models\Conditional;
+use App\Models\Conjunction;
 use App\Models\Detail;
+use App\Models\EncouragementUrging;
 use App\Models\Exception;
 use App\Models\Explanation;
 use App\Models\Negative;
@@ -11,6 +16,9 @@ use App\Models\Preposition;
 use App\Models\Pronoun;
 use Illuminate\Http\Request;
 use App\Models\Quran;
+use App\Models\SequencingOrdering;
+use App\Models\Specification;
+use App\Models\Synchronization;
 
 class QuranController extends Controller
 {
@@ -81,6 +89,15 @@ public function analyzeAyahResults(Request $request)
         'أدوات التوضيح' => Explanation::class,
         'أدوات الجر' => Preposition::class,
         'الضمائر' => Pronoun::class,
+        // 'أدوات المقارنة والتشبيه' => ComparisonSimile::class,
+        'أدوات العطف' => Conjunction::class,
+        'أدوات الاغراء والتحضيض' => EncouragementUrging::class,
+        'أدوات السببية الوتعليل' => CausalReasoning::class,
+        'أدوات التخصيص' => Specification::class,
+        'أدوات الترتيب والتسلسل' => SequencingOrdering::class,
+        'أدوات الاستنتاج' => ConclusionInference::class,
+        'أدوات التزامن' => Synchronization::class,
+
     ];
 
     // Loop through each word to check for matches
