@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -109,7 +108,7 @@
     .form-group {
         margin-bottom: 1rem;
     }
-    
+
     .alert {
         padding: 1rem;
         border-radius: 8px;
@@ -117,7 +116,7 @@
     }
 
     .alert-success {
-        background-color:rgb(186, 255, 159);
+        background-color: rgb(186, 255, 159);
         color: #03543f;
     }
 
@@ -207,7 +206,7 @@
         background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
         color: var(--white);
     }
-    
+
     .edit-btn,
     .delete-btn,
     .save-btn,
@@ -277,13 +276,12 @@
 </head>
 
 <body>
-    <header>
-        <h1>Example</h1>
-    </header>
+<header>
+    <h1>Grammar Rules</h1>
+</header>
 
-    <div class="container">
-    <div class="container">
-    <h2>Add New Example</h2>
+<div class="container">
+    <h2>Add New Rule</h2>
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -291,27 +289,60 @@
         </div>
     @endif
 
-    <form action="{{ route('examples.store') }}" method="POST">
+    <form action="{{ route('grammar-rules.store') }}" method="POST">
         @csrf
-
         <div class="mb-3">
-            <label for="word_type_id" class="form-label">Word Type</label>
-            <select name="word_type_id" id="word_type_id" class="form-control" required>
-                @foreach($wordTypes as $wordType)
-                    <option value="{{ $wordType->id }}">{{ $wordType->type_name }}</option>
-                @endforeach
-            </select>
+            <label for="rule_name" class="form-label">Rule Name</label>
+            <input type="text" name="rule_name" id="rule_name" class="form-control" required>
         </div>
 
         <div class="mb-3">
-            <label for="example_text" class="form-label">Example Text</label>
-            <input type="text" name="example_text" id="example_text" class="form-control" required>
+            <label for="description" class="form-label">Description</label>
+            <textarea name="description" id="description" rows="4" class="form-control" required></textarea>
         </div>
-
-        <button type="submit" class="btn btn-primary">Save Example</button>
+        
+        <button type="submit" class="btn btn-primary">Save Rule</button>
     </form>
 </div>
-    </div>
+
+<div class="container mt-4">
+    <h2>Existing Rules</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($grammarRules as $rule)
+                <tr>
+                    <td>{{ $rule->rule_name }}</td>
+                    <td>{{ $rule->description }}</td>
+                    <td>
+                        <!-- Edit Form -->
+                        <form action="{{ route('grammar-rules.update', $rule->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="rule_name" value="{{ $rule->rule_name }}">
+                            <input type="hidden" name="description" value="{{ $rule->description }}">
+                            <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                        </form>
+                        
+                        <!-- Delete Form -->
+                        <form action="{{ route('grammar-rules.destroy', $rule->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
 </body>
 
 </html>

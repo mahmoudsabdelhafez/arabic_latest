@@ -278,12 +278,12 @@
 
 <body>
     <header>
-        <h1>Example</h1>
+        <h1>Beauty Of Language</h1>
     </header>
 
     <div class="container">
     <div class="container">
-    <h2>Add New Example</h2>
+    <h2>Add New Beauty</h2>
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -291,24 +291,18 @@
         </div>
     @endif
 
-    <form action="{{ route('examples.store') }}" method="POST">
+    <form action="{{ route('beauty-of-language.store') }}" method="POST">
         @csrf
-
         <div class="mb-3">
-            <label for="word_type_id" class="form-label">Word Type</label>
-            <select name="word_type_id" id="word_type_id" class="form-control" required>
-                @foreach($wordTypes as $wordType)
-                    <option value="{{ $wordType->id }}">{{ $wordType->type_name }}</option>
-                @endforeach
-            </select>
+            <label for="aspect_name" class="form-label">Beauty Name</label>
+            <input type="text" name="aspect_name" id="aspect_name" class="form-control" required>
         </div>
 
         <div class="mb-3">
-            <label for="example_text" class="form-label">Example Text</label>
-            <input type="text" name="example_text" id="example_text" class="form-control" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Save Example</button>
+            <label for="description" class="form-label">Description</label>
+            <textarea name="description" id="description" rows="10"></textarea>
+            </div>
+        <button type="submit" class="btn btn-primary">Save Beauty</button>
     </form>
 </div>
     </div>
