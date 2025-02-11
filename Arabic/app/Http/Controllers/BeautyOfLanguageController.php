@@ -10,7 +10,7 @@ class BeautyOfLanguageController extends Controller
     public function index()
     {
         $beautyOfLanguage = BeautyOfLanguage::all();
-        return response()->json($beautyOfLanguage);
+        return view('arabic_discrption.beauty_of_language', compact('beautyOfLanguage'));
     }
 
     public function show($id)
@@ -30,7 +30,7 @@ class BeautyOfLanguageController extends Controller
         ]);
 
         $beauty = BeautyOfLanguage::create($validated);
-        return response()->json($beauty, 201);
+        return back()->with('success', 'Beauty aspect added successfully!');
     }
 
     public function update(Request $request, $id)

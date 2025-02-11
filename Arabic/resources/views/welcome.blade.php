@@ -499,7 +499,7 @@
             grid-template-columns: 1fr;
         }
     }
-</style>
+    </style>
 </head>
 
 <body>
@@ -546,10 +546,10 @@
                 @endif
 
                 <div class="button-grid">
-                    <a href="{{ url('/arabic-diacritics') }}" class="nav-button">
+                    <a onclick="showSection('name')" class="nav-button">
                         اسم
                     </a>
-                    <a href="{{ url('/arabic-diacritics') }}" class="nav-button">
+                    <a onclick="showSection('verb')" class="nav-button">
                         فعل
                     </a>
                     <!-- <h2 onclick="showSection('harf')">حرف</h2> -->
@@ -579,55 +579,140 @@
             </section>
 
             <section id="harf" class="section harf-section">
-    <div class="section-header">
-        <h2 class="section-title">الحرف في اللغة العربية</h2>
-    </div>
+                <div class="section-header">
+                    <h2 class="section-title">الحرف في اللغة العربية</h2>
+                </div>
 
-    <div class="harf-description">
-        @if(isset($wordType) && count($wordType) > 0)
-            @foreach($wordType as $content)
-                @if ($content->type_name == 'الحرف')
+                <div class="harf-description">
+                    @if(isset($wordType) && count($wordType) > 0)
+                    @foreach($wordType as $content)
+                    @if ($content->type_name == 'الحرف')
                     <div class="content-card">
                         <div class="content-description">
                             <p class="main-description">{{ $content->description }}</p>
-                            
+
                             @if(isset($examples) && count($examples) > 0)
-                                <div class="examples-section">
-                                    <h3 class="examples-title">أمثلة توضيحية</h3>
-                                    <ul class="examples-list">
-                                        @foreach ($examples as $example)
-                                            @if ($example->word_type_id == $content->id)
-                                                <li class="example-item">
-                                                    <span class="example-text">{{ $example->example_text }}</span>
-                                                </li>
-                                            @endif
-                                        @endforeach
-                                    </ul>
-                                </div>
+                            <div class="examples-section">
+                                <h3 class="examples-title">أمثلة توضيحية</h3>
+                                <ul class="examples-list">
+                                    @foreach ($examples as $example)
+                                    @if ($example->word_type_id == $content->id)
+                                    <li class="example-item">
+                                        <span class="example-text">{{ $example->example_text }}</span>
+                                    </li>
+                                    @endif
+                                    @endforeach
+                                </ul>
+                            </div>
                             @endif
                         </div>
                     </div>
-                @endif
-            @endforeach
-        @else
-            <div class="no-content-message">
-                <p>لا يوجد محتوى متاح حالياً للحرف</p>
-            </div>
-        @endif
-    </div>
+                    @endif
+                    @endforeach
+                    @else
+                    <div class="no-content-message">
+                        <p>لا يوجد محتوى متاح حالياً للحرف</p>
+                    </div>
+                    @endif
+                </div>
 
-    <div class="tools-section">
-        <h3 class="tools-title">أدوات الربط في اللغة العربية</h3>
-        <div class="button-grid">
-            @foreach ($tools as $tool)
-                <a href="{{ url('/harf/' . $tool->id) }}" class="tool-button">
-                    <span class="tool-icon">🔍</span>
-                    {{ $tool->arabic_name }}
-                </a>
-            @endforeach
-        </div>
-    </div>
-</section>
+                <div class="tools-section">
+                    <h3 class="tools-title">أدوات الربط في اللغة العربية</h3>
+                    <div class="button-grid">
+                        @foreach ($tools as $tool)
+                        <a href="{{ url('/harf/' . $tool->id) }}" class="tool-button">
+                            <span class="tool-icon">🔍</span>
+                            {{ $tool->arabic_name }}
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+            </section>
+            
+            <section id="name" class="section harf-section">
+                <div class="section-header">
+                    <h2 class="section-title">الاسم في اللغة العربية</h2>
+                </div>
+
+                <div class="harf-description">
+                    @if(isset($wordType) && count($wordType) > 0)
+                    @foreach($wordType as $content)
+                    @if ($content->type_name == 'الاسم')
+                    <div class="content-card">
+                        <div class="content-description">
+                            <p class="main-description">{{ $content->description }}</p>
+
+                            @if(isset($examples) && count($examples) > 0)
+                            <div class="examples-section">
+                                <h3 class="examples-title">أمثلة توضيحية</h3>
+                                <ul class="examples-list">
+                                    @foreach ($examples as $example)
+                                    @if ($example->word_type_id == $content->id)
+                                    <li class="example-item">
+                                        <span class="example-text">{{ $example->example_text }}</span>
+                                    </li>
+                                    @endif
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
+                    @endforeach
+                    @else
+                    <div class="no-content-message">
+                        <p>لا يوجد محتوى متاح حالياً للحرف</p>
+                    </div>
+                    @endif
+                </div>
+
+                <div class="tools-section">
+                    
+                </div>
+            </section>
+            <section id="verb" class="section harf-section">
+                <div class="section-header">
+                    <h2 class="section-title">الفعل في اللغة العربية</h2>
+                </div>
+
+                <div class="harf-description">
+                    @if(isset($wordType) && count($wordType) > 0)
+                    @foreach($wordType as $content)
+                    @if ($content->type_name == 'الفعل')
+                    <div class="content-card">
+                        <div class="content-description">
+                            <p class="main-description">{{ $content->description }}</p>
+
+                            @if(isset($examples) && count($examples) > 0)
+                            <div class="examples-section">
+                                <h3 class="examples-title">أمثلة توضيحية</h3>
+                                <ul class="examples-list">
+                                    @foreach ($examples as $example)
+                                    @if ($example->word_type_id == $content->id)
+                                    <li class="example-item">
+                                        <span class="example-text">{{ $example->example_text }}</span>
+                                    </li>
+                                    @endif
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
+                    @endforeach
+                    @else
+                    <div class="no-content-message">
+                        <p>لا يوجد محتوى متاح حالياً للحرف</p>
+                    </div>
+                    @endif
+                </div>
+
+                <div class="tools-section">
+                    
+                </div>
+            </section>
 
 
             <section id="roots" class="section">
@@ -668,7 +753,7 @@
             <section id="phoneme" class="section">
                 <h2>الصوتيات</h2>
                 <div class="button-container">
-                <a href="{{ url('/phonemes-menu') }}" class="button">الصوتيات</a>
+                    <a href="{{ url('/phonemes-menu') }}" class="button">الصوتيات</a>
                 </div>
             </section>
             <section id="admin" class="section">
@@ -676,19 +761,15 @@
                 <div class="button-container">
                     <a href="/phonemecategories" class="button">إضافة مخرج حروف رئيسي</a>
                     <a href="/upload" class="button">إضافة صورة مخرج</a>
+                    <a href="/examples" class="button">إضافة أمثلة ل(الحرف ، الاسم ، الفعل )</a>
+                    <a href="/grammar-rules" class="button">إضافة قواعد اساسية</a>
+                    <a href="/beauty-of-language" class="button">إضافة جماليات اللغة العربية</a>
                 </div>
             </section>
-        
 
-     
-
-      
-       
-        
-
-        
-    </div>
-        </main>
+                
+    </div>
+    </main>
     </div>
     <script>
     function showSection(sectionId) {
@@ -716,4 +797,3 @@
 </body>
 
 </html>
-

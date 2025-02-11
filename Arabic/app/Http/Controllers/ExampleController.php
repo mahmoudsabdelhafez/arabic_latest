@@ -32,8 +32,8 @@ class ExampleController extends Controller
             'example_text' => 'required|string'
         ]);
 
-        $example = Example::create($validated);
-        return response()->json($example, 201);
+        Example::create($validated);
+        return back()->with('success', 'Example added successfully!');
     }
 
     public function update(Request $request, $id)
