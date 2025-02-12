@@ -327,6 +327,24 @@
     box-shadow: 0 0 0 3px rgba(35, 75, 110, 0.2);
 }
 
+.toggle-buttons {
+    margin: 10px 0;
+}
+
+.toggle-btn {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.toggle-btn.active {
+    background-color:var(--primary-color);
+    color: white;
+}
+
 
         .footer {
             background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
@@ -381,6 +399,13 @@
 
         <div class="loader" id="loader"></div>
         <div id="ayah-analyze-results"></div>
+
+        <div class="toggle-buttons">
+    <button id="quran-btn" class="toggle-btn active">عرض الايات مع تشكيل</button>
+    <button id="quran-text-clean-btn" class="toggle-btn">عرض الايات بدون تشكيل</button>
+</div>
+
+
         <ul id="results"></ul>
         <div id="pagination"></div>
     </div>
@@ -394,12 +419,18 @@
 let currentQuery = '';
 let searchResults = []; // Store the original search results
 
+
 function highlightText(text, query) {
     if (!query) return text;
     const regex = new RegExp(`(${query})`, 'gi');
     return text.replace(regex, '<span class="highlight">$1</span>');
 }
 
+// =================== highlightText ====================
+
+
+
+// =================== applyAnalysis ====================
 function applyAnalysis(results) {
     // Replace 'ب' with 'ا'
     let modifiedResults = results.map(aya => {
@@ -408,9 +439,14 @@ function applyAnalysis(results) {
         // Replace characters with shadda and diacritic
         modifiedText = replaceShadda(modifiedText);
 
-          // Remove all sukoons from the text
-          modifiedText = removeSukoon(modifiedText);
-
+        
+        modifiedText = replaceFirstAlifWithHamza(modifiedText);
+        
+        
+        modifiedText = removeAlifFromWords(modifiedText);
+        
+        // Remove all sukoons from the text
+        modifiedText = removeSukoon(modifiedText);
 
         
         return {
@@ -422,8 +458,8 @@ function applyAnalysis(results) {
     return modifiedResults;
 }
 
+
 function replaceShadda(text) {
-    // Regular expression to match characters followed by shadda
     return text.replace(/([^\s])ّ/g, (match, p1) => {
         // Duplicate the consonant and add the diacritic (vowel)
         // Example: "دُّ" -> "ددُ"
@@ -433,10 +469,59 @@ function replaceShadda(text) {
 
 
 function removeSukoon(text) {
-    // Remove all sukoons (ْ) from the text
+    
     return text.replace(/ْ/g, '');
 }
 
+
+// Function to process the first word based on conditions
+function replaceFirstAlifWithHamza(text) {
+    let words = text.split(' '); // Split text into words
+    if (words.length === 0) return text; // Return if empty
+
+    let firstWord = words[0]; 
+
+    // Case 1: If first word starts with "الْ" (with sukoon), replace "ا" with "ءَ"
+    if (firstWord.startsWith('الْ')) {
+        words[0] = 'ءَ' + firstWord.slice(1);
+    } 
+    // Case 2: If first word starts with "ال" (without sukoon), remove "ال"
+    else if (firstWord.startsWith('ال')) {
+        words[0] = firstWord.slice(2);
+    }
+
+    return words.join(' '); // Join words back into a single string
+}
+
+
+// Function to remove the first "ا" from each word except the first word
+// Function to process words by removing "ال" or modifying "ألْ"
+function removeAlifFromWords(text) {
+    // Split the ayah into words
+    let words = text.split(' ');
+
+    // Loop through each word, starting from the second word
+    for (let i = 1; i < words.length; i++) {
+        let word = words[i];
+
+        // Case 1: If word starts with "ألْ" (with sukoon), remove only "ا"
+        if (word.startsWith('الْ')) {
+            words[i] = 'لْ' + word.slice(2);
+        }
+        // Case 2: If word starts with "ال" (without sukoon), remove "ال" completely
+        else if (word.startsWith('ال')) {
+            words[i] = word.slice(2);
+        }
+    }
+
+    // Join the words back into a string and return it
+    return words.join(' ');
+}
+
+// =================== applyAnalysis ====================
+
+
+// ===================== Fetch Results =======================
 function fetchResults(query, page = 1) {
     if (query === '') return;
     
@@ -450,13 +535,38 @@ function fetchResults(query, page = 1) {
         success: function(response) {
             $('#loader').hide();
             searchResults = response.data; // Store the original search results
+            searchResultsTextClean = response.clean_data; // Store clean search results
+
+            // Save the results in both formats
+            currentSearchResults = searchResults; // Store original results
+            currentSearchResultsClean = searchResultsTextClean; // Store clean results
 
             if (searchResults.length === 0) {
                 $('#results').html('<div class="no-results">لا توجد نتائج</div>');
                 return;
             }
 
-            displayResults(searchResults); // Display the results as usual
+            // Display the correct results based on the toggle state
+            displayResults(isCleanText ? currentSearchResultsClean : currentSearchResults); 
+            
+            // Handle pagination
+            $('#pagination').empty();
+
+            if (response.current_page > 1) {
+                $('#pagination').append(`
+                    <button id="prev-page" data-page="${response.current_page - 1}" class="pagination-btn">
+                        السابق
+                    </button>
+                `);
+            }
+
+            if (response.current_page < response.last_page) {
+                $('#pagination').append(`
+                    <button id="next-page" data-page="${response.current_page + 1}" class="pagination-btn">
+                        التالي
+                    </button>
+                `);
+            }
         },
         error: function() {
             $('#loader').hide();
@@ -464,7 +574,13 @@ function fetchResults(query, page = 1) {
         }
     });
 }
+// ===================== Fetch Results =======================
 
+
+
+
+
+// ========================= Display Results =========================
 function displayResults(results) {
     $('#results').empty();
 
@@ -483,6 +599,9 @@ function displayResults(results) {
         `);
     });
 }
+let isCleanText = false; // Track whether clean text is being displayed
+let currentSearchResults = []; // To store the current search results in original format
+let currentSearchResultsClean = []; // To store the current search results in clean format
 
 $(document).ready(function() {
     // Handle search input
@@ -503,23 +622,54 @@ $(document).ready(function() {
             fetchResults(query);
         }, 300);
     });
-    
 
     // Handle the "تحليل" button click
     $('#analysis-btn').on('click', function() {
         if (searchResults.length === 0) return;
 
-                // Show the analysis text container with a smooth animation
-                $('#analysis-text-container').addClass('show').html(`
+        // Show the analysis text container with a smooth animation
+        $('#analysis-text-container').addClass('show').html(`
             <h3>تحليل نتائج البحث</h3>
             <p> تم استبدال الألف الخنجرية بالألف العادية , تم استبدال الشدة وحركتها بحرف ساكن وحرف متحرك , تمت ازالة جميع اشارات السكون</p>
         `);
 
-
         const modifiedResults = applyAnalysis(searchResults); // Apply analysis (replace ب with ا and shadda transformation)
+        currentSearchResults = modifiedResults; // Save modified results
         displayResults(modifiedResults); // Display the modified results
     });
+
+    // Handle the toggle button click for Quran text
+    $('#quran-btn').on('click', function() {
+        if (!isCleanText) return; // If already showing original text, do nothing
+        isCleanText = false;
+        displayResults(currentSearchResults); // Display the original search results
+        $(this).addClass('active');
+        $('#quran-text-clean-btn').removeClass('active');
+    });
+
+    // Handle the toggle button click for Quran clean text
+    $('#quran-text-clean-btn').on('click', function() {
+        if (isCleanText) return; // If already showing clean text, do nothing
+        isCleanText = true;
+        displayResults(currentSearchResultsClean); // Display the clean text search results
+        $(this).addClass('active');
+        $('#quran-btn').removeClass('active');
+    });
+
+    // Handle pagination
+    $(document).on('click', '#next-page', function() {
+        let nextPage = $(this).data('page');
+        fetchResults(currentQuery, nextPage);
+    });
+
+    $(document).on('click', '#prev-page', function() {
+        let prevPage = $(this).data('page');
+        fetchResults(currentQuery, prevPage);
+    });
 });
+// ========================= Display Results =========================
+
+
 
 
 // =========== ayah analysis button handling ===========

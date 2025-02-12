@@ -16,6 +16,8 @@ use App\Models\Preposition;
 use App\Models\Pronoun;
 use Illuminate\Http\Request;
 use App\Models\Quran;
+use App\Models\QuranAll;
+use App\Models\QuranTextClean;
 use App\Models\SequencingOrdering;
 use App\Models\Specification;
 use App\Models\Synchronization;
@@ -31,9 +33,18 @@ class QuranController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
-        $results = Quran::whereRaw("BINARY text LIKE ?", ["%$query%"])->paginate(20);
-        return response()->json($results);
-    }
+        $results = QuranAll::whereRaw("BINARY text LIKE ?", ["%$query%"])->paginate(20);
+        $clean_results = QuranTextClean::whereRaw("BINARY text LIKE ?", ["%$query%"])->paginate(20);
+        return response()->json([
+            'data' => $results->items(), // The search results
+            'current_page' => $results->currentPage(),
+            'last_page' => $results->lastPage(),
+
+            'clean_data' => $clean_results->items(), // The search results
+            'clean_current_page' => $clean_results->currentPage(),
+            'clean_last_page' => $clean_results->lastPage()
+        ]);
+        }
 
 
    
