@@ -523,7 +523,9 @@
             <h2 onclick="showSection('words')">تركيب الكلمات</h2>
             <h2 onclick="showSection('roots')">الجذور</h2>
             <h2 onclick="showSection('affixes')">السوابق واللواحق</h2>
+            @if (auth()->check() )
             <h2 onclick="showSection('admin')">إدارة المحتوى</h2>
+            @endif
         </aside>
 
         <main class="main-content">
@@ -756,6 +758,7 @@
                     <a href="{{ url('/phonemes-menu') }}" class="button">الصوتيات</a>
                 </div>
             </section>
+            @if (auth()->check() )
             <section id="admin" class="section">
                 <h2>إدارة المحتوى</h2>
                 <div class="button-container">
@@ -768,8 +771,8 @@
                     <a href="/semantic-logical-effects/create" class="button">إضافة وظيفة دلالية</a>
                 </div>
             </section>
-
-                
+            @endif
+            
     </div>
     </main>
     </div>

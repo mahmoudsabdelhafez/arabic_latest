@@ -196,7 +196,9 @@
 
         <!-- Add Rule and Back Buttons -->
         <div style="text-align: center; margin: 20px 0;">
+        @if (auth()->check() )
             <a href="{{ route('add-rule') }}" class="btn btn-add">إضافة قاعدة</a>
+        @endif
             <a href="{{ url('/') }}" class="btn btn-back">العودة</a>
         </div>
 
@@ -209,7 +211,9 @@
                         <th>الآية المثال</th>
                         <th>الحروف</th>
                         <th>اسم القاعدة</th>
+                        @if (auth()->check() )
                         <th>الإجراءات</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -219,12 +223,14 @@
                             <td>{{ $tajweed->example_ayah }}</td>
                             <td>{{ $tajweed->expression }}</td>
                             <td>{{ $tajweed->rule_name }}</td>
+                            @if (auth()->check() )
                             <td>
                                 <div class="action-buttons">
                                     <a href="{{ route('edit-rule', $tajweed->id) }}" class="btn btn-edit">تعديل</a>
                                     <a href="{{ route('delete-rule', $tajweed->id) }}" class="btn btn-delete" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه القاعدة؟')">حذف</a>
                                 </div>
                             </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

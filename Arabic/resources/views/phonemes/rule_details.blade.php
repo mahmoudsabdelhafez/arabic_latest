@@ -255,7 +255,9 @@
                         <th>Typical Nisbah</th>
                         <th>Logical Effect</th>
                         <th>Semantic Effect</th>
+                        @if (auth()->check() )
                         <th>Actions</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -270,6 +272,7 @@
                         <td>{{ $rule->typical_nisbah }}</td>
                         <td>{{ $rule->logical_effect }}</td>
                         <td>{{ $rule->semantic_effect }}</td>
+                        @if (auth()->check() )
                         <td>
                             <button class="btn btn-warning edit-btn" data-id="{{ $rule->id }}"
                                 data-subtool="{{ $rule->subtool_name }}" data-name="{{ $rule->name }}"
@@ -287,12 +290,14 @@
                                         onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
                                 </form>
                         </td>
+                        @endif
                     </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
         @endif
+        @if (auth()->check() )
 
         <div class="form-container">
             <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;">Add New Classification</h2>
@@ -334,6 +339,7 @@
                 <button type="submit" class="btn btn-primary">Add Classification</button>
             </form>
         </div>
+        @endif
     </div>
 
     <!-- Edit Modal -->

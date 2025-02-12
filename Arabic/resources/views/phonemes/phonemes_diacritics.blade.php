@@ -339,7 +339,9 @@
                         <th>Harakah</th>
                         <th>Effect</th>
                         <th>Notes</th>
+                        @if (auth()->check() )
                         <th>Actions</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -357,11 +359,13 @@
                         <td dir="rtl">
                             {{ isset($diacritic->arabicLetters->first()->pivot) ? $diacritic->arabicLetters->first()->pivot->usage_meaning : '' }}
                         </td>
+                        @if (auth()->check() )
                         <td>
                             <button class="button button-primary" onclick="showEditForm({{ $diacritic->id }})">
                                 Edit
                             </button>
                         </td>
+                        @endif
                     </tr>
                     <tr id="edit_form_{{ $diacritic->id }}" style="display: none;">
                         <td colspan="9">
