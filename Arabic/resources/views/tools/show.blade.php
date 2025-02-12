@@ -233,47 +233,47 @@
 
                 <div class="detail-group">
                     <div class="detail-label">Example</div>
-                    <div class="example">{{ $conditional->example }}</div>
+                    <div class="example">{{ $conditional->example ?? 'N/A' }}</div>
                 </div>
 
                 <div class="detail-group">
                     <div class="detail-label">Description</div>
-                    <div class="detail-value">{{ $conditional->description }}</div>
+                    <div class="detail-value">{{ $conditional->description ?? 'N/A' }}</div>
                 </div>
 
                 <div class="detail-group">
                     <div class="detail-label">Applied On</div>
-                    <div class="detail-value">{{ $conditional->applied_on }}</div>
+                    <div class="detail-value">{{ $conditional->applied_on ?? 'N/A' }}</div>
                 </div>
 
                 <div class="detail-group">
                     <div class="detail-label">Context Condition</div>
-                    <div class="detail-value">{{ $conditional->context_condition }}</div>
+                    <div class="detail-value">{{ $conditional->context_condition ?? 'N/A' }}</div>
                 </div>
 
                 <div class="detail-group">
                     <div class="detail-label">Priority Order</div>
-                    <div class="detail-value">{{ $conditional->priority_order }}</div>
+                    <div class="detail-value">{{ $conditional->priority_order ?? 'N/A' }}</div>
                 </div>
 
                 <div class="detail-group">
                     <div class="detail-label">Notes</div>
-                    <div class="detail-value">{{ $conditional->notes }}</div>
+                    <div class="detail-value">{{ $conditional->notes ?? 'N/A' }}</div>
                 </div>
 
                 <div class="detail-group">
                     <div class="detail-label">Typical Relation</div>
-                    <div class="detail-value">{{ $conditional->typical_relation }}</div>
+                    <div class="detail-value">{{ $conditional->typical_relation ?? 'N/A' }}</div>
                 </div>
 
                 <div class="detail-group">
                     <div class="detail-label">Example Ayah</div>
-                    <div class="example">{{ $conditional->example_ayah }}</div>
+                    <div class="example">{{ $hasToolsInfo[0]->example_ayah ?? 'N/A' }}</div>
                 </div>
 
                 <div class="detail-group">
                     <div class="detail-label">Example Explanation</div>
-                    <div class="detail-value">{{ $conditional->example_explanation }}</div>
+                    <div class="detail-value">{{ $hasToolsInfo[0]->example_explanation ?? 'N/A' }}</div>
                 </div>
             </div>
         </div>

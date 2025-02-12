@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\ArabicDiacritic;
 use App\Models\ArabicLetter;
 use App\Models\ArabicTool;
+use App\Models\CausalReasoning;
 use App\Models\Classification;
 use App\Models\Conditional;
+use App\Models\Conjunction;
 use App\Models\Detail;
+use App\Models\EncouragementUrging;
 use App\Models\Exception as ModelsException;
 use App\Models\Explanation;
 use Illuminate\Http\Request;
@@ -19,6 +22,8 @@ use App\Models\PhonemeCategory;
 use App\Models\Preposition;
 use App\Models\Sawabeq;
 use App\Models\SemanticLogicalEffect;
+use App\Models\SequencingOrdering;
+use App\Models\Specification;
 use App\Models\Synchronization;
 use App\Models\SyntacticEffect;
 use App\Models\Tool;
@@ -233,37 +238,57 @@ public function checkStore(Request $request)
     }
 
     $tables = [
-        'Conditionals' => Conditional::where('name', 'LIKE', "$query")
+        'أداة شرط' => Conditional::where('name', 'LIKE', "$query")
                                        ->orWhere('name', 'LIKE', "$query%ِ")
                                        ->orWhere('name', 'LIKE', "$query%َ")
                                        ->orWhere('name', 'LIKE', "$query%ُ")->get(),
 
-        'Details' => Detail::where('name', 'LIKE', "$query")
+        'أداة تفضيل' => Detail::where('name', 'LIKE', "$query")
                              ->orWhere('name', 'LIKE', "$query%ِ")
                              ->orWhere('name', 'LIKE', "$query%َ")
                              ->orWhere('name', 'LIKE', "$query%ُ")->get(),
 
-        'Negatives' => Negative::where('name', 'LIKE', "$query")
+        'أداة نفي' => Negative::where('name', 'LIKE', "$query")
                                  ->orWhere('name', 'LIKE', "$query%ِ")
                                  ->orWhere('name', 'LIKE', "$query%َ")
                                  ->orWhere('name', 'LIKE', "$query%ُ")->get(),
 
-        'Model Exceptions' => ModelsException::where('name', 'LIKE', "$query")
+        'أداة إستثناء' => ModelsException::where('name', 'LIKE', "$query")
                                                ->orWhere('name', 'LIKE', "$query%ِ")
                                                ->orWhere('name', 'LIKE', "$query%َ")
                                                ->orWhere('name', 'LIKE', "$query%ُ")->get(),
 
-        'Explanations' => Explanation::where('name', 'LIKE', "$query")
+        'أداة التوضيح' => Explanation::where('name', 'LIKE', "$query")
                                        ->orWhere('name', 'LIKE', "$query%ِ")
                                        ->orWhere('name', 'LIKE', "$query%َ")
                                        ->orWhere('name', 'LIKE', "$query%ُ")->get(),
 
-        'Prepositions' => Preposition::where('name', 'LIKE', "$query")
+        'حرف جر' => Preposition::where('name', 'LIKE', "$query")
                                        ->orWhere('name', 'LIKE', "$query%ِ")
                                        ->orWhere('name', 'LIKE', "$query%َ")
                                        ->orWhere('name', 'LIKE', "$query%ُ")->get(),
                                        
-        'Synchronization' => Synchronization::where('name', 'LIKE', "$query")
+        'أداة تزامن' => Synchronization::where('name', 'LIKE', "$query")
+                                       ->orWhere('name', 'LIKE', "$query%ِ")
+                                       ->orWhere('name', 'LIKE', "$query%َ")
+                                       ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+        'حرف عطف' => Conjunction::where('name', 'LIKE', "$query")
+                                       ->orWhere('name', 'LIKE', "$query%ِ")
+                                       ->orWhere('name', 'LIKE', "$query%َ")
+                                       ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+        'أداة سببية وتعليل' => CausalReasoning::where('name', 'LIKE', "$query")
+                                       ->orWhere('name', 'LIKE', "$query%ِ")
+                                       ->orWhere('name', 'LIKE', "$query%َ")
+                                       ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+        'Encouragement and Urging' => EncouragementUrging::where('name', 'LIKE', "$query")
+                                       ->orWhere('name', 'LIKE', "$query%ِ")
+                                       ->orWhere('name', 'LIKE', "$query%َ")
+                                       ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+        'Sequencing And Ordering' => SequencingOrdering::where('name', 'LIKE', "$query")
+                                       ->orWhere('name', 'LIKE', "$query%ِ")
+                                       ->orWhere('name', 'LIKE', "$query%َ")
+                                       ->orWhere('name', 'LIKE', "$query%ُ")->get(),
+        'Specification' => Specification::where('name', 'LIKE', "$query")
                                        ->orWhere('name', 'LIKE', "$query%ِ")
                                        ->orWhere('name', 'LIKE', "$query%َ")
                                        ->orWhere('name', 'LIKE', "$query%ُ")->get(),
