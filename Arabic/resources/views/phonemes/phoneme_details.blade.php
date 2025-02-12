@@ -314,6 +314,8 @@
                 <button class="button" type="submit">عرض السياقية</button>
             </form>
         </td>
+        @if (auth()->check() )
+
         <td>
             <!-- DELETE Button with linking_tool_id -->
             <form action="{{ route('delete.rule', ['id' => $item->id, 'linking_tool_id' => $item->linking_tool_id]) }}" 
@@ -325,6 +327,7 @@
                 <button type="submit" class="btn btn-danger">حذف</button>
             </form>
         </td>
+        @endif
     </tr>
     @endforeach
 </tbody>
@@ -336,6 +339,7 @@
                 @endif
             </div>
         </div>
+        @if (auth()->check() )
 
         <div class="left-section card">
             @if(session('success'))
@@ -423,6 +427,7 @@
                 </div>
             </form>
         </div>
+        @endif
     </div>
 
     <div id="aiLoader" class="loader-container" style="display: none;">

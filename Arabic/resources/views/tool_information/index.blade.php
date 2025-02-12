@@ -266,7 +266,9 @@
                         <th>Example Ayah</th>
                         <th>Syntactic Analysis</th>
                         <th>Semantic Analysis</th>
+                        @if (auth()->check() )
                         <th>Actions</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -282,6 +284,7 @@
                         <td data-field="example_ayah">{{ $tool->example_ayah }}</td>
                         <td data-field="syntactic_analysis">{{ $tool->syntactic_analysis }}</td>
                         <td data-field="semantic_analysis">{{ $tool->semantic_analysis }}</td>
+                        @if (auth()->check() )
                         <td>
                             <div class="action-buttons">
                                 <button class="edit-btn" onclick="enableEdit({{ $tool->id }})">Edit</button>
@@ -294,6 +297,7 @@
                                 </form>
                             </div>
                         </td>
+                        @endif
                     </tr>
                     @endforeach
                 </tbody>
@@ -305,6 +309,7 @@
         </div>
         @endif
         <!-- Add New Entry Form -->
+        @if (auth()->check() )
         <div class="form-container">
             <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;">Add New Linking Tool</h2>
             <form action="/tool_information/store" method="POST">
@@ -361,7 +366,7 @@
                 <button type="submit" class="submit-btn">Add Linking Tool</button>
             </form>
         </div>
-
+        @endif
         <!-- Data Table -->
 
     </div>

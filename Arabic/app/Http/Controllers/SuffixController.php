@@ -146,7 +146,7 @@ class SuffixController extends Controller
         $madiResult = $varb . ($suffix ? $suffix->formula : ''); // لا توجد سوابق للماضي
         
         $results[] = [
-            'pronoun' => $pronoun->pronoun,
+            'pronoun' => $pronoun->name,
             'modara' => $modaraResult ?? '-',
             'amr' => $amrResult ?? '-',
             'madi' => $madiResult ?? '-',

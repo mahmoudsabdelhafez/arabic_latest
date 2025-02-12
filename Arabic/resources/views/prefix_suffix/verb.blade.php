@@ -249,6 +249,7 @@
 
                 if (data.length) {
                     data.forEach(item => {
+                        console.log(item);
                         const row = `
                             <tr>
                                 <td>${item.pronoun}</td>

@@ -265,7 +265,9 @@
                         <th>Semantic Analysis</th>
                         <th>Source Reference</th>
                         <th>Notes</th>
+                        @if (auth()->check() )
                         <th>Actions</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -287,6 +289,7 @@
                         <td data-field="semantic_analysis">{{ $condition->semantic_analysis }}</td>
                         <td data-field="source_reference">{{ $condition->source_reference }}</td>
                         <td data-field="notes">{{ $condition->notes }}</td>
+                        @if (auth()->check() )
                         <td>
                             <div class="action-buttons">
                                 <button class="edit-btn" onclick="enableEdit({{ $condition->id }})">Edit</button>
@@ -298,6 +301,7 @@
                                 </form>
                             </div>
                         </td>
+                        @endif
                     </tr>
                     @endforeach
                 </tbody>
@@ -310,6 +314,7 @@
         @endif
 
         <!-- Add New Entry Form -->
+        @if (auth()->check() )
         <div class="form-container">
             <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;">Add New Contextual Condition</h2>
             <form action="{{ route('contextual_conditions.store') }}" method="POST">
@@ -359,6 +364,7 @@
                 <button type="submit" class="submit-btn">Add Contextual Condition</button>
             </form>
         </div>
+        @endif
     </div>
 
     <script>
