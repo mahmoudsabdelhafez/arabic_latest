@@ -226,6 +226,12 @@ Route::post('/syntactic-effects', [SyntacticEffectController::class, 'store'])->
 
 Route::get('/semantic-logical-effects/create', [SemanticLogicalEffectController::class, 'create'])->name('semantic-logical-effects.create');
 Route::post('/semantic-logical-effects', [SemanticLogicalEffectController::class, 'store'])->name('semantic-logical-effects.store');
+Route::get('/semantic-logical-effects/{id}/edit', [SemanticLogicalEffectController::class, 'edit'])->name('semantic-logical-effects.edit');
+Route::delete('/semantic-logical-effects/{id}', [SemanticLogicalEffectController::class, 'destroy'])->name('semantic-logical-effects.destroy');
+Route::POST('/semantic-logical-effects/{id}', [SemanticLogicalEffectController::class, 'update'])->name('semantic-logical-effects.update');
+
+// Route::get('/semantic-logical-effects/create', [SemanticLogicalEffectController::class, 'create'])->name('semantic-logical-effects.create');
+// Route::post('/semantic-logical-effects', [SemanticLogicalEffectController::class, 'store'])->name('semantic-logical-effects.store');
 
 Route::resource('linkingtool', LinkingToolControlller::class);
 
@@ -263,3 +269,7 @@ Route::resource('beauty-of-language', BeautyOfLanguageController::class);
 Route::get('/harf/{id}', [ArabicLanguageController::class, 'tools'])->name('harf.show');
 // Route::get('/conditionals/{tool_id}/{id}', [ArabicLanguageController::class, 'show'])->name('conditionals.show');
 Route::get('/conditionals/show', [ArabicLanguageController::class, 'show'])->name('conditionals.show');
+
+
+Route::put('/syntactic-effects/{id}', [SyntacticEffectController::class, 'update']);
+Route::delete('/syntactic-effects/{id}', [SyntacticEffectController::class, 'destroy']);
