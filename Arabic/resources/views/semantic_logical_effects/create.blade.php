@@ -198,7 +198,9 @@
                             <th>الأدوار الدلالية</th>
                             <th>الشروط</th>
                             <th>ملاحظات</th>
+                            @if (auth()->check() )
                             <th>الإجراءات</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody id="effectsTableBody">
@@ -209,18 +211,20 @@
                             <td>{{ $effect->semantic_roles }}</td>
                             <td>{{ $effect->conditions }}</td>
                             <td>{{ $effect->notes }}</td>
+                            @if (auth()->check() )
                             <td>
                                 <button onclick="handleDelete({{ $effect->id }})" class="btn btn-danger btn-sm">
                                     <i class="fas fa-trash"></i> حذف
                                 </button>
                             </td>
+                            @endif
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
-
+        @if (auth()->check() )
         <div class="content-section">
             <h2 class="section-title"><i class="fas fa-plus-circle"></i> إضافة تأثير منطقي دلالي جديد</h2>
             <form id="semanticEffectForm">
@@ -249,6 +253,7 @@
                 </div>
             </form>
         </div>
+        @endif
     </div>
     
 
