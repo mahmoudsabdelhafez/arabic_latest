@@ -261,7 +261,7 @@
     padding: 20px;
     background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
     color: var(--white);
-    font-family: 'Aref Ruqaa', serif;
+    /* font-family: 'Aref Ruqaa', serif; */
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     font-size: 1.2rem;
@@ -405,6 +405,10 @@
     <button id="quran-text-clean-btn" class="toggle-btn">عرض الايات بدون تشكيل</button>
 </div>
 
+<div id="result-count"></div> <!-- This will display the number of results -->
+
+
+
 
         <ul id="results"></ul>
         <div id="pagination"></div>
@@ -434,7 +438,10 @@ function highlightText(text, query) {
 function applyAnalysis(results) {
     // Replace 'ب' with 'ا'
     let modifiedResults = results.map(aya => {
-        let modifiedText = aya.text.replace(/ٰ/g, 'ا');
+
+        let modifiedText = aya.text.replace(/ىٰ/g, 'ا');
+
+       modifiedText = modifiedText.replace(/ٰ/g, 'ا');
         
         // Replace characters with shadda and diacritic
         modifiedText = replaceShadda(modifiedText);
@@ -444,6 +451,15 @@ function applyAnalysis(results) {
         
         
         modifiedText = removeAlifFromWords(modifiedText);
+
+
+        modifiedText = replaceHamzaWithMadd(modifiedText);
+
+
+        modifiedText = removeAlifBeforeSukoon(modifiedText);
+
+
+        
         
         // Remove all sukoons from the text
         modifiedText = removeSukoon(modifiedText);
@@ -482,13 +498,13 @@ function replaceFirstAlifWithHamza(text) {
     let firstWord = words[0]; 
 
     // Case 1: If first word starts with "الْ" (with sukoon), replace "ا" with "ءَ"
-    if (firstWord.startsWith('الْ')) {
+    if (firstWord.startsWith('ال')) {
         words[0] = 'ءَ' + firstWord.slice(1);
     } 
     // Case 2: If first word starts with "ال" (without sukoon), remove "ال"
-    else if (firstWord.startsWith('ال')) {
-        words[0] = firstWord.slice(2);
-    }
+    // else if (firstWord.startsWith('ال')) {
+    //     words[0] = firstWord.slice(2);
+    // }
 
     return words.join(' '); // Join words back into a single string
 }
@@ -518,6 +534,24 @@ function removeAlifFromWords(text) {
     return words.join(' ');
 }
 
+
+function replaceHamzaWithMadd(text) {
+    return text.replace(/أَ/g, 'ءَ').replace(/أُ/g, 'ءُ').replace(/إِِ/g, 'ءِ');
+}
+
+function removeAlifBeforeSukoon(text) {
+    return text.replace(/ا([^\s])ْ/g, '$1ْ');
+}
+
+
+
+
+function replaceMaqsouraWithAlef(text) {
+    return text.replace(/ٰ/g, 'ا');
+}
+
+
+
 // =================== applyAnalysis ====================
 
 
@@ -526,7 +560,7 @@ function fetchResults(query, page = 1) {
     if (query === '') return;
     
     $('#loader').show();
-    $('#results, #pagination').empty();
+    $('#results, #pagination, #result-count').empty();
 
     $.ajax({
         url: '/search',
@@ -540,6 +574,14 @@ function fetchResults(query, page = 1) {
             // Save the results in both formats
             currentSearchResults = searchResults; // Store original results
             currentSearchResultsClean = searchResultsTextClean; // Store clean results
+
+            // Display total number of search results
+            $('#result-count').html(`
+                <p>عدد النتائج في القران الكريم المشكّل: <strong>${response.total_results_count}</strong></p>
+                <p>عدد النتائج في القران الكريم غير المشكّل: <strong>${response.total_clean_results_count}</strong></p>
+            `);
+
+
 
             if (searchResults.length === 0) {
                 $('#results').html('<div class="no-results">لا توجد نتائج</div>');
@@ -630,7 +672,13 @@ $(document).ready(function() {
         // Show the analysis text container with a smooth animation
         $('#analysis-text-container').addClass('show').html(`
             <h3>تحليل نتائج البحث</h3>
-            <p> تم استبدال الألف الخنجرية بالألف العادية , تم استبدال الشدة وحركتها بحرف ساكن وحرف متحرك , تمت ازالة جميع اشارات السكون</p>
+           <ul class="list-group">
+        <li class="list-group-item">✅ تم استبدال الألف الخنجرية بالألف العادية</li>
+        <li class="list-group-item">✅ تم استبدال الشدة وحركتها بحرف ساكن وحرف متحرك</li>
+        <li class="list-group-item">✅ تمت إزالة جميع إشارات السكون</li>
+        <li class="list-group-item">✅ تم استبدال همزء القطع بهمزة بهمزة نبرة وازالة همزات الوصل بما يتناسب مع اللفظ</li>
+        
+    </ul>
         `);
 
         const modifiedResults = applyAnalysis(searchResults); // Apply analysis (replace ب with ا and shadda transformation)
@@ -687,17 +735,20 @@ $(document).on('click', '.ayah-analysis-btn', function () {
         success: function (response) {
             $('#loader').hide();
             const analysisContainer = $('#analysis-result-' + ayaId);
-            const results = response.results || [];
+            console.log(response);  // Log the full response to inspect its structure
+
+            const results = response.results || [];  // Ensure results is an array
+
             if (results.length === 0) {
                 analysisContainer.html('<p>لا توجد نتائج للتحليل.</p>');
             } else {
                 let resultHtml = '';
                 results.forEach(result => {
-                    // Render each match name and all words that match it
-                    const matchedWords = result.matched_words.join(', '); // Combine words into a comma-separated list
+                    // Render matched words (full words or partial matches)
+                    const matchedWords = result.matched_words ? result.matched_words.join(', ') : '';  // Ensure matched_words is displayed
                     resultHtml += `
                         <div>
-                            <h4>${result.name} : في كلمة (${matchedWords})</h4>
+                            <h4>${result.name} : في كلمات (${matchedWords})</h4>
                             <p>${result.table}</p>
                             <p></p>
                         </div>
@@ -714,7 +765,6 @@ $(document).on('click', '.ayah-analysis-btn', function () {
         }
     });
 });
-
 
 
 // =========== ayah analysis button handling ===========

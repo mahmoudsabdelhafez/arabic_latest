@@ -31,20 +31,30 @@ class QuranController extends Controller
     }
 
     public function search(Request $request)
-    {
-        $query = $request->input('query');
-        $results = QuranAll::whereRaw("BINARY text LIKE ?", ["%$query%"])->paginate(20);
-        $clean_results = QuranTextClean::whereRaw("BINARY text LIKE ?", ["%$query%"])->paginate(20);
-        return response()->json([
-            'data' => $results->items(), // The search results
-            'current_page' => $results->currentPage(),
-            'last_page' => $results->lastPage(),
+{
+    $query = $request->input('query');
 
-            'clean_data' => $clean_results->items(), // The search results
-            'clean_current_page' => $clean_results->currentPage(),
-            'clean_last_page' => $clean_results->lastPage()
-        ]);
-        }
+    // Get paginated results
+    $results = QuranAll::whereRaw("BINARY text LIKE ?", ["%$query%"])->paginate(20);
+    $clean_results = QuranTextClean::whereRaw("BINARY text LIKE ?", ["%$query%"])->paginate(20);
+
+    // Get total count of results
+    $total_results_count = QuranAll::whereRaw("BINARY text LIKE ?", ["%$query%"])->count();
+    $total_clean_results_count = QuranTextClean::whereRaw("BINARY text LIKE ?", ["%$query%"])->count();
+
+    return response()->json([
+        'data' => $results->items(),
+        'current_page' => $results->currentPage(),
+        'last_page' => $results->lastPage(),
+        'total_results_count' => $total_results_count, // Total original text results
+
+        'clean_data' => $clean_results->items(),
+        'clean_current_page' => $clean_results->currentPage(),
+        'clean_last_page' => $clean_results->lastPage(),
+        'total_clean_results_count' => $total_clean_results_count // Total clean text results
+    ]);
+}
+
 
 
    
@@ -78,7 +88,7 @@ public function analyzeAyahResults(Request $request)
     $query = $request->input('query'); // Get the query text from the AJAX request
 
     // Find the Ayah in the Quran table using the provided ID
-    $ayah = Quran::where("index", "=", $ayaId)->first();
+    $ayah = QuranTextClean::where("index", "=", $ayaId)->first();
 
     // If the Ayah is not found, return an error
     if (!$ayah) {
@@ -88,7 +98,7 @@ public function analyzeAyahResults(Request $request)
     // Split the Ayah text into words
     $words = preg_split('/\s+/', $ayah->text); // Split by whitespace
 
-    // Array to store matches grouped by match name
+    // Array to store matches
     $matches = [];
 
     // Define the tables to check
@@ -100,7 +110,6 @@ public function analyzeAyahResults(Request $request)
         'أدوات التوضيح' => Explanation::class,
         'أدوات الجر' => Preposition::class,
         'الضمائر' => Pronoun::class,
-        // 'أدوات المقارنة والتشبيه' => ComparisonSimile::class,
         'أدوات العطف' => Conjunction::class,
         'أدوات الاغراء والتحضيض' => EncouragementUrging::class,
         'أدوات السببية الوتعليل' => CausalReasoning::class,
@@ -108,109 +117,79 @@ public function analyzeAyahResults(Request $request)
         'أدوات الترتيب والتسلسل' => SequencingOrdering::class,
         'أدوات الاستنتاج' => ConclusionInference::class,
         'أدوات التزامن' => Synchronization::class,
-
     ];
 
     // Loop through each word to check for matches
     foreach ($words as $word) {
-        // Trim any potential unwanted characters
-        $word = trim($word);
+        $word = trim($word);  // Clean up any extra spaces
 
-        // Step 1: Check for prefix matches (first two letters)
-        $prefix = mb_substr($word, 0, 2, 'UTF-8'); // Handle Arabic characters correctly
-        if (mb_strlen($word) > 1) { // Only check for prefix if the word has more than one character
-            foreach ($tables as $tableName => $model) {
-                // Check for prefix matches
-                $prefixMatches = $model::whereRaw("BINARY name = ?", [$prefix])->get();
-                foreach ($prefixMatches as $match) {
-                    if (!isset($matches[$match->name])) {
-                        $matches[$match->name] = [
-                            'type' => 'prefix', 
-                            'table' => $tableName, 
-                            'words' => []
-                        ];
-                    }
-                    $matches[$match->name]['words'][] = $word; // Add word to the group of this match
-                }
-            }
-        }
-
-        // Step 2: Check for three-character matches (first three letters)
-        $threeCharPrefix = mb_substr($word, 0, 3, 'UTF-8'); // Handle first 3 characters
-        if (mb_strlen($word) > 2) { // Only check for three-character prefix if the word has more than two characters
-            foreach ($tables as $tableName => $model) {
-                // Check for three-character prefix matches
-                $threeCharMatches = $model::whereRaw("BINARY name = ?", [$threeCharPrefix])->get();
-                foreach ($threeCharMatches as $match) {
-                    if (!isset($matches[$match->name])) {
-                        $matches[$match->name] = [
-                            'type' => 'threeCharPrefix', 
-                            'table' => $tableName, 
-                            'words' => []
-                        ];
-                    }
-                    $matches[$match->name]['words'][] = $word; // Add word to the group of this match
-                }
-            }
-        }
-
-        // Step 3: Check for full word matches
+        // Step 1: Check for full word matches
         foreach ($tables as $tableName => $model) {
-            // Check for full word matches
             $fullWordMatches = $model::whereRaw("BINARY name = ?", [$word])->get();
             foreach ($fullWordMatches as $match) {
                 if (!isset($matches[$match->name])) {
                     $matches[$match->name] = [
-                        'type' => 'fullWord', 
-                        'table' => $tableName, 
-                        'words' => []
+                        'type' => 'fullWord', // Full word match type
+                        'table' => $tableName, // Table name
+                        'matched_words' => [], // Use 'matched_words' for full matches
                     ];
                 }
-                $matches[$match->name]['words'][] = $word; // Add word to the group of this match
+                $matches[$match->name]['matched_words'][] = $word;
             }
         }
 
-                // Step 4: Check for last two-character matches
-        $lastTwoChars = mb_substr($word, -2, 2, 'UTF-8'); // Handle last 2 characters
-        if (mb_strlen($word) > 1) { // Only check for last two characters if the word has more than one character
+        // Step 2: Check for individual letter matches (first, second, third letter)
+        for ($i = 0; $i < mb_strlen($word); $i++) {
+            $letter = mb_substr($word, $i, 1, 'UTF-8');  // Extract individual letter
             foreach ($tables as $tableName => $model) {
-                
-                // Exclude Preposition table from this check
-                if ($tableName === 'أدوات الجر') {
-                    continue; // Skip this iteration for Preposition table
-                }
-
-                // Check for last two characters matches
-                $lastTwoMatches = $model::whereRaw("BINARY name = ?", [$lastTwoChars])->get();
-                foreach ($lastTwoMatches as $match) {
+                $letterMatches = $model::whereRaw("BINARY name = ?", [$letter])->get();
+                foreach ($letterMatches as $match) {
                     if (!isset($matches[$match->name])) {
                         $matches[$match->name] = [
-                            'type' => 'lastTwoChars', 
-                            'table' => $tableName, 
-                            'words' => []
+                            'type' => 'singleLetter', // Single letter match type
+                            'table' => $tableName, // Table name
+                            'matched_words' => [], // Use 'matched_words' for letter matches
                         ];
                     }
-                    $matches[$match->name]['words'][] = $word; // Add word to the group of this match
+                    $matches[$match->name]['matched_words'][] = $word;
                 }
             }
         }
 
-
-        // Step 5: Check for last three-character matches
-        $lastThreeChars = mb_substr($word, -3, 3, 'UTF-8'); // Handle last 3 characters
-        if (mb_strlen($word) > 2) { // Only check for last three characters if the word has more than two characters
+        // Step 3: Check for letter combinations
+        for ($i = 0; $i < mb_strlen($word) - 1; $i++) {
+            $combination = mb_substr($word, $i, 2, 'UTF-8');  // Extract two-character combination
             foreach ($tables as $tableName => $model) {
-                // Check for last three characters matches
-                $lastThreeMatches = $model::whereRaw("BINARY name = ?", [$lastThreeChars])->get();
-                foreach ($lastThreeMatches as $match) {
+                $combinationMatches = $model::whereRaw("BINARY name = ?", [$combination])->get();
+                foreach ($combinationMatches as $match) {
                     if (!isset($matches[$match->name])) {
                         $matches[$match->name] = [
-                            'type' => 'lastThreeChars', 
-                            'table' => $tableName, 
-                            'words' => []
+                            'type' => 'letterCombination', // Letter combination match type
+                            'table' => $tableName, // Table name
+                            'matched_words' => [], // Use 'matched_words' for combination matches
                         ];
                     }
-                    $matches[$match->name]['words'][] = $word; // Add word to the group of this match
+                    $matches[$match->name]['matched_words'][] = $word;
+                }
+            }
+        }
+
+        // Step 4: Check for combinations of three letters (if word length allows)
+        if (mb_strlen($word) > 2) {
+            for ($i = 0; $i < mb_strlen($word) - 2; $i++) {
+                $threeCharCombination = mb_substr($word, $i, 3, 'UTF-8');  // Extract three-character combination
+                foreach ($tables as $tableName => $model) {
+                    $threeCharMatches = $model::whereRaw("BINARY name = ?", [$threeCharCombination])->get();
+                    foreach ($threeCharMatches as $match) {
+                        if (!isset($matches[$match->name])) {
+                            $matches[$match->name] = [
+                                'type' => 'threeLetterCombination', // Three-letter combination match type
+                                'table' => $tableName, // Table name
+                                'matched_words' => [], // Use 'matched_words' for three-character matches
+                            ];
+                        }
+                        $matches[$match->name]['matched_words'][] = $word;
+                    }
                 }
             }
         }
@@ -219,12 +198,11 @@ public function analyzeAyahResults(Request $request)
     // Convert the matches array into a format that can be rendered
     $analysisResults = [];
     foreach ($matches as $matchName => $matchData) {
-        // Organize the matches by type and table, and group all matching words
         $analysisResults[] = [
             'name' => $matchName,
             'type' => $matchData['type'],
             'table' => $matchData['table'],
-            'matched_words' => $matchData['words'], // Group words by matching name
+            'matched_words' => $matchData['matched_words'], // All matched words will go into this key
         ];
     }
 
@@ -234,6 +212,9 @@ public function analyzeAyahResults(Request $request)
         'results' => $analysisResults,
     ]);
 }
+
+
+
 
 
 
