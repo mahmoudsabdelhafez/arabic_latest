@@ -53,8 +53,8 @@ class GrammarRuleController extends Controller
         $grammarRule = GrammarRule::find($id);
         if ($grammarRule) {
             $grammarRule->delete();
-            return response()->json(['message' => 'Grammar rule deleted successfully']);
+            return back()->with('success', 'Grammar rule deleted successfully!');
         }
-        return response()->json(['message' => 'Grammar rule not found'], 404);
+        return back()->with('error', 'Grammar rule not found!');
     }
 }

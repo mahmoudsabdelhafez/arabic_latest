@@ -327,7 +327,7 @@
                             @method('PUT')
                             <input type="hidden" name="rule_name" value="{{ $rule->rule_name }}">
                             <input type="hidden" name="description" value="{{ $rule->description }}">
-                            <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                            <!-- <button type="submit" class="btn btn-warning btn-sm">Edit</button> -->
                         </form>
                         
                         <!-- Delete Form -->

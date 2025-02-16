@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ArabicFeature;
+use App\Models\BeautyOfLanguage;
 use App\Models\Conditional;
 use App\Models\Example;
+use App\Models\GrammarRule;
 use App\Models\LanguageContent;
 use App\Models\Linking_tool;
+use App\Models\Sentence;
+use App\Models\SentencesPart;
 use App\Models\ToolsInformation;
 use App\Models\WordType;
 use Illuminate\Http\Request;
@@ -20,9 +25,15 @@ class ArabicLanguageController extends Controller
         $wordType = WordType::all();
         $examples = Example::all();
         $tools = Linking_tool::all();
+        $features = ArabicFeature::all();
+        $beautyOfLanguage = BeautyOfLanguage::all();
+        $grammarRules = GrammarRule::all();
+        $sentences = Sentence::all();
+        $sentences_parts = SentencesPart::all();
+
 
         // Pass data to view
-        return view('welcome', compact(['languageContents','tools','wordType','examples']));
+        return view('welcome', compact(['languageContents','tools','wordType','examples','features','beautyOfLanguage','grammarRules','sentences','sentences_parts']));
     }
 
 

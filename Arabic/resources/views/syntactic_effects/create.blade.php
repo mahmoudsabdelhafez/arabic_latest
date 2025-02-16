@@ -193,7 +193,9 @@
                             <th>شرط السياق</th>
                             <th>ترتيب الأولوية</th>
                             <th>ملاحظات</th>
+                            @if (auth()->check() )
                             <th>الإجراءات</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody id="effectsTableBody">
@@ -204,6 +206,7 @@
                                 <td class="context-condition">{{ $effect->context_condition }}</td>
                                 <td class="priority-order">{{ $effect->priority_order }}</td>
                                 <td class="notes">{{ $effect->notes }}</td>
+                                @if (auth()->check() )
                                 <td>
                                     <button onclick="openEditModal({{ $effect->id }})" class="btn btn-warning btn-sm">
                                         <i class="fas fa-edit"></i> تعديل
@@ -212,6 +215,7 @@
                                         <i class="fas fa-trash"></i> حذف
                                     </button>
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

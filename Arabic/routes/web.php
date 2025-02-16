@@ -39,6 +39,9 @@ use App\Http\Controllers\ExampleController;
 use App\Http\Controllers\GrammarRuleController;
 use App\Http\Controllers\BeautyOfLanguageController;
 use App\Http\Controllers\ArabicLanguageController;
+use App\Http\Controllers\SentenceController;
+use App\Http\Controllers\TreeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +66,59 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+    Route::resource('phonemecategories', PhonemeCategoryController::class);
+
+    Route::get('/edit-rule/{id}', [TajweedController::class, 'edit'])->name('edit-rule');
+
+    // Update the rule
+    Route::put('/update-rule/{id}', [TajweedController::class, 'update'])->name('update-rule');
+    // Delete the rule
+    Route::get('/delete-rule/{id}', [TajweedController::class, 'destroy'])->name('delete-rule');
+    Route::get('/upload', [PossibleWordsController::class, 'showUploadForm']);
+    
+    Route::resource('word-types', WordTypeController::class);
+    Route::resource('examples', ExampleController::class);
+    Route::resource('grammar-rules', GrammarRuleController::class);
+    Route::resource('beauty-of-language', BeautyOfLanguageController::class);
+    
+
+    Route::get('/syntactic-effects/create', [SyntacticEffectController::class, 'create'])->name('syntactic-effects.create');
+    Route::post('/syntactic-effects', [SyntacticEffectController::class, 'store'])->name('syntactic-effects.store');
+    Route::put('/syntactic-effects/{id}', [SyntacticEffectController::class, 'update']);
+    Route::delete('/syntactic-effects/{id}', [SyntacticEffectController::class, 'destroy']);
+
+    Route::get('tool_information/create', [ToolsInformationController::class, 'create'])->name('tool_information.create');
+    Route::post('tool_information/store', [ToolsInformationController::class, 'store'])->name('tool_information.store');
+    Route::post('tool_information/update/{id}', [ToolsInformationController::class, 'update']);
+    Route::delete('tool_information/destroy/{id}', [ToolsInformationController::class, 'destroy'])->name('tool_information.destroy');
+    Route::put('tool_information/update/{id}', [ToolsInformationController::class, 'update'])->name('tool_information.update');
+    // Route::resource('tool_information', ToolsInformationController::class);s
+    Route::delete('/delete-rule/{id}/{linking_tool_id}', [PhonemeController::class, 'destroy'])->name('delete.rule');
+    
+    Route::get('contextual_conditions/create', [ContextualConditionController::class, 'create'])->name('contextual_conditions.create');
+    Route::get('contextual_conditions/show-table/{toolName}', [ContextualConditionController::class, 'showTableRows']);
+    Route::post('contextual_conditions/store', [ContextualConditionController::class, 'store'])->name('contextual_conditions.store');
+    Route::post('contextual_conditions/destroy/{id}', [ContextualConditionController::class, 'destroy'])->name('contextual_conditions.destroy');
+    Route::post('contextual_conditions/update/{id}', [ContextualConditionController::class, 'update'])->name('contextual_conditions.update');
+
+    Route::post('/semantic-logical-effects', [SemanticLogicalEffectController::class, 'store'])->name('semantic-logical-effects.store');
+    Route::get('/semantic-logical-effects/{id}/edit', [SemanticLogicalEffectController::class, 'edit'])->name('semantic-logical-effects.edit');
+    Route::delete('/semantic-logical-effects/{id}', [SemanticLogicalEffectController::class, 'destroy'])->name('semantic-logical-effects.destroy');
+    Route::POST('/semantic-logical-effects/{id}', [SemanticLogicalEffectController::class, 'update'])->name('semantic-logical-effects.update');
+    
+    Route::get('contextual_conditions/create', [ContextualConditionController::class, 'create'])->name('contextual_conditions.create');
+    Route::get('contextual_conditions/show-table/{toolName}', [ContextualConditionController::class, 'showTableRows']);
+    Route::post('contextual_conditions/store', [ContextualConditionController::class, 'store'])->name('contextual_conditions.store');
+    Route::post('contextual_conditions/destroy/{id}', [ContextualConditionController::class, 'destroy'])->name('contextual_conditions.destroy');
+    Route::post('contextual_conditions/update/{id}', [ContextualConditionController::class, 'update'])->name('contextual_conditions.update');
+
+    Route::post('/sentences', [SentenceController::class, 'store']); // إضافة جملة جديدة
+    Route::put('/sentences/{id}', [SentenceController::class, 'update']); // تحديث جملة
+    Route::delete('/sentences/{id}', [SentenceController::class, 'destroy']); // حذف جملة
+    Route::delete('/sentence-parts/{id}', [SentenceController::class, 'destroyPart']); // حذف جزء من الجملة
+    
 });
 
 require __DIR__.'/auth.php';
@@ -103,7 +159,6 @@ Route::get('/four-letter-combinations', [ArabicFourLetterCombinationController::
 
 Route::get('/find-words', [possiblewordscontroller::class, 'filterWords']);
 
-Route::get('/upload', [PossibleWordsController::class, 'showUploadForm']);
 Route::post('/import', [PossibleWordsController::class, 'uploadExcel'])->name('upload');
 
 Route::get('/grammar', [GrammarController::class, 'index']); // swabeq and lawaheq routes
@@ -118,11 +173,8 @@ Route::get('/phonemes/show-letter-by-place/{place}', [PhonemeController::class, 
 
 
 Route::get('/root-words', [RootWordController::class, 'index'])->name('root-words.index');
-Route::post('/root-words/import', [RootWordController::class, 'import'])->name('root-words.import');
 
 Route::get('/root-words-view2', [RootWordController::class, 'index2'])->name('root-words.index2'); // New index2
-
-Route::post('/rootwords/attach-prefix-suffix', [RootWordController::class, 'attachPrefixesAndSuffixes'])->name('rootwords.attachPrefixSuffix');
 
 Route::get('/info', [RootWordController::class, 'info']);
 
@@ -159,13 +211,7 @@ Route::post('store-tajweed', [TajweedController::class, 'store'])->name('store-t
 
 
 // Show the edit form for a specific rule
-Route::get('/edit-rule/{id}', [TajweedController::class, 'edit'])->name('edit-rule');
 
-// Update the rule
-Route::put('/update-rule/{id}', [TajweedController::class, 'update'])->name('update-rule');
-
-// Delete the rule
-Route::get('/delete-rule/{id}', [TajweedController::class, 'destroy'])->name('delete-rule');
 
 Route::get('/phonemes-menu', [PhonemeController::class, 'showMenu'])->name('phonemes-menu'); // show the menu of phonemes
 Route::get('/phonemes-diacritics/{id}', [PhonemeController::class, 'phonemesDiacritics'])->name('phonemes-diacritics'); // show the menu of phonemes
@@ -183,7 +229,6 @@ Route::post('/upload', [ImageController::class, 'store'])->name('upload.store');
 
 Route::get('/phonemes/place/{place}', [PhonemeController::class, 'getPlaceLetters']);
 
-Route::resource('phonemecategories', PhonemeCategoryController::class);
 
 Route::post('/ar-tools/store', [ArabicLetterController::class, 'store'])->name('ar-tools.store');
 
@@ -251,14 +296,7 @@ Route::resource('classifications', ClassificationController::class);
 
 
 
-Route::get('/syntactic-effects/create', [SyntacticEffectController::class, 'create'])->name('syntactic-effects.create');
-Route::post('/syntactic-effects', [SyntacticEffectController::class, 'store'])->name('syntactic-effects.store');
-
 Route::get('/semantic-logical-effects/create', [SemanticLogicalEffectController::class, 'create'])->name('semantic-logical-effects.create');
-Route::post('/semantic-logical-effects', [SemanticLogicalEffectController::class, 'store'])->name('semantic-logical-effects.store');
-Route::get('/semantic-logical-effects/{id}/edit', [SemanticLogicalEffectController::class, 'edit'])->name('semantic-logical-effects.edit');
-Route::delete('/semantic-logical-effects/{id}', [SemanticLogicalEffectController::class, 'destroy'])->name('semantic-logical-effects.destroy');
-Route::POST('/semantic-logical-effects/{id}', [SemanticLogicalEffectController::class, 'update'])->name('semantic-logical-effects.update');
 
 // Route::get('/semantic-logical-effects/create', [SemanticLogicalEffectController::class, 'create'])->name('semantic-logical-effects.create');
 // Route::post('/semantic-logical-effects', [SemanticLogicalEffectController::class, 'store'])->name('semantic-logical-effects.store');
@@ -269,37 +307,22 @@ Route::resource('linkingtool', LinkingToolControlller::class);
 
 
 
-Route::get('contextual_conditions/create', [ContextualConditionController::class, 'create'])->name('contextual_conditions.create');
-Route::get('contextual_conditions/show-table/{toolName}', [ContextualConditionController::class, 'showTableRows']);
-Route::get('contextual_conditions/index', [ContextualConditionController::class, 'index'])->name('contextual_conditions.index');
-Route::post('contextual_conditions/store', [ContextualConditionController::class, 'store'])->name('contextual_conditions.store');
-Route::post('contextual_conditions/destroy/{id}', [ContextualConditionController::class, 'destroy'])->name('contextual_conditions.destroy');
-Route::post('contextual_conditions/update/{id}', [ContextualConditionController::class, 'update'])->name('contextual_conditions.update');
 
+Route::get('contextual_conditions/index', [ContextualConditionController::class, 'index'])->name('contextual_conditions.index');
 
 
 
 Route::get('/classification-view', [PhonemeController::class, 'ruleDetails'])->name('classification.ruleDetails');
 
-Route::get('tool_information/create', [ToolsInformationController::class, 'create'])->name('tool_information.create');
-Route::get('tool_information/show-table/{toolName}', [ToolsInformationController::class, 'showTableRows']);
-Route::post('tool_information/store', [ToolsInformationController::class, 'store'])->name('tool_information.store');
-Route::post('tool_information/update/{id}', [ToolsInformationController::class, 'update']);
-Route::delete('tool_information/destroy/{id}', [ToolsInformationController::class, 'destroy'])->name('tool_information.destroy');
-Route::put('tool_information/update/{id}', [ToolsInformationController::class, 'update'])->name('tool_information.update');
-// Route::resource('tool_information', ToolsInformationController::class);s
-Route::delete('/delete-rule/{id}/{linking_tool_id}', [PhonemeController::class, 'destroy'])->name('delete.rule');
 
-
-Route::resource('word-types', WordTypeController::class);
-Route::resource('examples', ExampleController::class);
-Route::resource('grammar-rules', GrammarRuleController::class);
-Route::resource('beauty-of-language', BeautyOfLanguageController::class);
 
 Route::get('/harf/{id}', [ArabicLanguageController::class, 'tools'])->name('harf.show');
 // Route::get('/conditionals/{tool_id}/{id}', [ArabicLanguageController::class, 'show'])->name('conditionals.show');
 Route::get('/conditionals/show', [ArabicLanguageController::class, 'show'])->name('conditionals.show');
 
 
-Route::put('/syntactic-effects/{id}', [SyntacticEffectController::class, 'update']);
-Route::delete('/syntactic-effects/{id}', [SyntacticEffectController::class, 'destroy']);
+Route::get('tool_information/show-table/{toolName}', [ToolsInformationController::class, 'showTableRows']);
+
+
+Route::get('/tree', [TreeController::class, 'index']);
+Route::get('/tree/branch/{parentId}', [TreeController::class, 'getBranchData']);
