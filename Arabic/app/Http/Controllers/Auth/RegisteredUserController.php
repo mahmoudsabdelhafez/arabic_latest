@@ -46,6 +46,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
-    }
+        return $request->user()->hasVerifiedEmail()
+        ? redirect()->intended(RouteServiceProvider::HOME)
+        : redirect()->route('verification.notice');    }
 }

@@ -33,7 +33,7 @@ use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\SemanticLogicalEffectController;
 use App\Http\Controllers\SyntacticEffectController;
 use App\Http\Controllers\ToolsInformationController;
-
+use App\Http\Controllers\ConnectiveCategoryController;
 use App\Http\Controllers\WordTypeController;
 use App\Http\Controllers\ExampleController;
 use App\Http\Controllers\GrammarRuleController;
@@ -42,6 +42,8 @@ use App\Http\Controllers\ArabicLanguageController;
 use App\Http\Controllers\MekdadPhonemeController;
 use App\Http\Controllers\SentenceController;
 use App\Http\Controllers\TreeController;
+use App\Http\Controllers\ArabicFeatureController;
+use App\Http\Controllers\ConnectiveController;
 
 
 /*
@@ -83,7 +85,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('examples', ExampleController::class);
     Route::resource('grammar-rules', GrammarRuleController::class);
     Route::resource('beauty-of-language', BeautyOfLanguageController::class);
-    
+    Route::resource('arabic-features', ArabicFeatureController::class);
+
 
     Route::get('/syntactic-effects/create', [SyntacticEffectController::class, 'create'])->name('syntactic-effects.create');
     Route::post('/syntactic-effects', [SyntacticEffectController::class, 'store'])->name('syntactic-effects.store');
@@ -115,10 +118,14 @@ Route::middleware('auth')->group(function () {
     Route::post('contextual_conditions/destroy/{id}', [ContextualConditionController::class, 'destroy'])->name('contextual_conditions.destroy');
     Route::post('contextual_conditions/update/{id}', [ContextualConditionController::class, 'update'])->name('contextual_conditions.update');
 
-    Route::post('/sentences', [SentenceController::class, 'store']); // إضافة جملة جديدة
-    Route::put('/sentences/{id}', [SentenceController::class, 'update']); // تحديث جملة
-    Route::delete('/sentences/{id}', [SentenceController::class, 'destroy']); // حذف جملة
-    Route::delete('/sentence-parts/{id}', [SentenceController::class, 'destroyPart']); // حذف جزء من الجملة
+    Route::resource('/sentences', SentenceController::class); // إضافة جملة جديدة
+
+    Route::resource('connectives', ConnectiveController::class);
+    Route::get('/connectives/{id}/edit', [ConnectiveController::class, 'update']);
+    Route::put('/connectives/{connective}', [ConnectiveController::class, 'update'])->name('connectives.update');
+
+    Route::resource('connective_categories', ConnectiveCategoryController::class);
+
     
 });
 
@@ -349,4 +356,7 @@ Route::get('/get-arabic-letter-id', [QuranController::class, 'getArabicLetterId'
 
 // Route to get phoneme details by letter ID
 Route::get('/get-phoneme-details', [QuranController::class, 'getPhonemeDetailsForLetter']);
+
+Route::get('/word/{name}', [TreeController::class, 'wordDetails'])->name('word.details');
+
 

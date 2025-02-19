@@ -28,3 +28,5 @@ class ConnectiveCategory extends Model
         return $this->hasMany(Connective::class, 'category_id');
 }
 }
+
+

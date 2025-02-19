@@ -21,6 +21,11 @@ class Connective extends Model
         'meaning',
         'definition',
         'category_id',
+        'syntactic_effect_id',
+        'semantic_logical_effect_id',
+        'morphological_form',
+        'typical_nisbah',
+        'primary_usage',
         'grammatical_function',
         'position',
         'connective_form',
@@ -28,20 +33,27 @@ class Connective extends Model
         'notes',
         'status',
         'created_by',
+
         'updated_by'
     ];
 
-    /**
-     * Get the category associated with the connective.
-     */
+ 
+    // Define Relationships
     public function category()
     {
-        return $this->belongsTo(ConnectiveCategory::class);
+        return $this->belongsTo(ConnectiveCategory::class, 'category_id');
     }
 
-    /**
-     * Get the user who created the connective.
-     */
+    public function syntacticEffect()
+    {
+        return $this->belongsTo(SyntacticEffect::class, 'syntactic_effect_id');
+    }
+
+    public function semanticLogicalEffect()
+    {
+        return $this->belongsTo(SemanticLogicalEffect::class, 'semantic_logical_effect_id');
+    }
+
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -55,3 +67,5 @@ class Connective extends Model
         return $this->belongsTo(User::class, 'updated_by');
 }
 }
+  
+

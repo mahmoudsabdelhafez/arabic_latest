@@ -1181,6 +1181,7 @@
                         <a href="/examples" class="button">إضافة أمثلة ل(الحرف ، الاسم ، الفعل )</a>
                         <a href="/grammar-rules" class="button">إضافة قواعد اساسية</a>
                         <a href="/beauty-of-language" class="button">إضافة جماليات اللغة العربية</a>
+                        <a href="/arabic-features" class="button">إضافة مميزات ل(الاسم ، الفعل ، الحرف)</a>
                         <a href="/syntactic-effects/create" class="button">إضافة وظيفة نحوية</a>
                         <a href="/semantic-logical-effects/create" class="button">إضافة وظيفة دلالية</a>
                     </div>
