@@ -346,6 +346,8 @@
 }
 
 
+
+
         .footer {
             background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
             color: var(--white);
@@ -356,6 +358,256 @@
             overflow: hidden;
             font-family: 'Aref Ruqaa', serif;
         }
+
+        /* <!------------------------------------- check boxes style ---------------------------------------------> */
+        .analysis-options {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.analysis-options-title {
+    color: var(--primary-color);
+    font-family: 'Aref Ruqaa', serif;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    text-align: right;
+}
+
+.checkbox-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Two columns */
+    gap: 12px 20px; /* Adjust spacing between checkboxes */
+    align-items: center;
+}
+
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.custom-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    background: var(--white);
+}
+
+.custom-checkbox:checked {
+    background: var(--primary-color);
+}
+
+.custom-checkbox:checked::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.custom-checkbox:hover {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(58, 126, 113, 0.3);
+}
+
+label {
+    font-family: 'Amiri', serif;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .analysis-options {
+        padding: 15px;
+    }
+    
+    .checkbox-group {
+        padding: 8px 0;
+    }
+    
+    .custom-checkbox {
+        width: 18px;
+        height: 18px;
+    }
+    
+    label {
+        font-size: 1rem;
+    }
+
+    .checkbox-container {
+        grid-template-columns: repeat(1, 1fr); /* Switch to one column on smaller screens */
+    }
+
+
+
+
+
+
+
+    .analysis-result {
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.98));
+    border-radius: 15px;
+    margin-top: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(35, 75, 110, 0.1);
+    border: 1px solid rgba(35, 75, 110, 0.1);
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideIn 0.5s ease forwards;
+}
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.analysis-result > div {
+    border-right: 4px solid var(--primary-color);
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 0 15px 15px 0;
+    transition: all 0.3s ease;
+}
+
+.analysis-result > div:hover {
+    transform: translateX(-5px);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 15px rgba(35, 75, 110, 0.1);
+}
+
+.analysis-result h4 {
+    color: var(--primary-color);
+    font-family: 'Aref Ruqaa', serif;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.analysis-result h4::before {
+    content: '⦿';
+    color: var(--accent-color);
+    font-size: 1.4rem;
+}
+
+.analysis-result .matched-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.analysis-result .word-chip {
+    background: var(--primary-color);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.analysis-result .word-chip:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(35, 75, 110, 0.2);
+    background: var(--secondary-color);
+}
+
+.analysis-result .analysis-table {
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.analysis-result .table-row {
+    display: flex;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(35, 75, 110, 0.1);
+}
+
+.analysis-result .table-row:last-child {
+    border-bottom: none;
+}
+
+.analysis-result .table-label {
+    font-weight: bold;
+    color: var(--secondary-color);
+    width: 120px;
+    flex-shrink: 0;
+}
+
+.analysis-result .table-value {
+    flex: 1;
+}
+
+/* Add this to your existing loader styles */
+.analysis-loader {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(35, 75, 110, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .analysis-result {
+        padding: 15px;
+    }
+
+    .analysis-result > div {
+        padding: 10px;
+    }
+
+    .analysis-result h4 {
+        font-size: 1.1rem;
+    }
+
+    .analysis-result .table-row {
+        flex-direction: column;
+    }
+
+    .analysis-result .table-label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+}
+}
+        /* <!------------------------------------- check boxes style ---------------------------------------------> */
+
 
         @media (max-width: 768px) {
             .container {
@@ -404,6 +656,32 @@
     <button id="quran-btn" class="toggle-btn active">عرض الايات مع تشكيل</button>
     <button id="quran-text-clean-btn" class="toggle-btn">عرض الايات بدون تشكيل</button>
 </div>
+
+<!------------------------------------- check boxes --------------------------------------------->
+<div class="analysis-options">
+    <h3 class="analysis-options-title">خيارات التحليل</h3>
+    <div class="checkbox-container">
+        
+        <!-- Select All Checkbox -->
+        <div class="checkbox-group">
+        <label for="select-all">جميع الأدوات</label>
+            <input type="checkbox" id="select-all" class="custom-checkbox">
+        </div>
+
+        <!-- Dynamic Category Checkboxes -->
+        @foreach ($categories as $category)
+            <div class="checkbox-group">
+            <label for="category-{{ $category->id }}">{{ $category->arabic_name }}</label>
+
+                <input type="checkbox" id="category-{{ $category->id }}" class="custom-checkbox category-checkbox" data-category-id="{{ $category->id }}">
+            </div>
+        @endforeach
+    </div>
+</div>
+
+
+<!------------------------------------- check boxes --------------------------------------------->
+
 
 <div id="result-count"></div> <!-- This will display the number of results -->
 
@@ -459,10 +737,13 @@ function applyAnalysis(results) {
         modifiedText = removeAlifBeforeSukoon(modifiedText);
 
 
+        // Add sukoon to letters that do not have any diacritic
+        modifiedText = addSukoonToBareLetters(modifiedText);
+
         
         
         // Remove all sukoons from the text
-        modifiedText = removeSukoon(modifiedText);
+        // modifiedText = removeSukoon(modifiedText);
 
         
         return {
@@ -474,6 +755,14 @@ function applyAnalysis(results) {
     return modifiedResults;
 }
 
+
+// Function to add sukoon to letters that don't have a diacritic
+function addSukoonToBareLetters(text) {
+    return text.replace(/([\u0621-\u064A])(?=\s|$|[\u0621-\u064A])/g, (match, letter) => {
+        // Check if the letter is followed by a diacritic
+        return letter + 'ْ';
+    });
+}
 
 function replaceShadda(text) {
     return text.replace(/([^\s])ّ/g, (match, p1) => {
@@ -675,7 +964,7 @@ $(document).ready(function() {
            <ul class="list-group">
         <li class="list-group-item">✅ تم استبدال الألف الخنجرية بالألف العادية</li>
         <li class="list-group-item">✅ تم استبدال الشدة وحركتها بحرف ساكن وحرف متحرك</li>
-        <li class="list-group-item">✅ تمت إزالة جميع إشارات السكون</li>
+        <li class="list-group-item">✅ تمت اضافة السكون على جميع الاحرف غير المتحركة</li>
         <li class="list-group-item">✅ تم استبدال همزء القطع بهمزة بهمزة نبرة وازالة همزات الوصل بما يتناسب مع اللفظ</li>
         
     </ul>
@@ -718,12 +1007,39 @@ $(document).ready(function() {
 // ========================= Display Results =========================
 
 
+// ============ Select all from ceckboxes ============
+document.addEventListener("DOMContentLoaded", function () {
+    const selectAllCheckbox = document.getElementById("select-all");
+    const categoryCheckboxes = document.querySelectorAll(".category-checkbox");
 
+    selectAllCheckbox.addEventListener("change", function () {
+        categoryCheckboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+    });
+
+    categoryCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", function () {
+            if (!this.checked) {
+                selectAllCheckbox.checked = false; // Uncheck "جميع الأدوات" if any checkbox is unchecked
+            } else if (Array.from(categoryCheckboxes).every(cb => cb.checked)) {
+                selectAllCheckbox.checked = true; // Check "جميع الأدوات" if all are checked
+            }
+        });
+    });
+});
+// ============ Select all from ceckboxes ============
 
 // =========== ayah analysis button handling ===========
 $(document).on('click', '.ayah-analysis-btn', function () {
     const query = $(this).data('query');
     const ayaId = $(this).data('aya-id');
+
+    // Capture selected categories
+    const selectedCategories = [];
+    $('.checkbox-container input:checked').each(function() {
+        selectedCategories.push($(this).data('category-id'));
+    });
 
     $('#loader').show();
     $('#analysis-result-' + ayaId).empty();
@@ -731,7 +1047,7 @@ $(document).on('click', '.ayah-analysis-btn', function () {
     $.ajax({
         url: '/analyze-ayah-results/' + ayaId,
         type: 'GET',
-        data: { query: query, aya_id: ayaId },
+        data: { query: query, aya_id: ayaId, categories: selectedCategories },
         success: function (response) {
             $('#loader').hide();
             const analysisContainer = $('#analysis-result-' + ayaId);
@@ -744,12 +1060,16 @@ $(document).on('click', '.ayah-analysis-btn', function () {
             } else {
                 let resultHtml = '';
                 results.forEach(result => {
-                    // Render matched words (full words or partial matches)
                     const matchedWords = result.matched_words ? result.matched_words.join(', ') : '';  // Ensure matched_words is displayed
+                    const definition = result.definition ? `<p><strong>التعريف:</strong> ${result.definition}</p>` : '';  // Display definition
+
                     resultHtml += `
                         <div>
                             <h4>${result.name} : في كلمات (${matchedWords})</h4>
                             <p>${result.table}</p>
+                            ${definition}
+                            <button class="phoneme-details-btn" data-matched-words="${result.name}">تفاصيل الحرف </button>
+                            <div class="phoneme-details-container"></div>
                             <p></p>
                         </div>
                     `;
@@ -765,6 +1085,116 @@ $(document).on('click', '.ayah-analysis-btn', function () {
         }
     });
 });
+
+// Phoneme details button click handler
+$(document).on('click', '.phoneme-details-btn', function () {
+    const matchedWords = $(this).data('matched-words');
+    const detailsContainer = $(this).next('.phoneme-details-container');
+
+    // Hide details if already shown
+    if (detailsContainer.is(':visible')) {
+        detailsContainer.empty().hide();
+        return;
+    }
+
+    // Show loader while fetching data
+    detailsContainer.html('<p>جاري تحميل التفاصيل...</p>').show();
+
+    // Loop through the matched words (e.g., "بس") and split into individual Arabic letters
+    const arabicText = matchedWords.replace(/[^ء-ي]/g, ''); // Only Arabic letters
+    const letters = arabicText.split(''); // Split the matched words into letters
+
+    // Loop through each letter to fetch phoneme details
+    const phonemeDetailsPromises = letters.map(letter => {
+        return getPhonemeDetailsForLetter(letter);
+    });
+
+    // Wait for all AJAX requests to complete
+    Promise.all(phonemeDetailsPromises)
+        .then(results => {
+            // Render the phoneme details
+            const phonemeHtml = results.map(phoneme => {
+                return `
+                    <div>
+                        <h5>الحرف: ${phoneme.letter}</h5>
+                        <p><strong>IPA:</strong> ${phoneme.ipa}</p>
+                        <p><strong>النوع:</strong> ${phoneme.type}</p>
+                        <p><strong>مكان النطق:</strong> ${phoneme.place_of_articulation}</p>
+                        <p><strong>طريقة النطق:</strong> ${phoneme.manner_of_articulation}</p>
+                        <p><strong>التأثيرات الصوتية:</strong> ${phoneme.sound_effects}</p>
+                        <p><strong>التعريف:</strong> ${phoneme.notes}</p>
+                        <p><strong>التصنيف:</strong> ${phoneme.articulation_arabic_name}</p>
+                    </div>
+                `;
+            }).join('');
+
+            detailsContainer.html(phonemeHtml);
+        })
+        .catch(error => {
+            detailsContainer.html('<p>حدث خطأ أثناء تحميل التفاصيل.</p>');
+        });
+});
+
+// Helper function to get phoneme details for each letter
+function getPhonemeDetailsForLetter(letter) {
+    return new Promise((resolve, reject) => {
+        // Send AJAX request to fetch the Arabic letter ID from the arabic_letters table
+        $.ajax({
+            url: '/get-arabic-letter-id',  // Endpoint to get the Arabic letter ID
+            type: 'GET',
+            data: { letter: letter },
+            success: function(response) {
+                console.log(response); // Log the response to confirm the structure
+                if (response.error) {
+                    reject('لم يتم العثور على تفاصيل الحرف');
+                } else {
+                    // Now, send another request to get the phoneme details using the Arabic letter ID
+                    const letterId = response.letter_id;
+
+                    $.ajax({
+    url: '/get-phoneme-details',  // Endpoint to get phoneme details by letter ID
+    type: 'GET',
+    data: { letter_id: letterId },
+    success: function(phonemeResponse) {
+        console.log(phonemeResponse); // Log the response to confirm the structure
+
+        if (phonemeResponse.error) {
+            reject('لم يتم العثور على تفاصيل الحرف');
+        } else {
+            // Assuming phonemeResponse is an array or an object of phoneme details
+            const firstLetter = phonemeResponse[0] || phonemeResponse;  // Retrieve the first element if it's an array
+
+            // Now, check if the first letter exists and has the required properties
+            const phoneme = firstLetter;
+
+            resolve({
+                letter: phoneme.letter || 'N/A',
+                ipa: phoneme.ipa || 'N/A',
+                type: phoneme.type || 'N/A',
+                place_of_articulation: phoneme.place_of_articulation || 'N/A',
+                manner_of_articulation: phoneme.manner_of_articulation || 'N/A',
+                sound_effects: phoneme.sound_effects || 'N/A',
+                notes: phoneme.notes || 'N/A',
+                articulation_arabic_name: phoneme.articulation_arabic_name || 'N/A'
+            });
+        }
+    },
+    error: function() {
+        reject('حدث خطأ أثناء تحميل التفاصيل');
+    }
+});
+
+
+                }
+            },
+            error: function() {
+                reject('حدث خطأ أثناء تحميل التفاصيل');
+            }
+        });
+    });
+}
+
+
 
 
 // =========== ayah analysis button handling ===========

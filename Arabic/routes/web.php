@@ -39,6 +39,7 @@ use App\Http\Controllers\ExampleController;
 use App\Http\Controllers\GrammarRuleController;
 use App\Http\Controllers\BeautyOfLanguageController;
 use App\Http\Controllers\ArabicLanguageController;
+use App\Http\Controllers\MekdadPhonemeController;
 use App\Http\Controllers\SentenceController;
 use App\Http\Controllers\TreeController;
 
@@ -326,3 +327,26 @@ Route::get('tool_information/show-table/{toolName}', [ToolsInformationController
 
 Route::get('/tree', [TreeController::class, 'index']);
 Route::get('/tree/branch/{parentId}', [TreeController::class, 'getBranchData']);
+
+
+
+// =========================== Mekdad Tables ===========================================
+
+Route::get('/{tableName}', [MekdadPhonemeController::class, 'renderTable'])->where('tableName', 'phoneme-syllabic-changes|phoneme-substitutions|phoneme-structural-roles|phoneme-semantic-features|phoneme-root-effects|phoneme-replacements|phoneme-phonetic-features|phoneme-origins|phoneme-natures|phoneme-morphemes|phoneme-harakats|phoneme-grammatical-roles|phoneme-functions|phoneme-embeddings|phoneme-deletions|phoneme-contextual-features|phoneme-characteristics|phoneme-activities');
+
+
+// =========================== Mekdad Tables ===========================================
+
+
+
+
+
+Route::get('/get-phoneme-details-for-letter', [QuranController::class, 'getPhonemeDetailsForLetter']);
+
+
+// Route to get the Arabic letter ID
+Route::get('/get-arabic-letter-id', [QuranController::class, 'getArabicLetterId']);
+
+// Route to get phoneme details by letter ID
+Route::get('/get-phoneme-details', [QuranController::class, 'getPhonemeDetailsForLetter']);
+
