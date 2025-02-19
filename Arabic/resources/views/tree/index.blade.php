@@ -40,13 +40,22 @@
         direction: rtl;
     }
 
-    /* Header Styles */
     header {
-        background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
-        padding: 2.5rem 2rem;
+        background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        padding: 1.5rem 2rem;
         position: relative;
         box-shadow: var(--shadow-md);
         overflow: hidden;
+    }
+
+    .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        z-index: 2;
     }
 
     header::before {
@@ -54,11 +63,76 @@
         position: absolute;
         inset: 0;
         background:
-            radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 60%),
-            linear-gradient(45deg, rgba(255, 255, 255, 0.05) 25%, transparent 25%);
-        background-size: 100% 100%, 60px 60px;
-        opacity: 0.2;
-        animation: backgroundMove 30s linear infinite;
+            radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.12) 0%, transparent 50%),
+            radial-gradient(circle at 80% 50%, rgba(255, 255, 255, 0.12) 0%, transparent 50%);
+        opacity: 0.8;
+    }
+
+    header::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(45deg, rgba(255, 255, 255, 0.08) 25%, transparent 25%);
+        background-size: 3px 3px;
+        opacity: 0.5;
+    }
+
+    header h1 {
+        color: var(--white);
+        font-size: 2.5rem;
+        margin: 0;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        position: relative;
+        font-weight: bold;
+    }
+
+    .back-button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: rgba(255, 255, 255, 0.15);
+        color: var(--white);
+        text-decoration: none;
+        border-radius: var(--border-radius);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(8px);
+        transition: all 0.3s ease;
+        font-size: 1.1rem;
+    }
+
+    .back-button:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateX(-5px);
+        border-color: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-button::before {
+        content: '←';
+        font-size: 1.2em;
+        margin-left: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+        header {
+            padding: 1.25rem 1rem;
+        }
+
+        .header-content {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2rem;
+        }
+
+        .back-button {
+            padding: 0.6rem 1.2rem;
+            font-size: 1rem;
+        }
     }
 
     @keyframes backgroundMove {
@@ -80,82 +154,11 @@
         position: relative;
     }
 
-    .search-container {
-        max-width: 600px;
-        margin: 1.5rem auto 0;
-        position: relative;
-    }
-
-    .search-input {
-        width: 100%;
-        padding: 1rem 3rem 1rem 1rem;
-        border: none;
-        border-radius: var(--border-radius);
-        background: rgba(255, 255, 255, 0.95);
-        font-size: 1.1rem;
-        transition: all var(--transition-speed);
-        direction: rtl;
-    }
-
-    .search-input:focus {
-        outline: none;
-        box-shadow: var(--shadow-lg);
-        background: var(--white);
-    }
-
-    .search-icon {
-        position: absolute;
-        right: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-light);
-    }
-
-    /* Main Layout */
     .body {
         display: flex;
         min-height: 82vh;
     }
 
-    /* Sidebar */
-    .sidebar {
-        width: var(--sidebar-width);
-        background: var(--white);
-        box-shadow: var(--shadow-sm);
-        z-index: 100;
-        padding-top: 1rem;
-    }
-
-    .nav-item {
-        padding: 1rem 1.5rem;
-        cursor: pointer;
-        transition: all var(--transition-speed);
-        margin: 0.5rem 1rem;
-        border-radius: var(--border-radius);
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    .nav-item:hover {
-        background: rgba(35, 75, 110, 0.1);
-        color: var(--primary-color);
-        transform: translateX(-5px);
-    }
-
-    .nav-item.active {
-        background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
-        color: var(--white);
-        box-shadow: var(--shadow-sm);
-    }
-
-    .nav-icon {
-        width: 20px;
-        height: 20px;
-        opacity: 0.7;
-    }
-
-    /* Tree Styles */
     .tree-container {
         display: flex;
         justify-content: center;
@@ -211,41 +214,34 @@
     }
 
     .tree li::after {
+        margin-top: 20px;
         content: '';
         position: absolute;
-        top: -20px;
+        top: 20px;
         width: 50%;
-        /* Changed from 100% to 50% */
         height: 2px;
         background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-end));
         right: 0;
-        /* Added to align from the right side */
     }
 
-    /* Add new rule for first child */
     .tree li:first-child::after {
         right: 50%;
-        /* Start from middle for first child */
         width: 50%;
     }
 
-    /* Add new rule for last child */
     .tree li:last-child::after {
         left: 50%;
-        /* Start from middle for last child */
         width: 50%;
     }
 
-    /* Remove the line for single children */
     .tree li:only-child::after {
         display: none;
     }
 
-    /* Ensure vertical lines are still visible */
     .tree li::before {
         content: '';
         position: absolute;
-        top: -20px;
+        top: 0px;
         height: 20px;
         width: 2px;
         background: linear-gradient(to bottom, var(--gradient-start), var(--gradient-end));
@@ -262,7 +258,7 @@
         border: 2px solid var(--primary-color);
         min-width: 150px;
         text-align: center;
-        margin: 10px 0;
+        margin: 16px 0;
         position: relative;
         text-decoration: none;
         color: var(--text-color);
@@ -298,7 +294,6 @@
         transform: translateX(-50%) translateY(-5px);
     }
 
-    /* Animations */
     @keyframes branchAppear {
         from {
             opacity: 0;
@@ -315,7 +310,6 @@
         animation: branchAppear 0.5s ease forwards;
     }
 
-    /* Progress Indicator */
     .progress-indicator {
         position: fixed;
         top: 0;
@@ -333,90 +327,18 @@
         transform: scaleX(1);
     }
 
-    /* Mobile Responsive */
-    @media (max-width: 768px) {
-        .sidebar {
-            position: fixed;
-            right: -280px;
-            top: 0;
-            /* height: 110vh; */
-            transition: transform var(--transition-speed);
-        }
-
-        .sidebar.active {
-            transform: translateX(-280px);
-        }
-
-        .tree-container {
-            padding: 1rem;
-        }
-
-        .branch {
-            min-width: 120px;
-            padding: 0.8rem 1.2rem;
-        }
-
-        header {
-            padding: 1.5rem 1rem;
-        }
-
-        header h1 {
-            font-size: 2rem;
-        }
-
-        .search-container {
-            margin-top: 1rem;
-        }
+    .main-container {
+        display: flex;
+        flex: 1;
     }
 
-    /* Overlay */
-    .overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.5);
-        display: none;
-        z-index: 99;
-        backdrop-filter: blur(4px);
-        transition: opacity var(--transition-speed);
-        opacity: 0;
+    .main-content {
+        flex: 1;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
     }
 
-    .overlay.active {
-        display: block;
-        opacity: 1;
-    }
-
-    /* Menu Toggle */
-    .menu-toggle {
-        position: fixed;
-        right: 1rem;
-        top: 1rem;
-        z-index: 101;
-        background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
-        color: var(--white);
-        border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: var(--border-radius);
-        cursor: pointer;
-        display: none;
-        font-family: inherit;
-        font-size: 1.1rem;
-        box-shadow: var(--shadow-sm);
-        transition: all var(--transition-speed);
-    }
-
-    .menu-toggle:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
-    }
-
-    @media (max-width: 768px) {
-        .menu-toggle {
-            display: block;
-        }
-    }
-
-    /* Toast Notifications */
     .toast-container {
         position: fixed;
         bottom: 2rem;
@@ -456,18 +378,6 @@
         border-right: 4px solid var(--warning-color);
     }
 
-    .main-container {
-        display: flex;
-        flex: 1;
-    }
-
-    .main-content {
-        flex: 1;
-        padding: 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
     a.branch {
         color: var(--primary-color);
     }
@@ -476,6 +386,79 @@
         text-decoration: none;
         color: var(--white);
     }
+
+    @media (max-width: 768px) {
+        .tree-container {
+            padding: 1rem;
+        }
+
+        .branch {
+            min-width: 120px;
+            padding: 0.8rem 1.2rem;
+        }
+
+        header {
+            padding: 1.5rem 1rem;
+        }
+
+        header h1 {
+            font-size: 2rem;
+        }
+    }
+
+    .alert {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 1000;
+        animation: slideIn 0.5s ease forwards, fadeOut 0.5s ease 5.5s forwards;
+        box-shadow: var(--shadow-md);
+        max-width: 300px;
+    }
+
+    .alert-success {
+        background-color: #def7ec;
+        color: #03543f;
+        border-left: 4px solid #03543f;
+    }
+
+    .alert-error {
+        background-color: #fde8e8;
+        color: #9b1c1c;
+        border-left: 4px solid #9b1c1c;
+    }
+
+    .alert-icon {
+        font-size: 1.5rem;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+
+        to {
+            opacity: 0;
+        }
+    }
     </style>
 </head>
 
@@ -483,25 +466,32 @@
     <div class="progress-indicator"></div>
 
     <header>
-        <h1>شجرة الكلمات</h1>
-        <!-- <div class="search-container">
-            <input type="text" class="search-input" placeholder="ابحث عن كلمة...">
-            <span class="search-icon">🔍</span>
-        </div> -->
+        <div class="header-content">
+            <h1>شجرة الكلمات</h1>
+            <a href="/" class="back-button">الرئيسية</a>
+        </div>
     </header>
+    <div class="alert-container">@if(session('error'))
+        <div class="alert alert-error">
+            {{ session('error') }}
+        </div>
+        @endif
+    </div>
+
+
 
     <div class="body">
-        <div class="overlay" onclick="toggleSidebar()"></div>
-        <button class="menu-toggle" onclick="toggleSidebar()">القائمة</button>
         <div class="main-container">
+
             <main class="main-content">
+
                 <div class="tree-container">
-                    <ul class="tree">
+                    <div class="tree">
                         <li>
-                            <span class="branch" data-id="{{ $root->id }}">{{ $root->type_name }}</span>
-                            <ul class="branch-data-{{ $root->id }}"></ul>
+                            <span class="branch" data-branch-id="{{ $root->id }}">{{ $root->type_name }}</span>
+                            <ul class="branch-children-{{ $root->id }}"></ul>
                         </li>
-                    </ul>
+                    </div>
                 </div>
             </main>
         </div>
@@ -510,11 +500,6 @@
     <div class="toast-container"></div>
 
     <script>
-    function toggleSidebar() {
-        document.querySelector('.sidebar').classList.toggle('active');
-        document.querySelector('.overlay').classList.toggle('active');
-    }
-
     function showToast(message, type = 'success') {
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
@@ -538,65 +523,6 @@
         document.body.classList.remove('loading');
     }
 
-    // Search functionality
-    const searchInput = document.querySelector('.search-input');
-    let searchTimeout;
-
-    // searchInput.addEventListener('input', (e) => {
-    //     clearTimeout(searchTimeout);
-    //     searchTimeout = setTimeout(() => {
-    //         const searchTerm = e.target.value.trim();
-    //         if (searchTerm.length >= 2) {
-    //             searchWords(searchTerm);
-    //         }
-    //     }, 300);
-    // });
-
-    async function searchWords(term) {
-        showLoader();
-        try {
-            const response = await fetch(`/api/search?term=${encodeURIComponent(term)}`);
-            const data = await response.json();
-
-            if (data.length > 0) {
-                highlightMatchingBranches(data);
-                showToast(`تم العثور على ${data.length} نتيجة`);
-            } else {
-                showToast('لم يتم العثور على نتائج', 'warning');
-            }
-        } catch (error) {
-            showToast('حدث خطأ في البحث', 'warning');
-            console.error('Search error:', error);
-        } finally {
-            hideLoader();
-        }
-    }
-
-    function highlightMatchingBranches(matches) {
-        document.querySelectorAll('.branch').forEach(branch => {
-            branch.style.transition = 'all 0.3s ease';
-            branch.style.opacity = '0.5';
-        });
-
-        matches.forEach(match => {
-            const branch = document.querySelector(`.branch[data-id="${match.id}"]`);
-            if (branch) {
-                branch.style.opacity = '1';
-                branch.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                });
-            }
-        });
-
-        setTimeout(() => {
-            document.querySelectorAll('.branch').forEach(branch => {
-                branch.style.opacity = '1';
-            });
-        }, 2000);
-    }
-
-    // Enhanced tree navigation
     $(document).ready(function() {
         let loadedBranches = new Set();
 
@@ -604,13 +530,12 @@
             event.stopPropagation();
             const branch = $(this);
 
-            // If this is a link (has href), don't handle as expandable branch
             if (branch.is('a')) {
-                return true; // Allow default link behavior
+                return true;
             }
 
-            const parentId = branch.data("id");
-            const branchDataContainer = $(".branch-data-" + parentId);
+            const parentId = branch.data("branch-id");
+            const branchDataContainer = $(".branch-children-" + parentId);
 
             if (!loadedBranches.has(parentId)) {
                 showLoader();
@@ -621,24 +546,23 @@
                         if (Array.isArray(data) && data.length > 0) {
                             let branchHtml = '<ul>';
                             data.forEach(item => {
-                                // Check if item is a leaf node (no parent_id or is_parent = 0)
                                 const isLeafNode = !item.parent_id || item.is_parent === 0;
+                                const uniqueId =
+                                    `${item.id}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
                                 branchHtml += `<li class="new-branch">`;
 
                                 if (isLeafNode) {
-                                    // Create as link if it's a leaf node
                                     branchHtml += `
-                                    <a href="/word/${item.id}" class="branch" data-id="${item.id}">
+                                    <a href="/word/${item.name || item.type_name}" class="branch" data-branch-id="${uniqueId}">
                                         ${item.arabic_name || item.type_name}
                                         <div class="branch-tooltip">
                                             ${item.description || 'انقر للعرض'}
                                         </div>
                                     </a>`;
                                 } else {
-                                    // Create as expandable branch if it's a parent node
                                     branchHtml += `
-                                    <span class="branch" data-id="${item.id}">
+                                    <span class="branch" data-branch-id="${uniqueId}">
                                         ${item.arabic_name || item.type_name}
                                         <div class="branch-tooltip">
                                             ${item.description || 'انقر للتوسيع'}
@@ -647,7 +571,7 @@
                                 }
 
                                 branchHtml +=
-                                    `<ul class="branch-data-${item.id}"></ul></li>`;
+                                    `<ul class="branch-children-${uniqueId}"></ul></li>`;
                             });
                             branchHtml += '</ul>';
 
@@ -677,14 +601,11 @@
                 branchDataContainer.slideToggle(300);
             }
 
-            // Visual feedback
             branch.addClass('active').siblings().removeClass('active');
         }
 
-        // Event delegation for branch clicks
         $(document).on('click', '.branch:not(a)', handleBranchClick);
 
-        // Keyboard navigation
         $(document).on('keydown', function(e) {
             const activeBranch = $('.branch.active');
             if (!activeBranch.length) return;
@@ -705,6 +626,27 @@
             }
         });
     });
+
+    function showAlert(message, type = 'success') {
+        const alert = document.createElement('div');
+        alert.className = `alert alert-${type}`;
+        alert.innerHTML = `
+        <span class="alert-icon">${type === 'success' ? '✔️' : '❌'}</span>
+        <span>${message}</span>
+    `;
+
+        const container = document.body;
+        container.appendChild(alert);
+
+        setTimeout(() => {
+            alert.remove();
+        }, 6000); // Remove after 6 seconds
+    }
+
+    // Replace showToast calls with showAlert
+    function showToast(message, type = 'success') {
+        showAlert(message, type);
+    }
     </script>
 </body>
 
