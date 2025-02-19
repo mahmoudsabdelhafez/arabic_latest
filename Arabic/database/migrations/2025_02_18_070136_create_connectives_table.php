@@ -31,8 +31,8 @@ return new class extends Migration
         $table->text('notes')->nullable();
         $table->string('status')->default('draft');
         $table->timestamps();
-        $table->foreignId('created_by')->nullable()->constrained('users'); // Uncomment if you have Users table
-        $table->foreignId('updated_by')->nullable()->constrained('users'); // Uncomment if you have Users table
+        // $table->foreignId('created_by')->nullable()->constrained('users'); // Uncomment if you have Users table
+        // $table->foreignId('updated_by')->nullable()->constrained('users'); // Uncomment if you have Users table
     });
 }
 
