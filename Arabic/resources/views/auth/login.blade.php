@@ -17,6 +17,8 @@
             --white: #ffffff;
             --gradient-start: #234B6E;
             --gradient-end: #3A7E71;
+            --error-color: #e53e3e;
+            --input-border: #e2e8f0;
         }
 
         * {
@@ -39,6 +41,12 @@
         .login-container {
             width: 100%;
             max-width: 440px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .header {
@@ -67,6 +75,7 @@
             font-family: 'Aref Ruqaa', serif;
             position: relative;
             margin: 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .form-container {
@@ -78,6 +87,7 @@
 
         .form-group {
             margin-bottom: 1.5rem;
+            position: relative;
         }
 
         .form-label {
@@ -90,7 +100,7 @@
         .form-input {
             width: 100%;
             padding: 0.75rem 1rem;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--input-border);
             border-radius: 0.5rem;
             font-size: 1rem;
             transition: all 0.3s ease;
@@ -100,6 +110,33 @@
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(35, 75, 110, 0.1);
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-color);
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+            padding: 0.25rem;
+        }
+
+        .toggle-password:hover {
+            opacity: 1;
+        }
+
+        .toggle-password svg {
+            width: 1.25rem;
+            height: 1.25rem;
         }
 
         .remember-forgot {
@@ -112,10 +149,32 @@
         .remember-me {
             display: flex;
             align-items: center;
+            gap: 0.5rem;
         }
 
         .remember-me input[type="checkbox"] {
-            margin-right: 0.5rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 0.25rem;
+            border: 2px solid var(--primary-color);
+            appearance: none;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .remember-me input[type="checkbox"]:checked {
+            background-color: var(--primary-color);
+        }
+
+        .remember-me input[type="checkbox"]:checked::after {
+            content: '✓';
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.75rem;
         }
 
         .forgot-password {
@@ -140,11 +199,29 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
         }
 
         .login-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(35, 75, 110, 0.2);
+        }
+
+        .login-button:hover::after {
+            transform: translateX(100%);
         }
 
         .register-link {
@@ -157,6 +234,7 @@
             text-decoration: none;
             font-weight: bold;
             transition: color 0.3s ease;
+            margin-left: 0.5rem;
         }
 
         .register-link a:hover {
@@ -164,9 +242,28 @@
         }
 
         .error-message {
-            color: #e53e3e;
+            color: var(--error-color);
             font-size: 0.875rem;
             margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .error-message::before {
+            content: '⚠';
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .alert-success {
+            background-color: #def7ec;
+            color: #03543f;
+            border: 1px solid #84e1bc;
         }
 
         @media (max-width: 640px) {
@@ -192,7 +289,7 @@
 
         <div class="form-container">
             @if (session('status'))
-                <div class="alert alert-success mb-4">
+                <div class="alert alert-success">
                     {{ session('status') }}
                 </div>
             @endif
@@ -219,14 +316,31 @@
 
                 <div class="form-group">
                     <label for="password" class="form-label">Password</label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        class="form-input" 
-                        required 
-                        autocomplete="current-password"
-                    >
+                    <div class="password-container">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-input" 
+                            required 
+                            autocomplete="current-password"
+                        >
+                        <button 
+                            type="button" 
+                            class="toggle-password" 
+                            onclick="togglePasswordVisibility()"
+                            aria-label="Toggle password visibility"
+                        >
+                            <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="eye-off-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
                     @error('password')
                         <div class="error-message">{{ $message }}</div>
                     @enderror
@@ -256,5 +370,23 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.querySelector('.eye-icon');
+            const eyeOffIcon = document.querySelector('.eye-off-icon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.style.display = 'none';
+                eyeOffIcon.style.display = 'block';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.style.display = 'block';
+                eyeOffIcon.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>

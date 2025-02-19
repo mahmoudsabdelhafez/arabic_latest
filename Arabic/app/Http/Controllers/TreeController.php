@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Linking_tool;
 use App\Models\WordType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+    use Illuminate\Support\Facades\Schema;
 class TreeController extends Controller
 {
     public function index()
@@ -31,4 +32,18 @@ class TreeController extends Controller
         
         return response()->json($branches);
     }
+
+    
+    public function wordDetails($name){
+        $table = strtolower($name).'s';
+    
+        // التحقق مما إذا كان الجدول موجودًا
+        if (!Schema::hasTable($table)) {
+            return back()->with('error', "الجدول '{$table}' غير موجود في قاعدة البيانات.");
+        }
+    
+        $branches = DB::table($table)->get();
+        return view('tree.word-details', compact(['branches', 'name']));
+    }
+    
 }
