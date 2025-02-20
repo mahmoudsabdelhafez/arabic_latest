@@ -771,6 +771,10 @@
                 <div class="nav-item" onclick="showSection('roots')"><span class="nav-icon">🌱</span> الجذور</div>
                 <div class="nav-item" onclick="showSection('affixes')"><span class="nav-icon">🔄</span> السوابق واللواحق</div>
                 <a href="/tree"><div class="nav-item" ><span class="nav-icon">🌳</span> الخطة الشجرية</div></a>
+                <div class="nav-item" onclick="showSection('mekdad')"><span class="nav-icon">🔄</span> جدوال مقداد</div>
+                <div class="nav-item" onclick="showSection('analysis')"><span class="nav-icon">🔄</span>المحلل الصرفي</div>
+
+
                 @if (auth()->check())
                 <div class="nav-item" onclick="showSection('admin')">إدارة المحتوى</div>
                 <form id="logoutForm" method="POST" action="{{ route('logout') }}">
@@ -1114,7 +1118,7 @@
                         <a href="{{ url('/tajweedcategories') }}" class="button">أحكام التجويد كاملة</a>
                         <a href="{{ url('/tajweeds') }}" class="button">أحرف التجويد</a>
                         <a href="{{ url('/ayah') }}" class="button">احكام التجويد في الاية</a>
-                        <a href="{{ url('/quran') }}" class="button">البحث في المصحف</a>
+                        <!-- <a href="{{ url('/quran') }}" class="button">البحث في المصحف</a> -->
 
                         <!-- <a href="{{ url('/tajweeds') }}" class="button">أحكام التجويد</a> -->
                         <!-- <a href="{{ url('/ayah') }}" class="button">مثال على أحكام التجويد</a> -->
@@ -1122,6 +1126,45 @@
                     <a href="{{ url('/emphatic-arabic-letters') }}" class="button">أحرف القلقلة</a> -->
                     </div>
                 </section>
+
+
+                <section id="mekdad" class="section">
+    <h2>Mekdad Phonemes Tables</h2>
+    <div class="button-container">
+        <a href="{{ url('/phoneme-syllabic-changes') }}" class="button">phoneme_syllabic_changes</a>
+        <a href="{{ url('/phoneme-substitutions') }}" class="button">phoneme_substitutions</a>
+        <a href="{{ url('/phoneme-structural-roles') }}" class="button">phoneme_structural_roles</a>
+        <a href="{{ url('/phoneme-semantic-features') }}" class="button">phoneme_semantic_features</a>
+        <a href="{{ url('/phoneme-root-effects') }}" class="button">phoneme_root_effects</a>
+        <a href="{{ url('/phoneme-replacements') }}" class="button">phoneme_replacements</a>
+        <a href="{{ url('/phoneme-phonetic-features') }}" class="button">phoneme_phonetic_features</a>
+        <a href="{{ url('/phoneme-origins') }}" class="button">phoneme_origins</a>
+        <a href="{{ url('/phoneme-natures') }}" class="button">phoneme_natures</a>
+        <a href="{{ url('/phoneme-morphemes') }}" class="button">phoneme_morphemes</a>
+        <a href="{{ url('/phoneme-harakats') }}" class="button">phoneme_harakats</a>
+        <a href="{{ url('/phoneme-grammatical-roles') }}" class="button">phoneme_grammatical_roles</a>
+        <a href="{{ url('/phoneme-functions') }}" class="button">phoneme_functions</a>
+        <a href="{{ url('/phoneme-embeddings') }}" class="button">phoneme_embeddings</a>
+        <a href="{{ url('/phoneme-deletions') }}" class="button">phoneme_deletions</a>
+        <a href="{{ url('/phoneme-contextual-features') }}" class="button">phoneme_contextual_features</a>
+        <a href="{{ url('/phoneme-characteristics') }}" class="button">phoneme_characteristics</a>
+        <a href="{{ url('/phoneme-activities') }}" class="button">phoneme_activities</a>
+    </div>
+</section>
+
+
+
+<section id="analysis" class="section">
+                    <h2>التجويد والصوتيات</h2>
+                    <div class="button-container">
+                        <a href="{{ url('/quran') }}" class="button">البحث في المصحف</a>
+                    
+                    </div>
+                </section>
+
+
+
+
 
                 <section id="phoneme" class="section">
                     <h2>الصوتيات</h2>

@@ -9,6 +9,11 @@ class Connective extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'name',
         'transliteration',
@@ -28,9 +33,11 @@ class Connective extends Model
         'notes',
         'status',
         'created_by',
-        'updated_by',
+
+        'updated_by'
     ];
 
+ 
     // Define Relationships
     public function category()
     {
@@ -52,8 +59,13 @@ class Connective extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    /**
+     * Get the user who last updated the connective.
+     */
     public function updater()
     {
         return $this->belongsTo(User::class, 'updated_by');
-    }
 }
+}
+  
+
