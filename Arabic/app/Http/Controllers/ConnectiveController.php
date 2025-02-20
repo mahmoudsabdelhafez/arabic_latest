@@ -10,13 +10,13 @@ use Illuminate\Http\Request;
 
 class ConnectiveController extends Controller
 {
-    public function index()
+    public function index($id)
 {
-    $connectives = Connective::with(['category', 'syntacticEffect', 'semanticLogicalEffect'])->get();
+    $connectives = Connective::with(['category', 'syntacticEffect', 'semanticLogicalEffect'])->where('category_id',$id)->get();
     $categories = ConnectiveCategory::all();
     $syntacticEffects = SyntacticEffect::all();
     $semanticEffects = SemanticLogicalEffect::all();
-    // dd($connectives);
+    
     return view('connectives.index', compact(
         'connectives',
         'categories',
@@ -34,63 +34,96 @@ class ConnectiveController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'meaning' => 'required|string',
-            'category_id' => 'required|exists:connective_categories,id',
-            'syntactic_effect_id' => 'required|exists:syntactic_effects,id',
-            'semantic_logical_effect_id' => 'required|exists:semantic_logical_effects,id',
-            'position' => 'required|in:start,middle,end',
-            'connective_form' => 'required|in:standalone,connected,hybrid',
-            'status' => 'nullable|string'
-        ]);
+{
+    // التحقق من صحة البيانات
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'meaning' => 'required|string',
+        'definition' => 'required|string',
+        'category_id' => 'required|exists:connective_categories,id',
+        'syntactic_effect_id' => 'required|exists:syntactic_effects,id',
+        'semantic_logical_effect_id' => 'required|exists:semantic_logical_effects,id',
+        'position' => 'required|in:start,middle,end',
+        'connective_form' => 'required|in:standalone,connected,hybrid',
+        'status' => 'nullable|string'
+    ]);
 
-        Connective::create($request->all());
+    // إضافة الرابط الجديد
+    $connective = Connective::create($request->all());
 
-        return redirect()->route('connectives.index')->with('success', 'Connective created successfully.');
+    // التحقق من إضافة الرابط بنجاح
+    if ($connective) {
+        return response()->json([
+            'success' => true,
+            'message' => 'تم إضافة الرابط بنجاح',
+            'connective' => $connective
+        ], 200);
+    } else {
+        return response()->json([
+            'success' => false,
+            'message' => 'حدث خطأ أثناء إضافة الرابط'
+        ], 500);
     }
+}
+
 
     public function show(Connective $connective)
     {
-        return view('connectives.show', compact('connective'));
-    }
+        $connectives = Connective::with(['category', 'syntacticEffect', 'semanticLogicalEffect'])->where('category_id',$connective->id)->get();
+        $categories = ConnectiveCategory::all();
+        $syntacticEffects = SyntacticEffect::all();
+        $semanticEffects = SemanticLogicalEffect::all();
+        
+        return view('connectives.index', compact(
+            'connectives',
+            'categories',
+            'syntacticEffects',
+            'semanticEffects'
+        ));    }
 
-    public function edit(Connective $connective)
-{
-    $connective->load(['category', 'syntacticEffect', 'semanticLogicalEffect']);
-    return response()->json($connective);
-}
-public function update(Request $request, Connective $connective)
-{
-    try {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'pronunciation' => 'nullable|string|max:255',
-            'syntactic_effect.applied_on' => 'nullable|string|max:255',
-            'syntactic_effect.result_case' => 'nullable|string|max:255',
-            'syntactic_effect.context_condition' => 'nullable|string',
-            'syntactic_effect.priority_order' => 'nullable|string',
-            'semantic_effect.typical_relation' => 'nullable|string|max:255',
-            'semantic_effect.nisbah_type' => 'nullable|string|max:255',
-            'semantic_effect.semantic_roles' => 'nullable|string',
-            'semantic_effect.conditions' => 'nullable|string',
-        ]);
-
-        // Update the connective
-        $connective->update($validatedData);
-
-        return response()->json(['message' => 'Connective updated successfully']);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
-    }
-}
-
-
+        public function edit($id)
+        {
+            $connective = Connective::with(['syntacticEffect', 'semanticLogicalEffect'])->findOrFail($id);
+            
+            return response()->json($connective);
+        }
+        
+        public function update(Request $request, $id)
+        {
+            // البحث عن الرابط في قاعدة البيانات
+            $connective = Connective::findOrFail($id);
+    
+            // تحديث بيانات الرابط
+            $connective->update([
+                'name' => $request->input('name'),
+                'pronunciation' => $request->input('pronunciation'),
+            ]);
+    
+            // تحديث التأثيرات النحوية
+            $connective->syntacticEffect()->update([
+                'applied_on' => $request->input('syntactic_effect.applied_on'),
+                'result_case' => $request->input('syntactic_effect.result_case'),
+                'context_condition' => $request->input('syntactic_effect.context_condition'),
+                'priority_order' => $request->input('syntactic_effect.priority_order'),
+            ]);
+    
+            // تحديث التأثيرات الدلالية المنطقية
+            $connective->semanticLogicalEffect()->update([
+                'typical_relation' => $request->input('semantic_effect.typical_relation'),
+                'nisbah_type' => $request->input('semantic_effect.nisbah_type'),
+                'semantic_roles' => $request->input('semantic_effect.semantic_roles'),
+                'conditions' => $request->input('semantic_effect.conditions'),
+            ]);
+    
+            // إعادة توجيه إلى الصفحة الرئيسية مع رسالة نجاح
+            return response()->json([
+                'success' => true,
+                'message' => 'تم تحديث الرابط بنجاح',
+                'connective' => $connective
+            ], 200);       }
     public function destroy(Connective $connective)
     {
         $connective->delete();
-        return redirect()->route('connectives.index')->with('success', 'Connective deleted successfully.');
+        return back()->with('success', 'Connective deleted successfully.');
     }
 }
