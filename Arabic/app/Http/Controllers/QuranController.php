@@ -109,7 +109,7 @@ public function analyzeAyahResults(Request $request)
     }
 
     // Fetch connectives along with definitions and category_id
-    $connectives = $query->get(['id', 'name', 'definition', 'category_id'])->keyBy('id');
+    $connectives = $query->get(['id', 'name', 'definition', 'category_id', 'position', 'connective_form'])->keyBy('id');
 
     // Fetch category Arabic names
     $categoryNames = ConnectiveCategory::whereIn('id', $connectives->pluck('category_id')->unique())
@@ -122,12 +122,13 @@ public function analyzeAyahResults(Request $request)
         ->get(['id', 'name', 'definition'])
         ->keyBy('id');
 
+    //===============================================================================
     foreach ($words as $word) {
         $word = trim($word);
 
-        // Check full-word match for connectives
+        // Check full-word match for connectives (only where connective_form = 'standalone')
         foreach ($connectives as $connectiveId => $connective) {
-            if ($word === $connective->name) {
+            if ($word === $connective->name && $connective->connective_form === 'standalone') {
                 $categoryName = $categoryNames[$connective->category_id] ?? 'الادوات'; // Default if not found
                 $matches[$word] = [
                     'type' => 'fullWord',
@@ -151,15 +152,25 @@ public function analyzeAyahResults(Request $request)
             ];
         }
 
-        // Check for any substring match in connectives
+        // Check for any substring match in connectives (only where connective_form = 'connected')
         for ($i = 0; $i < mb_strlen($word); $i++) {
             for ($j = $i + 1; $j <= mb_strlen($word); $j++) {
                 $combination = mb_substr($word, $i, $j - $i, 'UTF-8');
+                
+                // Determine the position of the substring
+                $position = 'middle'; // Default position
+                if ($i === 0) {
+                    $position = 'start'; // Start of the word
+                } elseif ($j === mb_strlen($word)) {
+                    $position = 'end'; // End of the word
+                }
 
+                // Loop through connectives to find a match (only where connective_form = 'connected')
                 foreach ($connectives as $connectiveId => $connective) {
-                    if ($combination === $connective->name) {
+                    if ($combination === $connective->name && $connective->position === $position && $connective->connective_form === 'connected') {
                         $categoryName = $categoryNames[$connective->category_id] ?? 'الادوات'; // Default if not found
 
+                        // Only add if it's not already in matches
                         if (!isset($matches[$combination])) {
                             $matches[$combination] = [
                                 'type' => 'letterCombination',
@@ -194,6 +205,7 @@ public function analyzeAyahResults(Request $request)
     $analysisResults = array_values($matches);
     return response()->json(['analysis' => 'تم التحليل بنجاح', 'results' => $analysisResults]);
 }
+
 
 
 
