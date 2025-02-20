@@ -9,14 +9,24 @@ class ConnectiveCategory extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'name',
         'arabic_name',
-        'definition',
+        'definition'
     ];
 
+    /**
+     * Get the connectives that belong to this category.
+     */
     public function connectives()
     {
         return $this->hasMany(Connective::class, 'category_id');
-    }
 }
+}
+
+

@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ArabicLetter;
 use App\Models\CausalReasoning;
 use App\Models\ComparisonSimile;
 use App\Models\ConclusionInference;
 use App\Models\Conditional;
 use App\Models\Conjunction;
+use App\Models\Connective;
+use App\Models\ConnectiveCategory;
 use App\Models\Detail;
 use App\Models\EncouragementUrging;
 use App\Models\Exception;
 use App\Models\Explanation;
 use App\Models\Negative;
+use App\Models\Phoneme;
 use App\Models\Preposition;
 use App\Models\Pronoun;
 use Illuminate\Http\Request;
@@ -20,6 +24,7 @@ use App\Models\QuranAll;
 use App\Models\QuranTextClean;
 use App\Models\SequencingOrdering;
 use App\Models\Specification;
+use App\Models\Suffix;
 use App\Models\Synchronization;
 
 class QuranController extends Controller
@@ -27,7 +32,8 @@ class QuranController extends Controller
 
     public function show()
     {
-        return view('quran.index');
+        $categories = ConnectiveCategory::all();
+        return view('quran.index', compact('categories'));
     }
 
     public function search(Request $request)
@@ -83,135 +89,206 @@ class QuranController extends Controller
 // }
 public function analyzeAyahResults(Request $request)
 {
-    // Get the ayah_id and query from the request
     $ayaId = $request->input('aya_id');
-    $query = $request->input('query'); // Get the query text from the AJAX request
+    $categories = $request->input('categories', []);  // Get the selected categories
 
-    // Find the Ayah in the Quran table using the provided ID
-    $ayah = QuranTextClean::where("index", "=", $ayaId)->first();
+    $ayah = QuranTextClean::where("index", $ayaId)->first();
 
-    // If the Ayah is not found, return an error
     if (!$ayah) {
         return response()->json(['error' => 'Ayah not found'], 404);
     }
 
-    // Split the Ayah text into words
-    $words = preg_split('/\s+/', $ayah->text); // Split by whitespace
-
-    // Array to store matches
+    $words = preg_split('/\s+/', trim($ayah->text));
     $matches = [];
 
-    // Define the tables to check
-    $tables = [
-        'أدوات الشرط' => Conditional::class,
-        'أدوات التفضيل' => Detail::class,
-        'أدوات النفي' => Negative::class,
-        'أدوات الاستثناء' => Exception::class,
-        'أدوات التوضيح' => Explanation::class,
-        'أدوات الجر' => Preposition::class,
-        'الضمائر' => Pronoun::class,
-        'أدوات العطف' => Conjunction::class,
-        'أدوات الاغراء والتحضيض' => EncouragementUrging::class,
-        'أدوات السببية الوتعليل' => CausalReasoning::class,
-        'أدوات التخصيص' => Specification::class,
-        'أدوات الترتيب والتسلسل' => SequencingOrdering::class,
-        'أدوات الاستنتاج' => ConclusionInference::class,
-        'أدوات التزامن' => Synchronization::class,
-    ];
+    // Fetch connectives filtered by category_id
+    $query = Connective::query();
 
-    // Loop through each word to check for matches
+    if (!empty($categories)) {
+        $query->whereIn('category_id', $categories);  // Filter by selected categories
+    }
+
+    // Fetch connectives along with definitions and category_id
+    $connectives = $query->get(['id', 'name', 'definition', 'category_id'])->keyBy('id');
+
+    // Fetch category Arabic names
+    $categoryNames = ConnectiveCategory::whereIn('id', $connectives->pluck('category_id')->unique())
+        ->pluck('arabic_name', 'id')
+        ->toArray();
+
+    // Fetch pronouns
+    $pronouns = Pronoun::pluck('name', 'id')->toArray();
+    $pronounsWithDefinitions = Pronoun::whereIn('id', array_keys($pronouns))
+        ->get(['id', 'name', 'definition'])
+        ->keyBy('id');
+
     foreach ($words as $word) {
-        $word = trim($word);  // Clean up any extra spaces
+        $word = trim($word);
 
-        // Step 1: Check for full word matches
-        foreach ($tables as $tableName => $model) {
-            $fullWordMatches = $model::whereRaw("BINARY name = ?", [$word])->get();
-            foreach ($fullWordMatches as $match) {
-                if (!isset($matches[$match->name])) {
-                    $matches[$match->name] = [
-                        'type' => 'fullWord', // Full word match type
-                        'table' => $tableName, // Table name
-                        'matched_words' => [], // Use 'matched_words' for full matches
-                    ];
-                }
-                $matches[$match->name]['matched_words'][] = $word;
+        // Check full-word match for connectives
+        foreach ($connectives as $connectiveId => $connective) {
+            if ($word === $connective->name) {
+                $categoryName = $categoryNames[$connective->category_id] ?? 'الادوات'; // Default if not found
+                $matches[$word] = [
+                    'type' => 'fullWord',
+                    'table' => $categoryName, // Use category Arabic name
+                    'matched_words' => [$word],
+                    'name' => $word,
+                    'definition' => $connective->definition ?? ''
+                ];
             }
         }
 
-        // Step 2: Check for individual letter matches (first, second, third letter)
+        // Check full-word match for pronouns
+        if (in_array($word, $pronouns, true)) {
+            $pronounId = array_search($word, $pronouns);
+            $matches[$word] = [
+                'type' => 'fullWord',
+                'table' => 'الضمائر',
+                'matched_words' => [$word],
+                'name' => $word,
+                'definition' => $pronounsWithDefinitions[$pronounId]->definition ?? ''
+            ];
+        }
+
+        // Check for any substring match in connectives
         for ($i = 0; $i < mb_strlen($word); $i++) {
-            $letter = mb_substr($word, $i, 1, 'UTF-8');  // Extract individual letter
-            foreach ($tables as $tableName => $model) {
-                $letterMatches = $model::whereRaw("BINARY name = ?", [$letter])->get();
-                foreach ($letterMatches as $match) {
-                    if (!isset($matches[$match->name])) {
-                        $matches[$match->name] = [
-                            'type' => 'singleLetter', // Single letter match type
-                            'table' => $tableName, // Table name
-                            'matched_words' => [], // Use 'matched_words' for letter matches
-                        ];
-                    }
-                    $matches[$match->name]['matched_words'][] = $word;
-                }
-            }
-        }
+            for ($j = $i + 1; $j <= mb_strlen($word); $j++) {
+                $combination = mb_substr($word, $i, $j - $i, 'UTF-8');
 
-        // Step 3: Check for letter combinations
-        for ($i = 0; $i < mb_strlen($word) - 1; $i++) {
-            $combination = mb_substr($word, $i, 2, 'UTF-8');  // Extract two-character combination
-            foreach ($tables as $tableName => $model) {
-                $combinationMatches = $model::whereRaw("BINARY name = ?", [$combination])->get();
-                foreach ($combinationMatches as $match) {
-                    if (!isset($matches[$match->name])) {
-                        $matches[$match->name] = [
-                            'type' => 'letterCombination', // Letter combination match type
-                            'table' => $tableName, // Table name
-                            'matched_words' => [], // Use 'matched_words' for combination matches
-                        ];
-                    }
-                    $matches[$match->name]['matched_words'][] = $word;
-                }
-            }
-        }
+                foreach ($connectives as $connectiveId => $connective) {
+                    if ($combination === $connective->name) {
+                        $categoryName = $categoryNames[$connective->category_id] ?? 'الادوات'; // Default if not found
 
-        // Step 4: Check for combinations of three letters (if word length allows)
-        if (mb_strlen($word) > 2) {
-            for ($i = 0; $i < mb_strlen($word) - 2; $i++) {
-                $threeCharCombination = mb_substr($word, $i, 3, 'UTF-8');  // Extract three-character combination
-                foreach ($tables as $tableName => $model) {
-                    $threeCharMatches = $model::whereRaw("BINARY name = ?", [$threeCharCombination])->get();
-                    foreach ($threeCharMatches as $match) {
-                        if (!isset($matches[$match->name])) {
-                            $matches[$match->name] = [
-                                'type' => 'threeLetterCombination', // Three-letter combination match type
-                                'table' => $tableName, // Table name
-                                'matched_words' => [], // Use 'matched_words' for three-character matches
+                        if (!isset($matches[$combination])) {
+                            $matches[$combination] = [
+                                'type' => 'letterCombination',
+                                'table' => $categoryName, // Use category Arabic name
+                                'matched_words' => [],
+                                'name' => $combination,
+                                'definition' => $connective->definition ?? ''
                             ];
                         }
-                        $matches[$match->name]['matched_words'][] = $word;
+                        $matches[$combination]['matched_words'][] = $word;
                     }
+                }
+
+                // Check for pronoun combination
+                if (in_array($combination, $pronouns, true)) {
+                    $pronounId = array_search($combination, $pronouns);
+                    if (!isset($matches[$combination])) {
+                        $matches[$combination] = [
+                            'type' => 'letterCombination',
+                            'table' => 'الضمائر',
+                            'matched_words' => [],
+                            'name' => $combination,
+                            'definition' => $pronounsWithDefinitions[$pronounId]->definition ?? ''
+                        ];
+                    }
+                    $matches[$combination]['matched_words'][] = $word;
                 }
             }
         }
     }
 
-    // Convert the matches array into a format that can be rendered
-    $analysisResults = [];
-    foreach ($matches as $matchName => $matchData) {
-        $analysisResults[] = [
-            'name' => $matchName,
-            'type' => $matchData['type'],
-            'table' => $matchData['table'],
-            'matched_words' => $matchData['matched_words'], // All matched words will go into this key
-        ];
+    $analysisResults = array_values($matches);
+    return response()->json(['analysis' => 'تم التحليل بنجاح', 'results' => $analysisResults]);
+}
+
+
+
+
+
+// public function getPhonemeDetailsForLetter(Request $request)
+// {
+//     $letter = $request->input('letter'); // Receive the letter from the frontend
+
+//     // Fetch the Arabic letter record from arabic_letters table based on the letter
+//     $arabicLetter = ArabicLetter::where('letter', $letter)->first();
+
+//     if (!$arabicLetter) {
+//         return response()->json(['error' => 'Arabic letter not found'], 404);
+//     }
+
+//     // Fetch the phoneme details from the phonemes table based on arabic_letter_id
+//     $phoneme = Phoneme::where('arabic_letter_id', $arabicLetter->id)->first();
+
+//     if (!$phoneme) {
+//         return response()->json(['error' => 'Phoneme not found'], 404);
+//     }
+
+//     // Return phoneme details
+//     return response()->json([
+//         'letter' => $letter,
+//         'ipa' => $phoneme->ipa,
+//         'type' => $phoneme->type,
+//         'place_of_articulation' => $phoneme->place_of_articulation,
+//         'manner_of_articulation' => $phoneme->manner_of_articulation,
+//         'voicing' => $phoneme->voicing,
+//         'sound_effects' => $phoneme->sound_effects,
+//         'notes' => $phoneme->notes,
+//         'articulation_arabic_name' => $phoneme->articulation_arabic_name,
+//     ]);
+// }
+
+
+
+// for analysis options (check boxes)
+public function showAnalysisOptions()
+{
+    $categories = ConnectiveCategory::all(); // Fetch all categories
+    return view('quran.index', compact('categories'));
+}
+
+
+public function getArabicLetterId(Request $request)
+{
+    $letter = $request->input('letter'); // Receive the letter from the frontend
+
+    // Fetch the Arabic letter record from the arabic_letters table based on the letter
+    $arabicLetter = ArabicLetter::where('letter', $letter)->first();
+
+    if (!$arabicLetter) {
+        return response()->json(['error' => 'Arabic letter not found'], 404);
     }
 
-    // Return the results as JSON
+    // Return the Arabic letter ID
     return response()->json([
-        'analysis' => 'تم التحليل بنجاح',
-        'results' => $analysisResults,
+        'letter_id' => $arabicLetter->id
     ]);
 }
+
+
+
+public function getPhonemeDetailsForLetter(Request $request)
+{
+    $letterId = $request->input('letter_id'); // Receive the letter ID from the frontend
+
+    // Fetch the phoneme details from the phonemes table based on arabic_letter_id
+    $phoneme = Phoneme::where('arabic_letter_id', $letterId)->first();
+
+    if (!$phoneme) {
+        return response()->json(['error' => 'Phoneme not found'], 404);
+    }
+
+    // Return phoneme details
+    return response()->json([
+        'letter' => $phoneme->arabicLetter->letter ?? 'N/A',
+        'ipa' => $phoneme->ipa ?? 'N/A',
+        'type' => $phoneme->type ?? 'N/A',
+        'place_of_articulation' => $phoneme->place_of_articulation ?? 'N/A',
+        'manner_of_articulation' => $phoneme->manner_of_articulation ?? 'N/A',
+        'sound_effects' => $phoneme->sound_effects ?? 'N/A',
+        'notes' => $phoneme->notes ?? 'N/A',
+        'articulation_arabic_name' => $phoneme->articulation_arabic_name ?? 'N/A'
+    ]);
+}
+
+
+
+
+
+
 
 
 
