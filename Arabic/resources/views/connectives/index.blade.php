@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>إدارة الروابط العربية</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;700&family=Amiri:wght@400;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&display=swap"
         rel="stylesheet">
     <style>
     :root {
@@ -16,15 +15,8 @@
         --accent-color: #C17B3F;
         --text-color: #2b2b2b;
         --white: #ffffff;
-        --gray-100: #f7fafc;
-        --gray-200: #edf2f7;
-        --gray-300: #e2e8f0;
-        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-        --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-        --radius-sm: 0.375rem;
-        --radius-md: 0.5rem;
-        --radius-lg: 1rem;
+        --gradient-start: #234B6E;
+        --gradient-end: #3A7E71;
     }
 
     * {
@@ -34,151 +26,123 @@
     }
 
     body {
-        font-family: 'Noto Kufi Arabic', 'Amiri', sans-serif;
-        background-color: var(--gray-100);
+        font-family: 'Amiri', serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
         color: var(--text-color);
-        line-height: 1.6;
-        overflow-x: hidden;
+        min-height: 100vh;
+        line-height: 1.8;
     }
 
-    /* Header Styles */
-    .header {
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        padding: 2rem 1rem;
-        text-align: center;
+    header {
+        background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+        padding: 3rem;
         position: relative;
-        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
-    .header h1 {
+    header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        background:
+            radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 60%),
+            linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%);
+        background-size: 100% 100%, 60px 60px;
+        opacity: 0.2;
+        animation: backgroundMove 30s linear infinite;
+    }
+
+    header h1 {
         color: var(--white);
-        font-size: clamp(1.5rem, 4vw, 2.5rem);
-        margin: 0;
-        font-weight: 700;
+        font-size: 3rem;
+        text-align: center;
+        font-family: 'Aref Ruqaa', serif;
+        position: relative;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    /* Container */
-    .container {
+    .main-content {
         max-width: 1200px;
-        margin: 0 auto;
-        padding: 1rem;
+        margin: 40px auto;
+        padding: 0 20px;
     }
 
-    /* Filter Section */
-    .filter-section {
-        background: var(--white);
-        border-radius: var(--radius-lg);
-        padding: 1.5rem;
-        margin: 1rem auto;
-        box-shadow: var(--shadow-md);
-    }
-
-    .filter-title {
-        color: var(--primary-color);
-        font-size: 1.25rem;
-        margin-bottom: 1rem;
-        font-weight: 700;
-    }
-
-    .filter-options {
+    .section-header {
         display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .filter-category {
-        padding: 0.5rem 1rem;
-        border-radius: var(--radius-md);
-        border: 2px solid var(--primary-color);
-        background: transparent;
-        color: var(--primary-color);
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
-    }
-
-    .filter-category:hover {
-        background: var(--gray-200);
-    }
-
-    .filter-category.active {
-        background: var(--primary-color);
-        color: var(--white);
-    }
-
-    /* Search Box */
-    .search-box {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        border: 2px solid var(--gray-300);
-        border-radius: var(--radius-md);
-        font-size: 1rem;
-        transition: all 0.3s ease;
-    }
-
-    .search-box:focus {
-        outline: none;
-        border-color: var(--primary-color);
-        box-shadow: var(--shadow-sm);
-    }
-
-    /* Content Cards */
-    .grid-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 1.5rem;
-        margin-top: 2rem;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
     }
 
     .content-card {
         background: var(--white);
-        border-radius: var(--radius-lg);
-        padding: 1.5rem;
-        box-shadow: var(--shadow-md);
-        transition: transform 0.3s ease;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
     }
 
     .content-card:hover {
         transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
     }
 
-    .content-card h3 {
-        color: var(--primary-color);
-        margin-bottom: 1rem;
-        font-size: 1.25rem;
-    }
-
-    /* Effect Sections */
     .effect-section {
-        background: var(--gray-100);
-        border-radius: var(--radius-md);
-        padding: 1rem;
-        margin-top: 1rem;
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+        border: 1px solid rgba(35, 75, 110, 0.1);
     }
 
     .effect-title {
         color: var(--primary-color);
-        font-size: 1.1rem;
-        margin-bottom: 0.75rem;
+        font-family: 'Aref Ruqaa', serif;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
         padding-bottom: 0.5rem;
         border-bottom: 2px solid var(--secondary-color);
     }
 
     .effect-content {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
     }
 
     .effect-item {
         background: var(--white);
-        padding: 0.75rem;
-        border-radius: var(--radius-sm);
-        border-right: 3px solid var(--primary-color);
+        padding: 1rem;
+        border-radius: 8px;
+        border-right: 4px solid var(--primary-color);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
-    /* Modal Styles */
+    .btn {
+        padding: 0.8rem 1.5rem;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        font-family: 'Amiri', serif;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-edit {
+        background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+        color: var(--white);
+    }
+
+    .btn-delete {
+        background: #dc3545;
+        color: var(--white);
+    }
+
     .modal {
         display: none;
         position: fixed;
@@ -186,84 +150,157 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(5px);
         z-index: 1000;
     }
 
     .modal-content {
         background: var(--white);
         width: 90%;
-        max-width: 600px;
+        max-width: 800px;
         margin: 2rem auto;
-        padding: 2rem;
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-lg);
-        max-height: 90vh;
-        overflow-y: auto;
+        padding: 2.5rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
 
-    /* Form Styles */
     .form-group {
         margin-bottom: 1.5rem;
     }
 
-    .form-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-        color: var(--primary-color);
-        font-weight: 500;
-    }
-
     .form-control {
         width: 100%;
-        padding: 0.75rem;
-        border: 2px solid var(--gray-300);
-        border-radius: var(--radius-md);
-        font-size: 1rem;
+        padding: 1rem;
+        border: 2px solid rgba(35, 75, 110, 0.2);
+        border-radius: 10px;
+        font-family: 'Amiri', serif;
+        font-size: 1.1rem;
         transition: all 0.3s ease;
     }
 
     .form-control:focus {
-        outline: none;
         border-color: var(--primary-color);
-        box-shadow: var(--shadow-sm);
+        box-shadow: 0 0 0 3px rgba(35, 75, 110, 0.1);
+        outline: none;
     }
 
-    /* Button Styles */
-    .btn {
-        padding: 0.75rem 1.5rem;
-        border-radius: var(--radius-md);
-        border: none;
-        cursor: pointer;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-    .btn-primary {
-        background: var(--primary-color);
-        color: var(--white);
-    }
-
-    .btn-danger {
-        background: #dc3545;
-        color: var(--white);
-    }
-
-    .btn:hover {
-        opacity: 0.9;
-        transform: translateY(-1px);
-    }
-
-    /* Responsive Adjustments */
     @media (max-width: 768px) {
-        .container {
-            padding: 0.5rem;
+        header h1 {
+            font-size: 2.2rem;
         }
 
-        .grid-container {
+        .effect-content {
             grid-template-columns: 1fr;
         }
 
+        .modal-content {
+            width: 95%;
+            padding: 1.5rem;
+            margin: 1rem auto;
+        }
+    }
+
+    @keyframes backgroundMove {
+        0% {
+            background-position: center, 0 0;
+        }
+
+        100% {
+            background-position: center, 60px 60px;
+        }
+    }
+
+    .filter-section {
+        background: var(--white);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 2rem auto;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        max-width: 1200px;
+    }
+
+    .filter-title {
+        color: var(--primary-color);
+        font-family: 'Aref Ruqaa', serif;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .filter-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .filter-category {
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        border: 2px solid var(--primary-color);
+        background: transparent;
+        color: var(--primary-color);
+        cursor: pointer;
+        font-family: 'Amiri', serif;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+
+    .filter-category:hover {
+        background: rgba(35, 75, 110, 0.1);
+    }
+
+    .filter-category.active {
+        background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+        color: var(--white);
+        border: none;
+    }
+
+    .search-box {
+        width: 100%;
+        padding: 1rem;
+        border: 2px solid rgba(35, 75, 110, 0.2);
+        border-radius: 10px;
+        font-family: 'Amiri', serif;
+        font-size: 1.1rem;
+        margin-top: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .search-box:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(35, 75, 110, 0.1);
+        outline: none;
+    }
+
+    .filter-tag {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: var(--secondary-color);
+        color: var(--white);
+        border-radius: 15px;
+        margin: 0.25rem;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .filter-tag:hover {
+        background: var(--primary-color);
+    }
+
+    .active-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        padding: 1rem;
+        background: rgba(35, 75, 110, 0.05);
+        border-radius: 10px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
         .filter-options {
             flex-direction: column;
         }
@@ -272,87 +309,170 @@
             width: 100%;
             text-align: center;
         }
+    }
+    </style>
 
+    <style>
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(5px);
+        z-index: 1000;
+        overflow-y: auto;
+        padding: 2rem 1rem;
+    }
+
+    .modal-content {
+        background: var(--white);
+        width: 90%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-title {
+        color: var(--primary-color);
+        font-family: 'Aref Ruqaa', serif;
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        border-bottom: 2px solid var(--secondary-color);
+        padding-bottom: 1rem;
+    }
+
+    /* Form Section Styles */
+    .form-section {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(35, 75, 110, 0.1);
+    }
+
+    .form-section-title {
+        color: var(--primary-color);
+        font-family: 'Aref Ruqaa', serif;
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
+
+    /* Form Controls */
+    .form-control {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 2px solid rgba(35, 75, 110, 0.2);
+        border-radius: 8px;
+        font-family: 'Amiri', serif;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(35, 75, 110, 0.1);
+        outline: none;
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--text-color);
+        font-weight: bold;
+    }
+
+    /* Form Actions */
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(35, 75, 110, 0.1);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
         .modal-content {
             width: 95%;
-            margin: 1rem auto;
-            padding: 1rem;
+            padding: 1.5rem;
         }
 
-        .effect-content {
+        .form-grid {
             grid-template-columns: 1fr;
         }
-    }
 
-    @media (max-width: 480px) {
-        .header h1 {
-            font-size: 1.5rem;
+        .form-actions {
+            flex-direction: column;
         }
 
-        .content-card {
-            padding: 1rem;
-        }
-
-        .btn {
+        .form-actions .btn {
             width: 100%;
-            margin-bottom: 0.5rem;
         }
     }
 
-    /* Utility Classes */
-    .mt-1 {
-        margin-top: 0.5rem;
+    /* Scrollbar Styling */
+    .modal-content {
+        max-height: 90vh;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--secondary-color) #f0f0f0;
     }
 
-    .mt-2 {
-        margin-top: 1rem;
+    .modal-content::-webkit-scrollbar {
+        width: 8px;
     }
 
-    .mt-3 {
-        margin-top: 1.5rem;
+    .modal-content::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        border-radius: 4px;
     }
 
-    .mb-1 {
-        margin-bottom: 0.5rem;
-    }
-
-    .mb-2 {
-        margin-bottom: 1rem;
-    }
-
-    .mb-3 {
-        margin-bottom: 1.5rem;
+    .modal-content::-webkit-scrollbar-thumb {
+        background: var(--secondary-color);
+        border-radius: 4px;
     }
     </style>
 </head>
 
 <body>
-    <header class="header">
+    <header>
         <h1>إدارة الروابط العربية</h1>
     </header>
 
-    <div class="container">
-        <section class="filter-section">
-            <h2 class="filter-title">تصفية الروابط</h2>
 
-            <div class="filter-options">
-                <button class="filter-category active">الكل</button>
-                <button class="filter-category">روابط العطف</button>
-                <button class="filter-category">روابط الشرط</button>
-                <button class="filter-category">روابط السببية</button>
-                <button class="filter-category">روابط الاستدراك</button>
-                <button class="filter-category">روابط التوكيد</button>
-            </div>
-
-            <input type="text" class="search-box" placeholder="ابحث عن رابط...">
-
-            <div class="active-filters mt-2"></div>
-        </section>
-
-        <section class="content-section mt-3">
-            <div class="section-header mb-3">
+    <div class="main-content">
+        <div class="content-section">
+            <div class="section-header">
                 <h2>قائمة الروابط</h2>
-                <button class="btn btn-primary" onclick="openAddModal()">إضافة رابط جديد</button>
+                <button class="btn btn-edit" onclick="openAddModal()">إضافة رابط جديد</button>
             </div>
 
             <div class="grid-container">
@@ -415,7 +535,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="action-buttons">
+                    <div class="action-buttons" style="display: flex; justify-content: space-between; margin: 20px;">
                         <button class="btn btn-edit" onclick="openEditModal({{ $connective->id }})">
                             تعديل
                         </button>
@@ -423,8 +543,8 @@
                             class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-delete"
-                                onclick="return confirm('هل أنت متأكد من الحذف؟')">
+                            <button type="button" class="btn btn-delete"
+                                onclick="deleteConnective({{ $connective->id }})">
                                 حذف
                             </button>
                         </form>
@@ -432,22 +552,23 @@
                 </div>
                 @endforeach
             </div>
-        </section>
+        </div>
     </div>
 
-    <!-- Modal Template -->
     <div id="editModal" class="modal">
         <div class="modal-content">
-            <h2 class="mb-3">تعديل الرابط</h2>
+            <h2>تعديل الرابط</h2>
             <form id="editForm" method="POST">
                 @csrf
                 @method('PUT')
+
+                <input type="hidden" id="edit_id" name="id">
 
                 <!-- Basic Information -->
                 <div class="grid-2">
                     <div class="form-group">
                         <label for="name">الاسم</label>
-                        <input type="text" class="form-control" id="name" name="name">
+                        <input type="text" class="form-control" id="name" name="name" required>
                     </div>
                     <div class="form-group">
                         <label for="pronunciation">النطق</label>
@@ -508,297 +629,266 @@
         </div>
     </div>
 
+   <!-- Add Modal -->
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <h2 class="modal-title">إضافة رابط جديد</h2>
+        <form id="addForm" method="POST">
+            @csrf
+            
+            <!-- Basic Information Section -->
+            <div class="form-section">
+                <h3 class="form-section-title">المعلومات الأساسية</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="add_name">الاسم</label>
+                        <input type="text" class="form-control" id="add_name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add_pronunciation">النطق</label>
+                        <input type="text" class="form-control" id="add_pronunciation" name="pronunciation">
+                    </div>
+                    <div class="form-group">
+                        <label for="add_meaning">المعنى</label>
+                        <input type="text" class="form-control" id="add_meaning" name="meaning" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add_meaning">التعريف</label>
+                        <input type="text" class="form-control" id="add_meaning" name="definition" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add_category_id">الفئة</label>
+                        <select class="form-control" id="add_category_id" name="category_id" required>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->arabic_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Position and Form Section -->
+            <div class="form-section">
+                <h3 class="form-section-title">الموقع والشكل</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="add_position">الموقع</label>
+                        <select class="form-control" id="add_position" name="position" required>
+                            <option value="start">بداية</option>
+                            <option value="middle">وسط</option>
+                            <option value="end">نهاية</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="add_connective_form">شكل الرابط</label>
+                        <select class="form-control" id="add_connective_form" name="connective_form" required>
+                            <option value="standalone">مستقل</option>
+                            <option value="connected">متصل</option>
+                            <option value="hybrid">هجين</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Effects Section -->
+            <div class="form-section">
+                <h3 class="form-section-title">التأثيرات</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="add_syntactic_effect_id">التأثير النحوي</label>
+                        <select class="form-control" id="add_syntactic_effect_id" name="syntactic_effect_id" required>
+                            @foreach ($syntacticEffects as $syntacticEffect)
+                                <option value="{{ $syntacticEffect->id }}">{{ $syntacticEffect->result_case }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="add_semantic_logical_effect_id">التأثير الدلالي المنطقي</label>
+                        <select class="form-control" id="add_semantic_logical_effect_id" name="semantic_logical_effect_id" required>
+                            @foreach ($semanticEffects as $semanticEffect)
+                                <option value="{{ $semanticEffect->id }}">{{ $semanticEffect->typical_relation }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Information -->
+            <div class="form-section">
+                <h3 class="form-section-title">معلومات إضافية</h3>
+                <div class="form-group">
+                    <label for="add_status">الحالة</label>
+                    <input type="text" class="form-control" id="add_status" name="status">
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-edit">إضافة الرابط</button>
+                <button type="button" class="btn btn-delete" onclick="closeAddModal()">إلغاء</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
     <script>
-    // Insert the JavaScript code from the previous artifact here
-    // State management
-    const state = {
-        currentFilters: new Set(),
-        searchTerm: '',
-        activeConnective: null
-    };
-
-    // Constants
-    const FILTER_TYPES = {
-        ALL: 'الكل',
-        CONJUNCTION: 'روابط العطف',
-        CONDITION: 'روابط الشرط',
-        CAUSATIVE: 'روابط السببية',
-        EXCEPTION: 'روابط الاستدراك',
-        EMPHASIS: 'روابط التوكيد'
-    };
-
-    // Utility functions
-    const debounce = (func, wait) => {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    };
-
-    // Filter management
-    class FilterManager {
-        constructor() {
-            this.filterContainer = document.querySelector('.filter-options');
-            this.activeFiltersContainer = document.querySelector('.active-filters');
-            this.searchBox = document.querySelector('.search-box');
-            this.setupEventListeners();
-        }
-
-        setupEventListeners() {
-            // Filter buttons
-            this.filterContainer.addEventListener('click', (e) => {
-                if (e.target.classList.contains('filter-category')) {
-                    this.handleFilterClick(e.target);
-                }
-            });
-
-            // Search functionality
-            this.searchBox.addEventListener('input', debounce((e) => {
-                state.searchTerm = e.target.value.trim().toLowerCase();
-                this.applyFilters();
-            }, 300));
-
-            // Active filter tags
-            this.activeFiltersContainer.addEventListener('click', (e) => {
-                if (e.target.classList.contains('filter-tag')) {
-                    this.removeFilter(e.target);
-                }
-            });
-        }
-
-        handleFilterClick(button) {
-            const filterValue = button.textContent;
-
-            if (filterValue === FILTER_TYPES.ALL) {
-                state.currentFilters.clear();
-                this.updateFilterButtons();
-                this.updateFilterTags();
-            } else {
-                if (state.currentFilters.has(filterValue)) {
-                    state.currentFilters.delete(filterValue);
-                } else {
-                    state.currentFilters.add(filterValue);
-                }
-            }
-
-            this.updateFilterButtons();
-            this.updateFilterTags();
-            this.applyFilters();
-        }
-
-        updateFilterButtons() {
-            const buttons = this.filterContainer.querySelectorAll('.filter-category');
-            buttons.forEach(button => {
-                const isActive = button.textContent === FILTER_TYPES.ALL ?
-                    state.currentFilters.size === 0 :
-                    state.currentFilters.has(button.textContent);
-                button.classList.toggle('active', isActive);
-            });
-        }
-
-        updateFilterTags() {
-            this.activeFiltersContainer.innerHTML = '';
-            state.currentFilters.forEach(filter => {
-                const tag = document.createElement('div');
-                tag.className = 'filter-tag';
-                tag.textContent = `${filter} ×`;
-                this.activeFiltersContainer.appendChild(tag);
-            });
-        }
-
-        removeFilter(tagElement) {
-            const filterText = tagElement.textContent.replace(' ×', '');
-            state.currentFilters.delete(filterText);
-            this.updateFilterButtons();
-            this.updateFilterTags();
-            this.applyFilters();
-        }
-
-        applyFilters() {
-            const cards = document.querySelectorAll('.content-card');
-
-            cards.forEach(card => {
-                const cardText = card.textContent.toLowerCase();
-                const categories = card.getAttribute('data-categories')?.toLowerCase() || '';
-
-                let matchesFilters = true;
-                let matchesSearch = true;
-
-                // Check filters
-                if (state.currentFilters.size > 0) {
-                    matchesFilters = Array.from(state.currentFilters).some(filter =>
-                        categories.includes(filter.toLowerCase())
-                    );
-                }
-
-                // Check search
-                if (state.searchTerm) {
-                    matchesSearch = cardText.includes(state.searchTerm);
-                }
-
-                card.style.display = (matchesFilters && matchesSearch) ? 'block' : 'none';
-            });
-        }
-    }
-
-    // Modal management
-    class ModalManager {
-        constructor() {
-            this.modal = document.getElementById('editModal');
-            this.form = document.getElementById('editForm');
-            this.setupEventListeners();
-        }
-
-        setupEventListeners() {
-            // Close modal on outside click
-            window.addEventListener('click', (e) => {
-                if (e.target === this.modal) {
-                    this.closeModal();
-                }
-            });
-
-            // Form submission
-            this.form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                this.handleSubmit(e);
-            });
-        }
-
-        async openModal(id) {
-            state.activeConnective = id;
-
-            // التأكد من وجود العناصر
-            if (!this.modal || !this.form) {
-                console.error("Modal or form not found");
-                return;
-            }
-
-            this.modal.style.display = 'block';
-            this.form.action = `/connectives/${id}`;
-
-            try {
-                const response = await fetch(`/connectives/${id}/edit`);
-                if (!response.ok) throw new Error('Failed to fetch connective data');
-
-                const data = await response.json();
-                this.populateForm(data);
-            } catch (error) {
-                console.error('Error fetching connective data:', error);
-                this.showError('Failed to load connective data');
-            }
-        }
-
-        closeModal() {
-            this.modal.style.display = 'none';
-            state.activeConnective = null;
-
-            // إعادة تعيين الحقول
-            this.form.reset();
-
-            // إعادة تعيين الحقول النصية (textarea) التي لا تتأثر بـ reset()
-            this.form.querySelectorAll('textarea').forEach(textarea => textarea.value = '');
-        }
-
-        populateForm(data) {
-            if (!data) return;
-
-            // تعبئة الحقول الأساسية
-            Object.entries(data).forEach(([key, value]) => {
-                const element = document.getElementById(key);
-                if (element && (typeof value === 'string' || typeof value === 'number')) {
-                    element.value = value;
-                }
-            });
-
-            // تعبئة الحقول المتداخلة (التأثير النحوي والتأثير الدلالي)
-            const effectMappings = {
-                syntactic_effect: ['applied_on', 'result_case', 'context_condition', 'priority_order'],
-                semantic_logical_effect: ['typical_relation', 'nisbah_type', 'semantic_roles', 'conditions']
-            };
-
-            Object.entries(effectMappings).forEach(([effectType, fields]) => {
-                // console.log(data);
-                if (data[effectType]) {
-                    fields.forEach(field => {
-                        const element = document.getElementById(field);
-                        if (element && (typeof data[effectType][field] === 'string' || typeof data[
-                                effectType][field] === 'number')) {
-                            element.value = data[effectType][field];
-                        }
-                    });
-                }
-            });
-        }
-
-
-
-        async handleSubmit(event) {
-    event.preventDefault();
-    
-    // Convert FormData to JSON
-    const formData = new FormData(this.form);
-    let jsonObject = {};
-
-    formData.forEach((value, key) => {
-        const keys = key.split('[').map(k => k.replace(']', ''));
-        if (keys.length > 1) {
-            if (!jsonObject[keys[0]]) jsonObject[keys[0]] = {};
-            jsonObject[keys[0]][keys[1]] = value;
-        } else {
-            jsonObject[key] = value;
-        }
-    });
-    console.log(jsonObject);
-    try {
-        const response = await fetch(this.form.action, {
-            method: 'PUT',
-            body: JSON.stringify(jsonObject), // Send JSON
-            headers: {
-                'Content-Type': 'application/json', // Set correct content type
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            }
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-            console.error('Validation errors:', result);
-            throw new Error('Submission failed');
-        }
-
-        this.closeModal();
-        window.location.reload(); // Refresh to show updated data
-    } catch (error) {
-        console.error('Error submitting form:', error);
-        this.showError('Failed to save changes');
-    }
+    // Modal handling functions
+    // Add Modal handling functions
+function openAddModal() {
+    const modal = document.getElementById('addModal');
+    const form = document.getElementById('addForm');
+    form.reset();
+    modal.style.display = 'block';
 }
 
+function closeAddModal() {
+    const modal = document.getElementById('addModal');
+    modal.style.display = 'none';
+}
+
+// Form submission handler for add form
+document.getElementById('addForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    fetch('/connectives', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('تم إضافة الرابط بنجاح');
+            window.location.reload();
+        } else {
+            alert('حدث خطأ أثناء إضافة الرابط');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('حدث خطأ أثناء إضافة الرابط');
+    });
+});
+
+// Close add modal when clicking outside
+window.onclick = function(event) {
+    const addModal = document.getElementById('addModal');
+    const editModal = document.getElementById('editModal');
+    if (event.target == addModal) {
+        closeAddModal();
+    }
+    if (event.target == editModal) {
+        closeModal();
+    }
+}
+    function openEditModal(id) {
+        // جلب بيانات الرابط عبر AJAX
+        fetch(`/connectives/${id}/edit`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // تعبئة البيانات في النموذج
+                document.getElementById('edit_id').value = id;
+                document.getElementById('name').value = data.name;
+                document.getElementById('pronunciation').value = data.pronunciation;
+                document.getElementById('applied_on').value = data.syntactic_effect.applied_on || '';
+                document.getElementById('result_case').value = data.syntactic_effect.result_case || '';
+                document.getElementById('context_condition').value = data.syntactic_effect.context_condition || '';
+                document.getElementById('priority_order').value = data.syntactic_effect.priority_order || '';
+
+                document.getElementById('typical_relation').value = data.semantic_logical_effect.typical_relation ||
+                    '';
+                document.getElementById('nisbah_type').value = data.semantic_logical_effect.nisbah_type || '';
+                document.getElementById('semantic_roles').value = data.semantic_logical_effect.semantic_roles || '';
+                document.getElementById('conditions').value = data.semantic_logical_effect.conditions || '';
+
+                // تعيين action للنموذج
+                document.getElementById('editForm').action = `/connectives/${id}`;
+
+                // فتح النافذة
+                document.getElementById('editModal').style.display = 'block';
+            })
+            .catch(error => console.error('Error fetching connective data:', error));
+    }
+
+    function closeModal() {
+        document.getElementById('editModal').style.display = 'none';
+    }
 
 
+    function closeModal() {
+        const modal = document.getElementById('editModal');
+        modal.style.display = 'none';
+    }
 
+    // Form submission handler
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-        showError(message) {
-            // Implement error notification
-            alert(message);
+        const formData = new FormData(this);
+        const method = formData.get('_method') || 'POST';
+
+        fetch(this.action, {
+                method: method === 'PUT' ? 'POST' : method,
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('تم حفظ البيانات بنجاح');
+                    window.location.reload();
+                } else {
+                    alert('حدث خطأ أثناء حفظ البيانات');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء حفظ البيانات');
+            });
+    });
+
+    // Delete handler
+    function deleteConnective(id) {
+        if (confirm('هل أنت متأكد من الحذف؟')) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/connectives/${id}`;
+
+            const methodInput = document.createElement('input');
+            methodInput.type = 'hidden';
+            methodInput.name = '_method';
+            methodInput.value = 'DELETE';
+
+            const tokenInput = document.createElement('input');
+            tokenInput.type = 'hidden';
+            tokenInput.name = '_token';
+            tokenInput.value = document.querySelector('meta[name="csrf-token"]').content;
+
+            form.appendChild(methodInput);
+            form.appendChild(tokenInput);
+            document.body.appendChild(form);
+
+            form.submit();
         }
     }
 
-    // Initialize the application
-    document.addEventListener('DOMContentLoaded', () => {
-        const filterManager = new FilterManager();
-        const modalManager = new ModalManager();
-
-        // Make modalManager available globally for onclick handlers
-        window.openEditModal = (id) => modalManager.openModal(id);
-        window.closeModal = () => modalManager.closeModal();
-    });
-    </script>
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('editModal');
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+   </script>
 </body>
 
 </html>
