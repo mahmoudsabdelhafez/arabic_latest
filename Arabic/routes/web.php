@@ -120,18 +120,17 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/sentences', SentenceController::class); // إضافة جملة جديدة
 
-    Route::resource('connectives', ConnectiveController::class);
     Route::get('/connectives/{id}/edit', [ConnectiveController::class, 'update']);
     Route::put('/connectives/{connective}', [ConnectiveController::class, 'update'])->name('connectives.update');
-
-    Route::resource('connective_categories', ConnectiveCategoryController::class);
-
+    
+    
     
 });
 
 require __DIR__.'/auth.php';
-Route::resource('connectives', ConnectiveController::class);
 
+Route::resource('connective_categories', ConnectiveCategoryController::class);
+Route::resource('connectives', ConnectiveController::class);
 
 /*
 |--------------------------------------------------------------------------
