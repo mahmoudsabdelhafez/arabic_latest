@@ -15,6 +15,8 @@
             --white: #ffffff;
             --gradient-start: #234B6E;
             --gradient-end: #3A7E71;
+            --sidebar-width: 300px;
+            --sidebar-bg: #f8f9fa;
         }
 
         * {
@@ -28,54 +30,72 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
             color: var(--text-color);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
             line-height: 1.8;
         }
 
+        /* Layout Structure */
+        .page-wrapper {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+            position: relative;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-right: var(--sidebar-width);
+            padding: 2rem;
+            width: calc(100% - var(--sidebar-width));
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            border-left: 1px solid rgba(0,0,0,0.1);
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.05);
+        }
+
+        .analysis-options {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-top: 80px; /* Space for header */
+        }
+
+        /* Header Styles */
         header {
             background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
-            padding: 3rem;
+            padding: 2rem;
             position: relative;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            left: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 60%),
-                linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
-            background-size: 100% 100%, 60px 60px;
-            opacity: 0.2;
-            animation: backgroundMove 30s linear infinite;
-        }
-
-        @keyframes backgroundMove {
-            0% { background-position: center, 0 0; }
-            100% { background-position: center, 60px 60px; }
+            z-index: 10;
         }
 
         header h1 {
             color: var(--white);
-            font-size: 3rem;
+            font-size: 2.5rem;
             text-align: center;
             font-family: 'Aref Ruqaa', serif;
+            margin-right: var(--sidebar-width);
             position: relative;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-
+        /* Search Container Styles */
         .search-container {
             background: var(--white);
             border-radius: 20px;
@@ -92,36 +112,95 @@
             border-radius: 12px;
             font-family: 'Amiri', serif;
             transition: all 0.3s ease;
-            outline: none;
         }
 
-        #search:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(35, 75, 110, 0.1);
+        /* Analysis Button Styles */
+        #analysis-btn {
+            padding: 12px 30px;
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+            color: var(--white);
+            font-family:  serif;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: all 0.3s ease;
         }
 
-        .loader {
-            display: none;
-            text-align: center;
-            padding: 1rem;
+        #analysis-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
 
-        .loader::after {
-            content: "";
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        /* Toggle Buttons Styles */
+        .toggle-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .toggle-btn {
+            padding: 10px 20px;
+            border: none;
+            background-color: var(--white);
+            cursor: pointer;
+            border-radius: 8px;
+            font-family: 'Amiri', serif;
+            transition: all 0.3s ease;
+            flex: 1;
         }
 
+        .toggle-btn.active {
+            background: var(--primary-color);
+            color: var(--white);
+            box-shadow: 0 4px 10px rgba(35, 75, 110, 0.2);
+        }
+
+        /* Checkbox Styles */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            padding: 12px 0;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-group:hover {
+            background: rgba(35, 75, 110, 0.05);
+            border-radius: 8px;
+            padding-right: 8px;
+        }
+
+        .custom-checkbox {
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--primary-color);
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .custom-checkbox:checked {
+            background: var(--primary-color);
+        }
+
+        .custom-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 14px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Results Styles */
         #results {
             list-style: none;
         }
@@ -129,461 +208,257 @@
         #results li {
             background: var(--white);
             margin-bottom: 15px;
-            padding: 20px 25px;
+            padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
         #results li:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
 
-        .sura-name {
-            color: var(--primary-color);
-            font-weight: bold;
-            font-size: 1.2rem;
-            font-family: 'Aref Ruqaa', serif;
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            :root {
+                --sidebar-width: 250px;
+            }
         }
 
-        .aya-number {
-            color: var(--secondary-color);
-            font-size: 1rem;
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+
+            .main-content {
+                margin-right: 0;
+                width: 100%;
+                padding: 1rem;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                margin-top: 0;
+            }
+
+            header h1 {
+                margin-right: 0;
+                font-size: 2rem;
+            }
+
+            .analysis-options {
+                margin-top: 0;
+            }
         }
 
-        .aya-text {
-            margin-top: 0.8rem;
-            line-height: 2;
-            font-size: 1.15rem;
-        }
 
-        .highlight {
-            background-color: rgba(193, 123, 63, 0.2);
-            color: var(--accent-color);
-            padding: 0 4px;
-            border-radius: 4px;
-        }
+        /* Results Container */
+#results {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px 0;
+}
 
-        #pagination {
-            margin-top: 2rem;
-            text-align: center;
-        }
-
-        .pagination-btn {
-            padding: 0.8rem 1.5rem;
-            margin: 0 0.5rem;
-            border: none;
-            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
-            color: var(--white);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Amiri', serif;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .pagination-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-        }
-
-        .pagination-btn:disabled {
-            background: #bdc3c7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .no-results {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-color);
-            font-size: 1.2rem;
-        }
-
-        .ayah-analysis-btn {
-    padding: 10px 20px;
-    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
-    color: var(--white);
-    font-family: 'Aref Ruqaa', serif;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+/* Individual Result Item */
+#results li {
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.98));
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(35, 75, 110, 0.08);
+    border: 1px solid rgba(35, 75, 110, 0.1);
     transition: all 0.3s ease;
-    text-align: center;
-    margin-top: 15px;
-    display: block;
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-}
-#analysis-btn {
-    padding: 12px 25px;
-    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
-    color: var(--white);
-    font-family: 'Aref Ruqaa', serif;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    display: block;
-    margin: 20px auto; /* Center the button horizontally */
-    width: fit-content;
-    text-align: center;
+    position: relative;
+    overflow: hidden;
 }
 
-#analysis-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+#results li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(35, 75, 110, 0.12);
 }
 
-#analysis-btn:disabled {
-    background: #bdc3c7;
-    cursor: not-allowed;
-    transform: none;
-}
-
-#analysis-btn:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(35, 75, 110, 0.2);
-}
-
-/* Container for the text that will be shown */
-.analysis-text-container {
-    display: none;  /* Initially hidden */
-    margin-top: 20px;
-    padding: 20px;
-    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
-    color: var(--white);
-    /* font-family: 'Aref Ruqaa', serif; */
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    font-size: 1.2rem;
-    line-height: 1.8;
-    text-align: center;
-    opacity: 0;
-    transform: translateY(-20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.analysis-text-container.show {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.analysis-text-container h3 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--accent-color);
-}
-
-.analysis-text-container p {
-    margin-top: 10px;
-    font-size: 1.2rem;
-}
-
-.analysis-result {
-            background-color: #f4f4f9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: none;
-        }
-
-        .analysis-result h4 {
-            color: var(--primary-color);
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        .analysis-result p {
-            font-size: 1rem;
-            color: var(--text-color);
-        }
-
-
-.ayah-analysis-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
-.ayah-analysis-btn:disabled {
-    background: #bdc3c7;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.ayah-analysis-btn:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(35, 75, 110, 0.2);
-}
-
-.toggle-buttons {
-    margin: 10px 0;
-}
-
-.toggle-btn {
-    padding: 10px 20px;
-    margin: 5px;
-    border: none;
-    background-color: #f0f0f0;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.toggle-btn.active {
-    background-color:var(--primary-color);
-    color: white;
-}
-
-
-
-
-        .footer {
-            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
-            color: var(--white);
-            text-align: center;
-            padding: 2rem;
-            margin-top: auto;
-            position: relative;
-            overflow: hidden;
-            font-family: 'Aref Ruqaa', serif;
-        }
-
-        /* <!------------------------------------- check boxes style ---------------------------------------------> */
-        .analysis-options {
-    background: var(--white);
-    border-radius: 20px;
-    padding: 20px;
-    margin: 20px 0;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.analysis-options-title {
+/* Sura Name Styling */
+.sura-name {
     color: var(--primary-color);
     font-family: 'Aref Ruqaa', serif;
-    font-size: 1.3rem;
-    margin-bottom: 15px;
-    text-align: right;
-}
-
-.checkbox-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Two columns */
-    gap: 12px 20px; /* Adjust spacing between checkboxes */
-    align-items: center;
-}
-
-
-.checkbox-group {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 10px;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
 }
 
-.custom-checkbox {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--primary-color);
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s ease;
-    background: var(--white);
+.sura-name::before {
+    content: '◈';
+    color: var(--accent-color);
+    font-size: 1.2rem;
 }
 
-.custom-checkbox:checked {
+/* Aya Number */
+.aya-number {
     background: var(--primary-color);
-}
-
-.custom-checkbox:checked::after {
-    content: '✓';
-    position: absolute;
     color: white;
-    font-size: 14px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(35, 75, 110, 0.2);
 }
 
-.custom-checkbox:hover {
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 5px rgba(58, 126, 113, 0.3);
+/* Aya Text */
+.aya-text {
+    font-size: 1.25rem;
+    line-height: 2.2;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    border-right: 4px solid var(--secondary-color);
+    margin: 15px 0;
 }
 
-label {
-    font-family: 'Amiri', serif;
-    font-size: 1.1rem;
-    color: var(--text-color);
+/* Highlighted Text */
+.highlight {
+    background: linear-gradient(120deg, rgba(193, 123, 63, 0.2) 0%, rgba(193, 123, 63, 0.1) 100%);
+    color: var(--accent-color);
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.pagination-btn {
+    background: var(--secondary-color);
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
+    font-family: 'Amiri', serif;
+    font-size: 1rem;
+    margin-top: 10px;
+    transition: all 0.3s ease;
 }
 
-@media (max-width: 768px) {
-    .analysis-options {
-        padding: 15px;
-    }
-    
-    .checkbox-group {
-        padding: 8px 0;
-    }
-    
-    .custom-checkbox {
-        width: 18px;
-        height: 18px;
-    }
-    
-    label {
-        font-size: 1rem;
-    }
-
-    .checkbox-container {
-        grid-template-columns: repeat(1, 1fr); /* Switch to one column on smaller screens */
-    }
+.pagination-btn:hover {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+}
 
 
+/* Analysis Button */
+.ayah-analysis-btn {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family:  serif;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    box-shadow: 0 4px 15px rgba(35, 75, 110, 0.15);
+}
 
+.ayah-analysis-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(35, 75, 110, 0.2);
+}
 
-
-
-
-    .analysis-result {
-    background: linear-gradient(to left, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.98));
-    border-radius: 15px;
+/* Analysis Results */
+.analysis-result {
     margin-top: 20px;
     padding: 20px;
-    box-shadow: 0 4px 20px rgba(35, 75, 110, 0.1);
-    border: 1px solid rgba(35, 75, 110, 0.1);
-    transition: all 0.3s ease;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: slideIn 0.5s ease forwards;
-}
-
-@keyframes slideIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    background: rgba(248, 249, 250, 0.9);
+    border-radius: 12px;
+    display: none;
 }
 
 .analysis-result > div {
     border-right: 4px solid var(--primary-color);
     margin-bottom: 20px;
     padding: 15px;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 0 15px 15px 0;
+    background: white;
+    border-radius: 0 10px 10px 0;
     transition: all 0.3s ease;
 }
 
 .analysis-result > div:hover {
     transform: translateX(-5px);
-    background: rgba(255, 255, 255, 0.9);
     box-shadow: 0 4px 15px rgba(35, 75, 110, 0.1);
 }
 
 .analysis-result h4 {
     color: var(--primary-color);
-    font-family: 'Aref Ruqaa', serif;
+    font-family:  serif;
     font-size: 1.2rem;
-    margin-bottom: 12px;
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.analysis-result h4::before {
-    content: '⦿';
-    color: var(--accent-color);
-    font-size: 1.4rem;
-}
-
-.analysis-result .matched-words {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 10px 0;
-}
-
-.analysis-result .word-chip {
-    background: var(--primary-color);
+/* Phoneme Details Button */
+.phoneme-details-btn {
+    background: var(--secondary-color);
     color: white;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    display: inline-block;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Amiri', serif;
+    font-size: 1rem;
+    margin-top: 10px;
     transition: all 0.3s ease;
 }
 
-.analysis-result .word-chip:hover {
+.phoneme-details-btn:hover {
+    background: var(--primary-color);
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(35, 75, 110, 0.2);
-    background: var(--secondary-color);
 }
 
-.analysis-result .analysis-table {
+/* Phoneme Details Container */
+.phoneme-details-container {
     margin-top: 15px;
-    padding: 10px;
+    padding: 15px;
     background: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--text-color);
+    display: none;
 }
 
-.analysis-result .table-row {
-    display: flex;
-    padding: 8px 0;
+.phoneme-details-container > div {
+    padding: 15px;
     border-bottom: 1px solid rgba(35, 75, 110, 0.1);
 }
 
-.analysis-result .table-row:last-child {
+.phoneme-details-container > div:last-child {
     border-bottom: none;
 }
 
-.analysis-result .table-label {
-    font-weight: bold;
-    color: var(--secondary-color);
-    width: 120px;
-    flex-shrink: 0;
+.phoneme-details-container h5 {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    margin-bottom: 10px;
 }
 
-.analysis-result .table-value {
-    flex: 1;
-}
-
-/* Add this to your existing loader styles */
-.analysis-loader {
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    border: 3px solid rgba(35, 75, 110, 0.1);
-    border-radius: 50%;
-    border-top-color: var(--primary-color);
-    animation: spin 1s linear infinite;
-    margin: 20px auto;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Mobile responsiveness */
+/* Responsive Design */
 @media (max-width: 768px) {
+    #results li {
+        padding: 15px;
+    }
+
+    .sura-name {
+        font-size: 1.2rem;
+    }
+
+    .aya-text {
+        font-size: 1.1rem;
+        padding: 10px;
+        line-height: 2;
+    }
+
     .analysis-result {
         padding: 15px;
     }
@@ -591,110 +466,101 @@ label {
     .analysis-result > div {
         padding: 10px;
     }
-
-    .analysis-result h4 {
-        font-size: 1.1rem;
-    }
-
-    .analysis-result .table-row {
-        flex-direction: column;
-    }
-
-    .analysis-result .table-label {
-        width: 100%;
-        margin-bottom: 5px;
-    }
 }
+
+/* No Results Message */
+.no-results {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-color);
+    font-size: 1.2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(35, 75, 110, 0.1);
 }
-        /* <!------------------------------------- check boxes style ---------------------------------------------> */
 
+/* Loading Animation */
+.loader {
+    display: none;
+    margin: 20px auto;
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(35, 75, 110, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s linear infinite;
+}
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-                margin: 20px auto;
-            }
-
-            header h1 {
-                font-size: 2.2rem;
-            }
-
-            #search {
-                font-size: 1rem;
-                padding: 12px 15px;
-            }
-        }
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
     </style>
 </head>
 <body>
-    <header>
-        
-        <h1>البحث في القرآن الكريم</h1>
-    </header>
+    <div class="page-wrapper">
+        <header>
+            <h1>البحث في القرآن الكريم</h1>
+        </header>
 
-    <div class="container">
-        
-        <div class="search-container">
-            <input 
-                type="text" 
-                id="search" 
-                placeholder="ابحث عن كلمة أو آية..." 
-                autocomplete="off"
-            >
+        <div class="content-wrapper">
+            <main class="main-content">
+                <div class="search-container">
+                    <input type="text" id="search" placeholder="ابحث عن كلمة أو آية..." autocomplete="off">
+                </div>
+
+                <button id="analysis-btn">تحليل</button>
+                <div id="analysis-text-container" class="analysis-text-container"></div>
+
+                <div class="toggle-buttons">
+                    <button id="quran-btn" class="toggle-btn active">عرض الايات مع تشكيل</button>
+                    <button id="quran-text-clean-btn" class="toggle-btn">عرض الايات بدون تشكيل</button>
+                </div>
+
+                <div class="loader" id="loader"></div>
+                <div id="result-count"></div> <!-- This will display the number of results -->
+                <div id="ayah-analyze-results"></div>
+                <ul id="results"></ul>
+                <div id="pagination"></div>
+
+            </main>
+
+            <aside class="sidebar">
+                <div class="analysis-options">
+                    <h3 class="analysis-options-title">خيارات التحليل</h3>
+                    <div class="checkbox-container">
+                        <div class="checkbox-group" id="select-all-group">
+                            <label for="select-all">جميع الأدوات</label>
+                            <input type="checkbox" id="select-all" class="custom-checkbox">
+                        </div>
+
+                        @foreach ($categories as $category)
+                            <div class="checkbox-group">
+                                <label for="category-{{ $category->id }}">{{ $category->arabic_name }}</label>
+                                <input type="checkbox" id="category-{{ $category->id }}" class="custom-checkbox category-checkbox" data-category-id="{{ $category->id }}">
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </aside>
         </div>
-       <!-- Add this button inside your container before the search bar -->
-<button id="analysis-btn" class="pagination-btn">
-    تحليل
-</button>
-<div id="analysis-text-container" class="analysis-text-container"></div>
-
-
-        <div class="loader" id="loader"></div>
-        <div id="ayah-analyze-results"></div>
-
-        <div class="toggle-buttons">
-    <button id="quran-btn" class="toggle-btn active">عرض الايات مع تشكيل</button>
-    <button id="quran-text-clean-btn" class="toggle-btn">عرض الايات بدون تشكيل</button>
+    </div>
+    <!------------------------------------- check boxes --------------------------------------------->
+    
+    
+   
+    
+    
+    
+    
+    <ul id="results"></ul>
+    <div id="pagination"></div>
 </div>
 
-<!------------------------------------- check boxes --------------------------------------------->
-<div class="analysis-options">
-    <h3 class="analysis-options-title">خيارات التحليل</h3>
-    <div class="checkbox-container">
-        
-        <!-- Select All Checkbox -->
-        <div class="checkbox-group">
-        <label for="select-all">جميع الأدوات</label>
-            <input type="checkbox" id="select-all" class="custom-checkbox">
-        </div>
-
-        <!-- Dynamic Category Checkboxes -->
-        @foreach ($categories as $category)
-            <div class="checkbox-group">
-            <label for="category-{{ $category->id }}">{{ $category->arabic_name }}</label>
-
-                <input type="checkbox" id="category-{{ $category->id }}" class="custom-checkbox category-checkbox" data-category-id="{{ $category->id }}">
-            </div>
-        @endforeach
-    </div>
-</div>
-
-
-<!------------------------------------- check boxes --------------------------------------------->
-
-
-<div id="result-count"></div> <!-- This will display the number of results -->
-
-
-
-
-        <ul id="results"></ul>
-        <div id="pagination"></div>
-    </div>
-
-    <footer class="footer">
-        <p>© جميع الحقوق محفوظة للقرآن الكريم</p>
-    </footer>
+<footer class="footer">
+    <p>© جميع الحقوق محفوظة للقرآن الكريم</p>
+</footer>
+</body>
+</html>
 
     <script>
       let searchTimeout;
@@ -885,7 +751,7 @@ function fetchResults(query, page = 1) {
 
             if (response.current_page > 1) {
                 $('#pagination').append(`
-                    <button id="prev-page" data-page="${response.current_page - 1}" class="pagination-btn">
+                    <button id="prev-page"  data-page="${response.current_page - 1}" class="pagination-btn">
                         السابق
                     </button>
                 `);
