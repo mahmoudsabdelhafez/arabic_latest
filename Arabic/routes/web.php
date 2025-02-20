@@ -121,20 +121,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('/sentences', SentenceController::class); // إضافة جملة جديدة
 
     Route::resource('connectives', ConnectiveController::class);
-    Route::get('connectives/{id}', [ConnectiveController::class, 'index'])->name('connectives.index');
-
-    Route::get('/connectives/{id}/edit', [ConnectiveController::class, 'edit'])->name('connectives.edit');
-    Route::put('/connectives/{id}', [ConnectiveController::class, 'update'])->name('connectives.update');
+    Route::get('/connectives/{id}/edit', [ConnectiveController::class, 'update']);
+    Route::put('/connectives/{connective}', [ConnectiveController::class, 'update'])->name('connectives.update');
 
     Route::resource('connective_categories', ConnectiveCategoryController::class);
-    Route::get('categories', [ConnectiveController::class, 'index']);
 
-
-    // Route::get('/connectives/{id}/edit', [ConnectiveController::class, 'update']);
-    // Route::put('/connectives/{connective}', [ConnectiveController::class, 'update'])->name('connectives.update');
-    
-    Route::resource('connective_categories', ConnectiveCategoryController::class);
-    
     
 });
 

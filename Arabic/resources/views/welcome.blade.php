@@ -768,6 +768,7 @@
                 <div class="nav-item" onclick="showSection('tajweed')"> <span class="nav-icon">📖</span> القرآن الكريم</div>
                 <div class="nav-item" onclick="showSection('phoneme')"> <span class="nav-icon">🔊</span> الصوتيات</div>
                 <div class="nav-item" onclick="showSection('words')"><span class="nav-icon">📝</span> تركيب الكلمات</div>
+                <a href="/connective_categories"><div class="nav-item"><span class="nav-icon">📝</span>  الأدوات في اللغة العربية</div>
                 <div class="nav-item" onclick="showSection('roots')"><span class="nav-icon">🌱</span> الجذور</div>
                 <div class="nav-item" onclick="showSection('affixes')"><span class="nav-icon">🔄</span> السوابق واللواحق</div>
                 <a href="/tree"><div class="nav-item" ><span class="nav-icon">🌳</span> الخطة الشجرية</div></a>
