@@ -894,13 +894,12 @@ $(document).ready(function() {
         // Show the analysis text container with a smooth animation
         $('#analysis-text-container').addClass('show').html(`
             <h3>تحليل نتائج البحث</h3>
-           <ul class="list-group">
+        <ul class="list-group">
         <li class="list-group-item">✅ تم استبدال الألف الخنجرية بالألف العادية</li>
         <li class="list-group-item">✅ تم استبدال الشدة وحركتها بحرف ساكن وحرف متحرك</li>
         <li class="list-group-item">✅ تمت اضافة السكون على جميع الاحرف غير المتحركة</li>
         <li class="list-group-item">✅ تم استبدال همزء القطع بهمزة بهمزة نبرة وازالة همزات الوصل بما يتناسب مع اللفظ</li>
-        
-    </ul>
+        </ul>
         `);
 
         const modifiedResults = applyAnalysis(searchResults); // Apply analysis (replace ب with ا and shadda transformation)
@@ -1034,8 +1033,8 @@ $(document).on('click', '.phoneme-details-btn', function () {
     detailsContainer.html('<p>جاري تحميل التفاصيل...</p>').show();
 
     // Loop through the matched words (e.g., "بس") and split into individual Arabic letters
-    const arabicText = matchedWords.replace(/[^ء-ي]/g, ''); // Only Arabic letters
-    const letters = arabicText.split(''); // Split the matched words into letters
+    // const arabicText = matchedWords.replace(/[^ء-ي]/g, ''); // Only Arabic letters
+    const letters = matchedWords.split(''); // Split the matched words into letters
 
     // Loop through each letter to fetch phoneme details
     const phonemeDetailsPromises = letters.map(letter => {

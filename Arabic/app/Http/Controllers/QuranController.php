@@ -90,9 +90,9 @@ class QuranController extends Controller
 public function analyzeAyahResults(Request $request)
 {
     $ayaId = $request->input('aya_id');
-    $categories = $request->input('categories', []);  // Get the selected categories
+    // $categories = $request->input('categories', []);  // Get the selected categories
 
-    $ayah = QuranTextClean::where("index", $ayaId)->first();
+    $ayah = QuranAll::where("index", $ayaId)->first();
 
     if (!$ayah) {
         return response()->json(['error' => 'Ayah not found'], 404);
@@ -107,7 +107,7 @@ public function analyzeAyahResults(Request $request)
     if (!empty($categories)) {
         $query->whereIn('category_id', $categories);  // Filter by selected categories
     }
-
+    // dd();
     // Fetch connectives along with definitions and category_id
     $connectives = $query->get(['id', 'name', 'definition', 'category_id', 'position', 'connective_form'])->keyBy('id');
 
@@ -128,7 +128,7 @@ public function analyzeAyahResults(Request $request)
 
         // Check full-word match for connectives (only where connective_form = 'standalone')
         foreach ($connectives as $connectiveId => $connective) {
-            if ($word === $connective->name && $connective->connective_form === 'standalone') {
+            if ($word == $connective->name && $connective->connective_form == 'standalone') {
                 $categoryName = $categoryNames[$connective->category_id] ?? 'الادوات'; // Default if not found
                 $matches[$word] = [
                     'type' => 'fullWord',
