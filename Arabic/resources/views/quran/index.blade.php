@@ -494,6 +494,52 @@
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+    .analysis-options-title {
+        padding: 12px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+        position: relative;
+        margin-bottom: 0;
+    }
+
+    .analysis-options-title::after {
+        content: '▼';
+        position: absolute;
+        left: 12px;
+        transition: transform 0.3s ease;
+    }
+
+    .analysis-options.active .analysis-options-title::after {
+        transform: rotate(180deg);
+    }
+
+    .checkbox-container {
+        display: none;
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        margin-top: 8px;
+        padding: 8px 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .analysis-options.active .checkbox-container {
+        display: block;
+    }
+
+    .checkbox-group {
+        padding: 12px 16px;
+    }
+
+    .checkbox-group:not(:last-child) {
+        border-bottom: 1px solid #eee;
+    }
+}
     </style>
 </head>
 <body>
@@ -503,6 +549,27 @@
         </header>
 
         <div class="content-wrapper">
+
+        <aside class="sidebar">
+    <div class="analysis-options">
+        <h3 class="analysis-options-title">خيارات التحليل</h3>
+        <div class="checkbox-container">
+            <div class="checkbox-group" id="select-all-group">
+                <label for="select-all">جميع الأدوات</label>
+                <input type="checkbox" id="select-all" class="custom-checkbox">
+            </div>
+            
+            @foreach ($categories as $category)
+                <div class="checkbox-group">
+                    <label for="category-{{ $category->id }}">{{ $category->arabic_name }}</label>
+                    <input type="checkbox" id="category-{{ $category->id }}" class="custom-checkbox category-checkbox" data-category-id="{{ $category->id }}">
+                </div>
+            @endforeach
+        </div>
+    </div>
+</aside>
+
+
             <main class="main-content">
                 <div class="search-container">
                     <input type="text" id="search" placeholder="ابحث عن كلمة أو آية..." autocomplete="off">
@@ -524,24 +591,7 @@
 
             </main>
 
-            <aside class="sidebar">
-                <div class="analysis-options">
-                    <h3 class="analysis-options-title">خيارات التحليل</h3>
-                    <div class="checkbox-container">
-                        <div class="checkbox-group" id="select-all-group">
-                            <label for="select-all">جميع الأدوات</label>
-                            <input type="checkbox" id="select-all" class="custom-checkbox">
-                        </div>
-
-                        @foreach ($categories as $category)
-                            <div class="checkbox-group">
-                                <label for="category-{{ $category->id }}">{{ $category->arabic_name }}</label>
-                                <input type="checkbox" id="category-{{ $category->id }}" class="custom-checkbox category-checkbox" data-category-id="{{ $category->id }}">
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </aside>
+        
         </div>
     </div>
     <!------------------------------------- check boxes --------------------------------------------->
@@ -563,6 +613,23 @@
 </html>
 
     <script>
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const analysisOptions = document.querySelector('.analysis-options');
+    const title = document.querySelector('.analysis-options-title');
+
+    // Only add click handler on mobile devices
+    if (window.innerWidth <= 768) {
+        title.addEventListener('click', function() {
+            analysisOptions.classList.toggle('active');
+        });
+    }
+});
+
+
+
+
       let searchTimeout;
 let currentQuery = '';
 let searchResults = []; // Store the original search results

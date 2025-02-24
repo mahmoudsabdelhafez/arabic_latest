@@ -182,7 +182,27 @@ public function analyzeAyahResults(Request $request)
                         }
                         $matches[$combination]['matched_words'][] = $word;
                     }
+
+                      // Case 2: Check if it's a 'hybrid' connective (matches anywhere)
+            if ($combination === $connective->name && $connective->connective_form === 'hybrid') {
+                $categoryName = $categoryNames[$connective->category_id] ?? 'الادوات'; // Default if not found
+
+                if (!isset($matches[$combination])) {
+                    $matches[$combination] = [
+                        'type' => 'hybridCombination',
+                        'table' => $categoryName,
+                        'matched_words' => [],
+                        'name' => $combination,
+                        'definition' => $connective->definition ?? ''
+                    ];
                 }
+                $matches[$combination]['matched_words'][] = $word;
+            }
+
+            
+                }
+
+                
 
                 // Check for pronoun combination
                 if (in_array($combination, $pronouns, true)) {
