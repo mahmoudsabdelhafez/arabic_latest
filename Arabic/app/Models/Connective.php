@@ -33,7 +33,6 @@ class Connective extends Model
         'notes',
         'status',
         'created_by',
-
         'updated_by'
     ];
 

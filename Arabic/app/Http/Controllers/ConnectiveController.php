@@ -70,6 +70,7 @@ class ConnectiveController extends Controller
     public function show(Connective $connective)
     {
         $connectives = Connective::with(['category', 'syntacticEffect', 'semanticLogicalEffect'])->where('category_id',$connective->id)->get();
+        // dd($connective);
         $categories = ConnectiveCategory::all();
         $syntacticEffects = SyntacticEffect::all();
         $semanticEffects = SemanticLogicalEffect::all();

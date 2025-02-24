@@ -481,7 +481,7 @@
                     <h3>{{ $connective->name }}</h3>
                     <div class="main-description">
                         <p><strong>النطق:</strong> {{ $connective->pronunciation }}</p>
-                        <p><strong>المعنى:</strong> {{ $connective->meaning }}</p>
+                        <p><strong>المعنى:</strong> {{ isset($connective->meaning)? $connective->meaning : $connective->definition}}</p>
                         <p><strong>الأدوات:</strong> {{ $connective->category->arabic_name }}</p>
                         <p><strong>التعريف:</strong> {{ $connective->definition }}</p>
 

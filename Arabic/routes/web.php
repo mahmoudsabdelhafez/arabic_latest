@@ -44,6 +44,11 @@ use App\Http\Controllers\SentenceController;
 use App\Http\Controllers\TreeController;
 use App\Http\Controllers\ArabicFeatureController;
 use App\Http\Controllers\ConnectiveController;
+use App\Http\Controllers\DialectController;
+use App\Http\Controllers\SemanticDomainController;
+use App\Http\Controllers\NameTypeController;
+use App\Http\Controllers\FunctionalWordController;
+use App\Http\Controllers\RelativePronounController;
 
 
 /*
@@ -56,6 +61,14 @@ use App\Http\Controllers\ConnectiveController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::resource('name_types', NameTypeController::class);
+Route::resource('functional_words', FunctionalWordController::class);
+Route::resource('relative_pronouns', RelativePronounController::class);
+
+Route::resource('dialects', DialectController::class);
+Route::resource('semantic_domains', SemanticDomainController::class);
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -130,7 +143,7 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
-Route::resource('connectives', ConnectiveController::class);
+// Route::resource('connectives', ConnectiveController::class);
 
 
 /*
