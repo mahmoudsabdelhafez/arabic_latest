@@ -165,7 +165,7 @@
 
         .table {
             display: block;
-            overflow-x: auto;
+            /* overflow-x: auto; */
         }
 
         .btn {
@@ -240,7 +240,104 @@
 .mb-3{
     margin-bottom: 15px;
 }
+
+.pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            font-family: 'Amiri', serif;
+        }
+
+        .pagination nav {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .pagination svg {
+            width: 1.2rem;
+            height: 1.2rem;
+            fill: currentColor;
+        }
+
+        .pagination > div {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .pagination span.relative,
+        .pagination a.relative {
+            position: relative;
+            padding: 0.75rem 1rem;
+            background: var(--white);
+            border-radius: 8px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            min-width: 2.5rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .pagination span[aria-current="page"] {
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+            color: var(--white);
+            border: none;
+            font-weight: bold;
+        }
+
+        .pagination a.relative:hover {
+            background: rgba(35, 75, 110, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .pagination span[aria-disabled="true"] {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Specifically targeting the Previous/Next text */
+        .pagination span.relative span,
+        .pagination a.relative span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* For the dots/ellipsis */
+        .pagination span.relative span[aria-hidden="true"] {
+            color: var(--text-color);
+        }
+
+        @media (max-width: 768px) {
+            .pagination {
+                flex-wrap: wrap;
+                gap: 0.25rem;
+            }
+
+            .pagination span.relative,
+            .pagination a.relative {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            /* Hide some pagination elements on mobile for better fit */
+            .pagination span.relative span:not([aria-hidden="true"]),
+            .pagination a.relative span:not([aria-hidden="true"]) {
+                display: none;
+            }
+        }
+
 </style>
+
     @yield('styles')
 </head>
 <body>

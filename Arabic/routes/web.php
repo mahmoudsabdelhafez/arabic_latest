@@ -49,6 +49,7 @@ use App\Http\Controllers\SemanticDomainController;
 use App\Http\Controllers\NameTypeController;
 use App\Http\Controllers\FunctionalWordController;
 use App\Http\Controllers\RelativePronounController;
+use App\Http\Controllers\ToolNameController;
 
 
 /*
@@ -308,6 +309,15 @@ Route::get('/analyze-ayah-results/{ayaId}', [QuranController::class, 'analyzeAya
 // mahmoud ------------------------------------------
 
 
+Route::prefix('toolnames')->group(function () {
+    Route::get('/', [ToolNameController::class, 'index'])->name('toolnames.index');
+    Route::get('create', [ToolNameController::class, 'create'])->name('toolnames.create');
+    Route::get('{id}', [ToolNameController::class, 'show'])->name('toolnames.show');
+    Route::get('{id}/edit', [ToolNameController::class, 'edit'])->name('toolnames.edit');
+    Route::post('/', [ToolNameController::class, 'store'])->name('toolnames.store');
+    Route::put('{id}', [ToolNameController::class, 'update'])->name('toolnames.update');
+    Route::delete('{id}', [ToolNameController::class, 'destroy'])->name('toolnames.destroy');
+});
 
 
 Route::resource('linkingtool', LinkingToolControlller::class);

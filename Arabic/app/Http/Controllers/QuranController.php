@@ -10,6 +10,7 @@ use App\Models\Conditional;
 use App\Models\Conjunction;
 use App\Models\Connective;
 use App\Models\ConnectiveCategory;
+use App\Models\Demonstrative;
 use App\Models\Detail;
 use App\Models\EncouragementUrging;
 use App\Models\Exception;
@@ -22,10 +23,12 @@ use Illuminate\Http\Request;
 use App\Models\Quran;
 use App\Models\QuranAll;
 use App\Models\QuranTextClean;
+use App\Models\RelativePronoun;
 use App\Models\SequencingOrdering;
 use App\Models\Specification;
 use App\Models\Suffix;
 use App\Models\Synchronization;
+use App\Models\ToolName;
 
 class QuranController extends Controller
 {
@@ -90,10 +93,9 @@ class QuranController extends Controller
 public function analyzeAyahResults(Request $request)
 {
     $ayaId = $request->input('aya_id');
-    // $categories = $request->input('categories', []);  // Get the selected categories
+    $categories = $request->input('categories', []);
 
-    $ayah = QuranAll::where("index", $ayaId)->first();
-
+    $ayah = QuranTextClean::where("index", $ayaId)->first();
     if (!$ayah) {
         return response()->json(['error' => 'Ayah not found'], 404);
     }
@@ -101,130 +103,130 @@ public function analyzeAyahResults(Request $request)
     $words = preg_split('/\s+/', trim($ayah->text));
     $matches = [];
 
-    // Fetch connectives filtered by category_id
-    $query = Connective::query();
+    // جلب الأدوات من tool_names مع بياناتها من connectives
+    $tools = ToolName::with(['connective' => function ($query) use ($categories) {
+            if (!empty($categories)) {
+                $query->whereIn('category_id', $categories);
+            }
+        }])->get();
 
-    if (!empty($categories)) {
-        $query->whereIn('category_id', $categories);  // Filter by selected categories
-    }
-    // dd();
-    // Fetch connectives along with definitions and category_id
-    $connectives = $query->get(['id', 'name', 'definition', 'category_id', 'position', 'connective_form'])->keyBy('id');
-
-    // Fetch category Arabic names
-    $categoryNames = ConnectiveCategory::whereIn('id', $connectives->pluck('category_id')->unique())
+    $categoryNames = ConnectiveCategory::whereIn('id', $tools->pluck('connective.category_id')->unique())
         ->pluck('arabic_name', 'id')
         ->toArray();
 
-    // Fetch pronouns
-    $pronouns = Pronoun::pluck('name', 'id')->toArray();
-    $pronounsWithDefinitions = Pronoun::whereIn('id', array_keys($pronouns))
-        ->get(['id', 'name', 'definition'])
-        ->keyBy('id');
+    $tools = $tools->keyBy('name');
 
-    //===============================================================================
+    // جلب الضمائر
+    $pronouns = Pronoun::get(['id', 'name', 'definition'])->keyBy('id');
+    $pronounNames = $pronouns->pluck('name', 'id')->toArray();
+
+    // جلب أسماء الإشارة
+    $demonstratives = Demonstrative::get(['id', 'name', 'definition'])->keyBy('id');
+    $demonstrativeNames = $demonstratives->pluck('name', 'id')->toArray();
+
+    // جلب أسماء الموصول
+    $relativePronouns = RelativePronoun::get(['id', 'surface_form', 'notes'])->keyBy('id');
+    $relativePronounForms = $relativePronouns->pluck('surface_form', 'id')->toArray();
+
     foreach ($words as $word) {
         $word = trim($word);
 
-        // Check full-word match for connectives (only where connective_form = 'standalone')
-        foreach ($connectives as $connectiveId => $connective) {
-            if ($word == $connective->name && $connective->connective_form == 'standalone') {
-                $categoryName = $categoryNames[$connective->category_id] ?? 'الادوات'; // Default if not found
-                $matches[$word] = [
-                    'type' => 'fullWord',
-                    'table' => $categoryName, // Use category Arabic name
-                    'matched_words' => [$word],
-                    'name' => $word,
-                    'definition' => $connective->definition ?? ''
-                ];
+        // البحث في الأدوات
+        if (isset($tools[$word])) {
+            $tool = $tools[$word];
+            if ($tool->connective_form === 'standalone' && $tool->connective) {
+                $matches[$word] = $this->formatMatch(
+                    $word,
+                    'fullWord',
+                    $categoryNames[$tool->connective->category_id] ?? 'الأدوات',
+                    $tool->connective->definition,
+                    $word
+                );
             }
         }
 
-        // Check full-word match for pronouns
-        if (in_array($word, $pronouns, true)) {
-            $pronounId = array_search($word, $pronouns);
-            $matches[$word] = [
-                'type' => 'fullWord',
-                'table' => 'الضمائر',
-                'matched_words' => [$word],
-                'name' => $word,
-                'definition' => $pronounsWithDefinitions[$pronounId]->definition ?? ''
-            ];
+        // البحث في الضمائر
+        if (in_array($word, $pronounNames, true)) {
+            $pronounId = array_search($word, $pronounNames);
+            $matches[$word] = $this->formatMatch($word, 'fullWord', 'الضمائر', $pronouns[$pronounId]->definition ?? '', $word);
         }
 
-        // Check for any substring match in connectives (only where connective_form = 'connected')
-        for ($i = 0; $i < mb_strlen($word); $i++) {
-            for ($j = $i + 1; $j <= mb_strlen($word); $j++) {
+        // البحث في أسماء الإشارة
+        if (in_array($word, $demonstrativeNames, true)) {
+            $demonstrativeId = array_search($word, $demonstrativeNames);
+            $matches[$word] = $this->formatMatch($word, 'fullWord', 'أسماء الإشارة', $demonstratives[$demonstrativeId]->definition ?? '', $word);
+        }
+
+        // البحث في أسماء الموصول
+        if (in_array($word, $relativePronounForms, true)) {
+            $relativePronounId = array_search($word, $relativePronounForms);
+            $matches[$word] = $this->formatMatch($word, 'fullWord', 'أسماء الموصول', $relativePronouns[$relativePronounId]->notes ?? '', $word);
+        }
+
+        // تحليل التركيبات داخل الكلمات
+        $wordLength = mb_strlen($word);
+        for ($i = 0; $i < $wordLength; $i++) {
+            for ($j = $i + 1; $j <= $wordLength; $j++) {
                 $combination = mb_substr($word, $i, $j - $i, 'UTF-8');
-                
-                // Determine the position of the substring
-                $position = 'middle'; // Default position
-                if ($i === 0) {
-                    $position = 'start'; // Start of the word
-                } elseif ($j === mb_strlen($word)) {
-                    $position = 'end'; // End of the word
-                }
+                $position = $i === 0 ? 'start' : ($j === $wordLength ? 'end' : 'middle');
 
-                // Loop through connectives to find a match (only where connective_form = 'connected')
-                foreach ($connectives as $connectiveId => $connective) {
-                    if ($combination === $connective->name && $connective->position === $position && $connective->connective_form === 'connected') {
-                        $categoryName = $categoryNames[$connective->category_id] ?? 'الادوات'; // Default if not found
-
-                        // Only add if it's not already in matches
-                        if (!isset($matches[$combination])) {
-                            $matches[$combination] = [
-                                'type' => 'letterCombination',
-                                'table' => $categoryName, // Use category Arabic name
-                                'matched_words' => [],
-                                'name' => $combination,
-                                'definition' => $connective->definition ?? ''
-                            ];
-                        }
-                        $matches[$combination]['matched_words'][] = $word;
+                if (isset($tools[$combination])) {
+                    $tool = $tools[$combination];
+                    if ($tool->connective && $tool->connective->position === $position && $tool->connective_form === 'connected') {
+                        $matches[$combination] = $this->formatMatch(
+                            $combination,
+                            'letterCombination',
+                            $categoryNames[$tool->connective->category_id] ?? 'الأدوات',
+                            $tool->connective->definition,
+                            $word
+                        );
                     }
-
-                      // Case 2: Check if it's a 'hybrid' connective (matches anywhere)
-            if ($combination === $connective->name && $connective->connective_form === 'hybrid') {
-                $categoryName = $categoryNames[$connective->category_id] ?? 'الادوات'; // Default if not found
-
-                if (!isset($matches[$combination])) {
-                    $matches[$combination] = [
-                        'type' => 'hybridCombination',
-                        'table' => $categoryName,
-                        'matched_words' => [],
-                        'name' => $combination,
-                        'definition' => $connective->definition ?? ''
-                    ];
-                }
-                $matches[$combination]['matched_words'][] = $word;
-            }
-
-            
                 }
 
-                
+                // البحث في الضمائر
+                if (in_array($combination, $pronounNames, true)) {
+                    $pronounId = array_search($combination, $pronounNames);
+                    $matches[$combination] = $this->formatMatch($combination, 'letterCombination', 'الضمائر', $pronouns[$pronounId]->definition ?? '', $word);
+                }
 
-                // Check for pronoun combination
-                if (in_array($combination, $pronouns, true)) {
-                    $pronounId = array_search($combination, $pronouns);
-                    if (!isset($matches[$combination])) {
-                        $matches[$combination] = [
-                            'type' => 'letterCombination',
-                            'table' => 'الضمائر',
-                            'matched_words' => [],
-                            'name' => $combination,
-                            'definition' => $pronounsWithDefinitions[$pronounId]->definition ?? ''
-                        ];
-                    }
-                    $matches[$combination]['matched_words'][] = $word;
+                // البحث في أسماء الإشارة
+                if (in_array($combination, $demonstrativeNames, true)) {
+                    $demonstrativeId = array_search($combination, $demonstrativeNames);
+                    $matches[$combination] = $this->formatMatch($combination, 'letterCombination', 'أسماء الإشارة', $demonstratives[$demonstrativeId]->definition ?? '', $word);
+                }
+
+                // البحث في أسماء الموصول
+                if (in_array($combination, $relativePronounForms, true)) {
+                    $relativePronounId = array_search($combination, $relativePronounForms);
+                    $matches[$combination] = $this->formatMatch($combination, 'letterCombination', 'أسماء الموصول', $relativePronouns[$relativePronounId]->notes ?? '', $word);
                 }
             }
         }
     }
 
-    $analysisResults = array_values($matches);
-    return response()->json(['analysis' => 'تم التحليل بنجاح', 'results' => $analysisResults]);
+    // تجميع النتائج حسب الفئة
+    $categorizedResults = [];
+    foreach ($matches as $match) {
+        $categorizedResults[$match['table']][] = $match;
+    }
+
+    return response()->json([
+        'analysis' => 'تم التحليل بنجاح',
+        'results' => $categorizedResults
+    ]);
 }
+
+private function formatMatch($name, $type, $table, $definition, $matchedWord = null)
+{
+    return [
+        'type' => $type,
+        'table' => $table,
+        'matched_words' => [$matchedWord],
+        'name' => $name,
+        'definition' => $definition
+    ];
+}
+
 
 
 
