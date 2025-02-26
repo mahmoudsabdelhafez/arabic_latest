@@ -5,17 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Example extends Model
+class ArabicBeautyOfLanguage extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'word_type_id', 
-        'example_text'
+        'aspect_name',
+        'description'
     ];
-
-    public function wordType()
-    {
-        return $this->belongsTo(WordType::class);
-    }
 }

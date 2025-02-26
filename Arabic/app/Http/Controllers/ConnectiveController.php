@@ -16,7 +16,6 @@ class ConnectiveController extends Controller
     $categories = ConnectiveCategory::all();
     $syntacticEffects = SyntacticEffect::all();
     $semanticEffects = SemanticLogicalEffect::all();
-    
     return view('connectives.index', compact(
         'connectives',
         'categories',
@@ -74,7 +73,7 @@ class ConnectiveController extends Controller
         $categories = ConnectiveCategory::all();
         $syntacticEffects = SyntacticEffect::all();
         $semanticEffects = SemanticLogicalEffect::all();
-        
+
         return view('connectives.index', compact(
             'connectives',
             'categories',

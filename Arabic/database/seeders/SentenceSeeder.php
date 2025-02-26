@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\ArabicSentencesPart;
 use Illuminate\Database\Seeder;
 use App\Models\Sentence;
-use App\Models\SentencesPart;
 
 class SentenceSeeder extends Seeder
 {
@@ -21,13 +21,13 @@ class SentenceSeeder extends Seeder
         ]);
 
         // إدخال أجزاء الجملة الاسمية
-        SentencesPart::create([
+        ArabicSentencesPart::create([
             'sentence_id' => $jumlaIsmiya->id,
             'name' => 'المبتدأ',
             'description' => 'يدل على الشيء الذي نتحدث عنه، مثل: الطالبُ.',
         ]);
 
-        SentencesPart::create([
+        ArabicSentencesPart::create([
             'sentence_id' => $jumlaIsmiya->id,
             'name' => 'الخبر',
             'description' => 'يخبرنا عن المبتدأ، مثل: مجتهدٌ.',
@@ -41,19 +41,19 @@ class SentenceSeeder extends Seeder
         ]);
 
         // إدخال أجزاء الجملة الفعلية
-        SentencesPart::create([
+        ArabicSentencesPart::create([
             'sentence_id' => $jumlaFi3liya->id,
             'name' => 'الفعل',
             'description' => 'يدل على الحدث، مثل: كتبَ.',
         ]);
 
-        SentencesPart::create([
+        ArabicSentencesPart::create([
             'sentence_id' => $jumlaFi3liya->id,
             'name' => 'الفاعل',
             'description' => 'من قام بالفعل، مثل: الطالبُ.',
         ]);
 
-        SentencesPart::create([
+        ArabicSentencesPart::create([
             'sentence_id' => $jumlaFi3liya->id,
             'name' => 'المفعول به',
             'description' => 'الشيء الذي وقع عليه الفعل (إذا وُجد)، مثل: الدرسَ.',

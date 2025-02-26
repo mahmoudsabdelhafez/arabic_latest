@@ -10,8 +10,9 @@ use App\Models\Suffix;
 class Pronoun extends Model
 {
     use HasFactory;
+    protected $table = 'name_pronouns'; // Define the table name
 
-    protected $fillable = ['pronoun'];
+    // protected $fillable = ['pronoun'];
 
     // العلاقة مع جدول السوابق
     public function sawabeqs()

@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\ArabicFeature;
-use App\Models\BeautyOfLanguage;
+use App\Models\ArabicBeautyOfLanguage;
 use App\Models\Conditional;
-use App\Models\Example;
-use App\Models\GrammarRule;
+use App\Models\ArabicWordTypeExample;
+use App\Models\ArabicGrammarRule;
 use App\Models\LanguageContent;
 use App\Models\Linking_tool;
-use App\Models\Sentence;
-use App\Models\SentencesPart;
+use App\Models\ArabicSentence;
+use App\Models\ArabicSentencesPart;
 use App\Models\ToolsInformation;
 use App\Models\WordType;
 use Illuminate\Http\Request;
@@ -23,13 +23,13 @@ class ArabicLanguageController extends Controller
         // Fetch content from database
         $languageContents = LanguageContent::where('language', 'arabic')->get();
         $wordType = WordType::all();
-        $examples = Example::all();
+        $examples = ArabicWordTypeExample::all();
         $tools = Linking_tool::all();
         $features = ArabicFeature::all();
-        $beautyOfLanguage = BeautyOfLanguage::all();
-        $grammarRules = GrammarRule::all();
-        $sentences = Sentence::all();
-        $sentences_parts = SentencesPart::all();
+        $beautyOfLanguage = ArabicBeautyOfLanguage::all();
+        $grammarRules = ArabicGrammarRule::all();
+        $sentences = ArabicSentence::all();
+        $sentences_parts = ArabicSentencesPart::all();
 
 
         // Pass data to view

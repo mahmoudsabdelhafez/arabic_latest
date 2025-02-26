@@ -9,7 +9,7 @@ class NunSakinahAndTanween extends Model
 {
     use HasFactory;
 
-    protected $table = 'nun_sakinah_and_tanween_rules';
+    protected $table = 'tajweed_nun_sakinah_and_tanween_rules';
 
     // Define the fillable attributes
     protected $fillable = [

@@ -134,7 +134,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/sentences', SentenceController::class); // إضافة جملة جديدة
 
-    Route::get('/connectives/{id}/edit', [ConnectiveController::class, 'update']);
+    // Route::get('/connectives/{id}/edit', [ConnectiveController::class, 'update']);
     Route::put('/connectives/{connective}', [ConnectiveController::class, 'update'])->name('connectives.update');
     
     
@@ -215,7 +215,7 @@ Route::get('/words', [RootController::class, 'indexWords']);
 Route::get('/verb-suffix', [SuffixController::class, 'index']);
 Route::post('/process-verb', [SuffixController::class, 'processVerb']);
 Route::post('/apply-prefixes', [SuffixController::class, 'applyPrefixesToVerb'])->name('apply-prefixes');
-Route::post('/apply-prefixes-suffixes', [SuffixController::class, 'applyPrefixesAndSuffixesToVerb'])->name('apply-prefixes-suffixes');
+Route::get('/apply-prefixes-suffixes', [SuffixController::class, 'applyPrefixesAndSuffixesToVerb'])->name('apply-prefixes-suffixes');
 
 // Route for displaying Tajweed rules letters
 Route::get('/tajweed/rules-letters', [TajweedController::class, 'showRulesLetters'])->name('tajweed.rules.letters');
@@ -281,10 +281,6 @@ Route::get('/refuge-basmala', [RefugeBasmalaController::class, 'index']);
 
 
 
-
-
-Route::get('/check', [PhonemeController::class, 'check']);
-Route::post('/check', [PhonemeController::class, 'checkStore'])->name('check.phoneme');
 
 
 Route::get('/check', [PhonemeController::class, 'check']);

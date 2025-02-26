@@ -235,93 +235,120 @@
     }
     </style>
     <style>
-.loader-container {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    .loader-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-.loader-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  text-align: center;
-  max-width: 400px;
-  width: 90%;
-}
+    .loader-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        text-align: center;
+        max-width: 400px;
+        width: 90%;
+    }
 
-.brain-loader {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 1rem;
-  background: 
-    linear-gradient(90deg, #4F46E5 50%, transparent 50%),
-    linear-gradient(90deg, #818CF8 50%, transparent 50%),
-    linear-gradient(90deg, #C7D2FE 50%, transparent 50%);
-  background-size: 200% 100%;
-  background-position: 200% 0;
-  border-radius: 50%;
-  animation: pulse 2s ease-in-out infinite;
-  position: relative;
-}
+    .brain-loader {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 1rem;
+        background:
+            linear-gradient(90deg, #4F46E5 50%, transparent 50%),
+            linear-gradient(90deg, #818CF8 50%, transparent 50%),
+            linear-gradient(90deg, #C7D2FE 50%, transparent 50%);
+        background-size: 200% 100%;
+        background-position: 200% 0;
+        border-radius: 50%;
+        animation: pulse 2s ease-in-out infinite;
+        position: relative;
+    }
 
-.brain-loader::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2'%3E%3Cpath d='M9.5 2a2.5 2.5 0 0 1 2.5 2.5c0 .63-.24 1.2-.63 1.63.31.4.5.9.5 1.46a2.5 2.5 0 0 1-2.5 2.5c-.63 0-1.2-.24-1.63-.63-.4.31-.9.5-1.46.5a2.5 2.5 0 0 1-2.5-2.5c0-.63.24-1.2.63-1.63-.31-.4-.5-.9-.5-1.46a2.5 2.5 0 0 1 2.5-2.5c.63 0 1.2.24 1.63.63.4-.31.9-.5 1.46-.5zM16.5 6a2.5 2.5 0 0 1 2.5 2.5c0 .63-.24 1.2-.63 1.63.31.4.5.9.5 1.46a2.5 2.5 0 0 1-2.5 2.5c-.63 0-1.2-.24-1.63-.63-.4.31-.9.5-1.46.5a2.5 2.5 0 0 1-2.5-2.5c0-.63.24-1.2.63-1.63-.31-.4-.5-.9-.5-1.46a2.5 2.5 0 0 1 2.5-2.5c.63 0 1.2.24 1.63.63.4-.31.9-.5 1.46-.5z'/%3E%3C/svg%3E") center/60% no-repeat;
-}
+    .brain-loader::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2'%3E%3Cpath d='M9.5 2a2.5 2.5 0 0 1 2.5 2.5c0 .63-.24 1.2-.63 1.63.31.4.5.9.5 1.46a2.5 2.5 0 0 1-2.5 2.5c-.63 0-1.2-.24-1.63-.63-.4.31-.9.5-1.46.5a2.5 2.5 0 0 1-2.5-2.5c0-.63.24-1.2.63-1.63-.31-.4-.5-.9-.5-1.46a2.5 2.5 0 0 1 2.5-2.5c.63 0 1.2.24 1.63.63.4-.31.9-.5 1.46-.5zM16.5 6a2.5 2.5 0 0 1 2.5 2.5c0 .63-.24 1.2-.63 1.63.31.4.5.9.5 1.46a2.5 2.5 0 0 1-2.5 2.5c-.63 0-1.2-.24-1.63-.63-.4.31-.9.5-1.46.5a2.5 2.5 0 0 1-2.5-2.5c0-.63.24-1.2.63-1.63-.31-.4-.5-.9-.5-1.46a2.5 2.5 0 0 1 2.5-2.5c.63 0 1.2.24 1.63.63.4-.31.9-.5 1.46-.5z'/%3E%3C/svg%3E") center/60% no-repeat;
+    }
 
-.thinking-dots::after {
-  content: '';
-  animation: dots 1.5s steps(5, end) infinite;
-}
+    .thinking-dots::after {
+        content: '';
+        animation: dots 1.5s steps(5, end) infinite;
+    }
 
-@keyframes pulse {
-  0% { transform: scale(1); background-position: 200% 0; }
-  50% { transform: scale(1.1); background-position: 100% 0; }
-  100% { transform: scale(1); background-position: 0% 0; }
-}
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            background-position: 200% 0;
+        }
 
-@keyframes dots {
-  0%, 20% { content: '.'; }
-  40% { content: '..'; }
-  60% { content: '...'; }
-  80% { content: '....'; }
-  100% { content: '.....'; }
-}
+        50% {
+            transform: scale(1.1);
+            background-position: 100% 0;
+        }
 
-.messages {
-  margin-top: 1rem;
-}
+        100% {
+            transform: scale(1);
+            background-position: 0% 0;
+        }
+    }
 
-.message {
-  margin: 0.5rem 0;
-  font-size: 0.9rem;
-  color: #6B7280;
-  opacity: 0;
-  transform: translateY(10px);
-  animation: fadeInUp 0.5s ease forwards;
-}
+    @keyframes dots {
 
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-</style>
+        0%,
+        20% {
+            content: '.';
+        }
+
+        40% {
+            content: '..';
+        }
+
+        60% {
+            content: '...';
+        }
+
+        80% {
+            content: '....';
+        }
+
+        100% {
+            content: '.....';
+        }
+    }
+
+    .messages {
+        margin-top: 1rem;
+    }
+
+    .message {
+        margin: 0.5rem 0;
+        font-size: 0.9rem;
+        color: #6B7280;
+        opacity: 0;
+        transform: translateY(10px);
+        animation: fadeInUp 0.5s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    </style>
 </head>
 
 <body>
@@ -397,14 +424,14 @@
                                                 <option value="">اختر الوظيفة الدلالية</option>
                                                 @foreach($Semantic_logical_effect as $tool)
                                                 <option value="{{ $tool->id }}">
-                                                {{ $tool->typical_relation  }}، {{ $tool->nisbah_type  }}
+                                                    {{ $tool->typical_relation  }}، {{ $tool->nisbah_type  }}
                                                 </option>
                                                 @endforeach
                                             </select>
 
                                             <label for="syntactic_effects" style="margin-top: 15px;">الوظيفة النحوية
                                                 :</label>
-                                                <select name="syntactic_effects" required>
+                                            <select name="syntactic_effects" required>
                                                 <option value="">اختر الوظيفة النحوية</option>
                                                 @foreach($syntactic_effect as $tool)
                                                 <option value="{{ $tool->id }}">
@@ -412,7 +439,7 @@
                                                 </option>
                                                 @endforeach
                                             </select>
-                                                
+
                                         </div>
 
                                     </div>
@@ -423,7 +450,7 @@
                                     <div class="form-group">
                                         <label for="example">شرح</label>
                                         <textarea name="description" rows="3"></textarea>
-                                            <button class="btn" id="ai" type="button">إستخدم الذكاء الإصطناعي</button>
+                                        <button class="btn" id="ai" type="button">إستخدم الذكاء الإصطناعي</button>
                                     </div>
                                     <div style="text-align: right;">
                                         <button type="button" class="button"
@@ -446,53 +473,53 @@
     </div>
 
     <div id="toast" class="toast"></div>
-    
 
-<div id="aiLoader" class="loader-container" style="display: none;">
-  <div class="loader-content">
-    <div class="brain-loader"></div>
-    <h3 class="thinking-dots" style="color: #4F46E5; margin: 0;">AI is thinking</h3>
-    <div class="messages">
-      <p class="message" style="animation-delay: 0.5s">Analyzing language patterns...</p>
-      <p class="message" style="animation-delay: 1.5s">Generating linguistic insights...</p>
-      <p class="message" style="animation-delay: 2.5s">Crafting detailed explanation...</p>
+
+    <div id="aiLoader" class="loader-container" style="display: none;">
+        <div class="loader-content">
+            <div class="brain-loader"></div>
+            <h3 class="thinking-dots" style="color: #4F46E5; margin: 0;">AI is thinking</h3>
+            <div class="messages">
+                <p class="message" style="animation-delay: 0.5s">Analyzing language patterns...</p>
+                <p class="message" style="animation-delay: 1.5s">Generating linguistic insights...</p>
+                <p class="message" style="animation-delay: 2.5s">Crafting detailed explanation...</p>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<script>
-document.getElementById('ai').addEventListener('click', async function() {
-    const loader = document.getElementById('aiLoader');
-    loader.style.display = 'flex';
-    
-    try {
-        const response = await fetch("{{ route('deepinfra-chat') }}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
-            },
-            body: JSON.stringify({
-                arabic_letter_id: document.querySelector('input[name="arabic_letter_id"]').value,
-                arabic_diacritic_id: document.querySelector('input[name="arabic_diacritic_id"]').value
-            })
-        });
-
-        const data = await response.json();
-
-        if (data.description) {
-            document.querySelector('textarea[name="description"]').value = data.description;
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    } finally {
-        loader.style.display = 'none';
-    }
-});
-</script>
     <script>
+    document.getElementById('ai').addEventListener('click', async function() {
+        const loader = document.getElementById('aiLoader');
+        loader.style.display = 'flex';
 
+        try {
+            const response = await fetch("{{ route('deepinfra-chat') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+                },
+                body: JSON.stringify({
+                    arabic_letter_id: document.querySelector(
+                        'input[name="arabic_letter_id"]').value,
+                    arabic_diacritic_id: document.querySelector(
+                        'input[name="arabic_diacritic_id"]').value
+                })
+            });
 
+            const data = await response.json();
+
+            if (data.description) {
+                document.querySelector('textarea[name="description"]').value = data.description;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            loader.style.display = 'none';
+        }
+    });
+    </script>
+    <script>
     document.addEventListener("DOMContentLoaded", function() {
         function handleSubmit(event) {
             event.preventDefault(); // Prevent form submission

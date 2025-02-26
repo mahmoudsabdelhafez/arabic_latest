@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('basmalas', function (Blueprint $table) {
+        Schema::create('quran_basmalas', function (Blueprint $table) {
             $table->id();
             $table->text('formula'); // Formula of Bismillah
             $table->text('placement'); // Placement of Bismillah
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('basmalas');
+        Schema::dropIfExists('quran_basmalas');
     }
 };

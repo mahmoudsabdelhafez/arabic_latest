@@ -26,7 +26,7 @@ class ContextualConditionController extends Controller
         // $rows = DB::table($tableName)->get();
         $conditions = DB::select("
     SELECT t.*, ti.*
-    FROM `contextual_conditions` ti
+    FROM `connective_contextual_conditions` ti
     JOIN `$tableName` t ON t.linking_tool_id = ti.linking_tool_id
     WHERE ti.tool_id = ? 
     AND t.id = ?

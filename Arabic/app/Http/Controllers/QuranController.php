@@ -21,7 +21,8 @@ use App\Models\Preposition;
 use App\Models\Pronoun;
 use Illuminate\Http\Request;
 use App\Models\Quran;
-use App\Models\QuranAll;
+use App\Models\QuranSimplePlain;
+use App\Models\QuranSimpleClean;
 use App\Models\QuranTextClean;
 use App\Models\RelativePronoun;
 use App\Models\SequencingOrdering;
@@ -44,19 +45,18 @@ class QuranController extends Controller
     $query = $request->input('query');
 
     // Get paginated results
-    $results = QuranAll::whereRaw("BINARY text LIKE ?", ["%$query%"])->paginate(20);
-    $clean_results = QuranTextClean::whereRaw("BINARY text LIKE ?", ["%$query%"])->paginate(20);
+    $results = QuranSimplePlain::whereRaw("BINARY text LIKE ?", ["%$query%"])->paginate(20);
+    $clean_results = QuranSimpleClean::whereRaw("BINARY text LIKE ?", ["%$query%"])->paginate(20);
 
     // Get total count of results
-    $total_results_count = QuranAll::whereRaw("BINARY text LIKE ?", ["%$query%"])->count();
-    $total_clean_results_count = QuranTextClean::whereRaw("BINARY text LIKE ?", ["%$query%"])->count();
+    $total_results_count = QuranSimplePlain::whereRaw("BINARY text LIKE ?", ["%$query%"])->count();
+    $total_clean_results_count = QuranSimpleClean::whereRaw("BINARY text LIKE ?", ["%$query%"])->count();
 
     return response()->json([
         'data' => $results->items(),
         'current_page' => $results->currentPage(),
         'last_page' => $results->lastPage(),
         'total_results_count' => $total_results_count, // Total original text results
-
         'clean_data' => $clean_results->items(),
         'clean_current_page' => $clean_results->currentPage(),
         'clean_last_page' => $clean_results->lastPage(),
@@ -95,12 +95,16 @@ public function analyzeAyahResults(Request $request)
     $ayaId = $request->input('aya_id');
     $categories = $request->input('categories', []);
 
-    $ayah = QuranTextClean::where("index", $ayaId)->first();
+    $ayah2 = QuranSimpleClean::where("index", $ayaId)->first();
+    $ayah = QuranSimplePlain::where("index", $ayaId)->first();
     if (!$ayah) {
         return response()->json(['error' => 'Ayah not found'], 404);
     }
+    $words = array_merge(
+        preg_split('/\s+/', trim($ayah->text)),
+        preg_split('/\s+/', trim($ayah2->text))
+    );
 
-    $words = preg_split('/\s+/', trim($ayah->text));
     $matches = [];
 
     // جلب الأدوات من tool_names مع بياناتها من connectives
@@ -117,7 +121,7 @@ public function analyzeAyahResults(Request $request)
     $tools = $tools->keyBy('name');
 
     // جلب الضمائر
-    $pronouns = Pronoun::get(['id', 'name', 'definition'])->keyBy('id');
+    $pronouns = Pronoun::get(['id', 'name', ])->keyBy('id');
     $pronounNames = $pronouns->pluck('name', 'id')->toArray();
 
     // جلب أسماء الإشارة
