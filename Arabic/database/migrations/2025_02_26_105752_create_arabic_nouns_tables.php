@@ -23,7 +23,7 @@ return new class extends Migration {
 
         Schema::create('attached_types', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['noun', 'verb', 'particle']); // نوع التعلق (اسم، فعل، حرف)
+            $table->text('type'); // نوع التعلق (اسم، فعل، حرف)
             $table->timestamps();
         });
 
@@ -47,8 +47,6 @@ return new class extends Migration {
     public function down()
     {
         Schema::dropIfExists('name_pronouns');
-        Schema::dropIfExists('syntactic_effects');
-        Schema::dropIfExists('semantic_logical_effects');
         Schema::dropIfExists('attached_types');
         Schema::dropIfExists('parsing');
     }

@@ -107,7 +107,6 @@ public function analyzeAyahResults(Request $request)
 
     $matches = [];
 
-    // جلب الأدوات من tool_names مع بياناتها من connectives
     $tools = ToolName::with(['connective' => function ($query) use ($categories) {
             if (!empty($categories)) {
                 $query->whereIn('category_id', $categories);
@@ -120,22 +119,19 @@ public function analyzeAyahResults(Request $request)
 
     $tools = $tools->keyBy('name');
 
-    // جلب الضمائر
-    $pronouns = Pronoun::get(['id', 'name', ])->keyBy('id');
+    $pronouns = Pronoun::get(['id', 'name','definition', 'position'])->keyBy('id');
     $pronounNames = $pronouns->pluck('name', 'id')->toArray();
 
-    // جلب أسماء الإشارة
     $demonstratives = Demonstrative::get(['id', 'name', 'definition'])->keyBy('id');
     $demonstrativeNames = $demonstratives->pluck('name', 'id')->toArray();
 
-    // جلب أسماء الموصول
     $relativePronouns = RelativePronoun::get(['id', 'surface_form', 'notes'])->keyBy('id');
     $relativePronounForms = $relativePronouns->pluck('surface_form', 'id')->toArray();
 
     foreach ($words as $word) {
         $word = trim($word);
 
-        // البحث في الأدوات
+        // Matching Tools
         if (isset($tools[$word])) {
             $tool = $tools[$word];
             if ($tool->connective_form === 'standalone' && $tool->connective) {
@@ -149,66 +145,79 @@ public function analyzeAyahResults(Request $request)
             }
         }
 
-        // البحث في الضمائر
-        if (in_array($word, $pronounNames, true)) {
-            $pronounId = array_search($word, $pronounNames);
-            $matches[$word] = $this->formatMatch($word, 'fullWord', 'الضمائر', $pronouns[$pronounId]->definition ?? '', $word);
+        // Matching Pronouns (Fixed)
+        $pronounId = collect($pronounNames)->search($word);
+        if ($pronounId !== false && isset($pronouns[$pronounId])) {
+            $matches[$word] = $this->formatMatch(
+                $word,
+                'fullWord',
+                'الضمائر',
+                $pronouns[$pronounId]->definition ?? '',
+                $word
+            );
         }
 
-        // البحث في أسماء الإشارة
-        if (in_array($word, $demonstrativeNames, true)) {
-            $demonstrativeId = array_search($word, $demonstrativeNames);
-            $matches[$word] = $this->formatMatch($word, 'fullWord', 'أسماء الإشارة', $demonstratives[$demonstrativeId]->definition ?? '', $word);
+        // Matching Demonstratives
+        $demonstrativeId = collect($demonstrativeNames)->search($word);
+        if ($demonstrativeId !== false && isset($demonstratives[$demonstrativeId])) {
+            $matches[$word] = $this->formatMatch(
+                $word,
+                'fullWord',
+                'أسماء الإشارة',
+                $demonstratives[$demonstrativeId]->definition ?? '',
+                $word
+            );
         }
 
-        // البحث في أسماء الموصول
-        if (in_array($word, $relativePronounForms, true)) {
-            $relativePronounId = array_search($word, $relativePronounForms);
-            $matches[$word] = $this->formatMatch($word, 'fullWord', 'أسماء الموصول', $relativePronouns[$relativePronounId]->notes ?? '', $word);
+        // Matching Relative Pronouns
+        $relativePronounId = collect($relativePronounForms)->search($word);
+        if ($relativePronounId !== false && isset($relativePronouns[$relativePronounId])) {
+            $matches[$word] = $this->formatMatch(
+                $word,
+                'fullWord',
+                'أسماء الموصول',
+                $relativePronouns[$relativePronounId]->notes ?? '',
+                $word
+            );
         }
 
-        // تحليل التركيبات داخل الكلمات
-        $wordLength = mb_strlen($word);
-        for ($i = 0; $i < $wordLength; $i++) {
-            for ($j = $i + 1; $j <= $wordLength; $j++) {
-                $combination = mb_substr($word, $i, $j - $i, 'UTF-8');
-                $position = $i === 0 ? 'start' : ($j === $wordLength ? 'end' : 'middle');
+        // Matching prefixes and suffixes in Tools
+        foreach ($tools as $toolName => $tool) {
+            if (!$tool->connective) continue;
 
-                if (isset($tools[$combination])) {
-                    $tool = $tools[$combination];
-                    if ($tool->connective && $tool->connective->position === $position && $tool->connective_form === 'connected') {
-                        $matches[$combination] = $this->formatMatch(
-                            $combination,
-                            'letterCombination',
-                            $categoryNames[$tool->connective->category_id] ?? 'الأدوات',
-                            $tool->connective->definition,
-                            $word
-                        );
-                    }
-                }
+            if ($tool->connective->position === 'start' && str_starts_with($word, $toolName)) {
+                $matches[$toolName] = $this->formatMatch(
+                    $toolName, 'letterCombination',
+                    $categoryNames[$tool->connective->category_id] ?? 'الأدوات',
+                    $tool->connective->definition, $word
+                );
+            }
 
-                // البحث في الضمائر
-                if (in_array($combination, $pronounNames, true)) {
-                    $pronounId = array_search($combination, $pronounNames);
-                    $matches[$combination] = $this->formatMatch($combination, 'letterCombination', 'الضمائر', $pronouns[$pronounId]->definition ?? '', $word);
-                }
+            if ($tool->connective->position === 'end' && str_ends_with($word, $toolName)) {
+                $matches[$toolName] = $this->formatMatch(
+                    $toolName, 'letterCombination',
+                    $categoryNames[$tool->connective->category_id] ?? 'الأدوات',
+                    $tool->connective->definition, $word
+                );
+            }
+        }
 
-                // البحث في أسماء الإشارة
-                if (in_array($combination, $demonstrativeNames, true)) {
-                    $demonstrativeId = array_search($combination, $demonstrativeNames);
-                    $matches[$combination] = $this->formatMatch($combination, 'letterCombination', 'أسماء الإشارة', $demonstratives[$demonstrativeId]->definition ?? '', $word);
-                }
+        // Matching prefixes and suffixes in Pronouns
+        foreach ($pronouns as $pronoun) {
+            if ($pronoun->position === 'start' && str_starts_with($word, $pronoun->name)) {
+                $matches[$pronoun->name] = $this->formatMatch(
+                    $pronoun->name, 'letterCombination', 'الضمائر', $pronoun->definition ?? '', $word
+                );
+            }
 
-                // البحث في أسماء الموصول
-                if (in_array($combination, $relativePronounForms, true)) {
-                    $relativePronounId = array_search($combination, $relativePronounForms);
-                    $matches[$combination] = $this->formatMatch($combination, 'letterCombination', 'أسماء الموصول', $relativePronouns[$relativePronounId]->notes ?? '', $word);
-                }
+            if ($pronoun->position === 'end' && str_ends_with($word, $pronoun->name)) {
+                $matches[$pronoun->name] = $this->formatMatch(
+                    $pronoun->name, 'letterCombination', 'الضمائر', $pronoun->definition ?? '', $word
+                );
             }
         }
     }
 
-    // تجميع النتائج حسب الفئة
     $categorizedResults = [];
     foreach ($matches as $match) {
         $categorizedResults[$match['table']][] = $match;

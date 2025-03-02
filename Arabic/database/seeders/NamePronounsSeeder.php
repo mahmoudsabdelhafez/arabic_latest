@@ -19,40 +19,39 @@ class NamePronounsSeeder extends Seeder
         ]);
         
         DB::table('name_pronouns')->insert([
-          // First-person pronouns
-            ['name' => 'أَنَا', 'type' => 'detached', 'person' => 'first', 'number' => 'single', 'gender' => 'both', 'parsing_id' => 5],
-            ['name' => 'نَحْنُ', 'type' => 'detached', 'person' => 'first', 'number' => 'plural', 'gender' => 'both', 'parsing_id' => 1],
-            ['name' => 'يِ', 'type' => 'attached', 'person' => 'first', 'number' => 'single', 'gender' => 'both', 'parsing_id' => 3],
-            ['name' => 'نَا', 'type' => 'attached', 'person' => 'first', 'number' => 'plural', 'gender' => 'both', 'parsing_id' => 3],
-            ['name' => '(مُسْتَتِرٌ تَقْدِيرُهُ أَنَا)', 'type' => 'hidden', 'person' => 'first', 'number' => 'single', 'gender' => 'both', 'parsing_id' => 5],
-            ['name' => '(مُسْتَتِرٌ تَقْدِيرُهُ نَحْنُ)', 'type' => 'hidden', 'person' => 'first', 'number' => 'plural', 'gender' => 'both', 'parsing_id' => 5],
-        
+            // First-person pronouns
+            ['name' => 'أَنَا', 'type' => 'detached', 'position' => 'start', 'person' => 'first', 'number' => 'single', 'gender' => 'both', 'parsing_id' => 5, 'definition' => 'أنا، تستخدم للمتكلم المفرد، سواء كان مذكرًا أو مؤنثًا.'],
+            ['name' => 'نَحْنُ', 'type' => 'detached', 'position' => 'start', 'person' => 'first', 'number' => 'plural', 'gender' => 'both', 'parsing_id' => 1, 'definition' => 'نحن، تستخدم للمتكلمين الجمع، سواء كانوا مذكرين أو مؤنثين.'],
+            ['name' => 'يِ', 'type' => 'attached', 'position' => 'end', 'person' => 'first', 'number' => 'single', 'gender' => 'both', 'parsing_id' => 3, 'definition' => 'ضمير متصل للمتكلم المفرد، سواء كان مذكرًا أو مؤنثًا.'],
+            ['name' => 'نَا', 'type' => 'attached', 'position' => 'end', 'person' => 'first', 'number' => 'plural', 'gender' => 'both', 'parsing_id' => 3, 'definition' => 'ضمير متصل للمتكلم الجمع، سواء كان مذكرًا أو مؤنثًا.'],
+            ['name' => '(مُسْتَتِرٌ تَقْدِيرُهُ أَنَا)', 'type' => 'hidden', 'position' => 'middle', 'person' => 'first', 'number' => 'single', 'gender' => 'both', 'parsing_id' => 5, 'definition' => 'ضمير مستتر تقديره "أنا" في سياق الجملة.'],
+            ['name' => '(مُسْتَتِرٌ تَقْدِيرُهُ نَحْنُ)', 'type' => 'hidden', 'position' => 'middle', 'person' => 'first', 'number' => 'plural', 'gender' => 'both', 'parsing_id' => 5, 'definition' => 'ضمير مستتر تقديره "نحن" في سياق الجملة.'],
+            
             // Second-person pronouns
-            ['name' => 'أَنْتَ', 'type' => 'detached', 'person' => 'second', 'number' => 'single', 'gender' => 'm', 'parsing_id' => 5],
-            ['name' => 'أَنْتِ', 'type' => 'detached', 'person' => 'second', 'number' => 'single', 'gender' => 'f', 'parsing_id' => 5],
-            ['name' => 'أَنْتُمَا', 'type' => 'detached', 'person' => 'second', 'number' => 'dual', 'gender' => 'both', 'parsing_id' => 5],
-            ['name' => 'أَنْتُمْ', 'type' => 'detached', 'person' => 'second', 'number' => 'plural', 'gender' => 'm', 'parsing_id' => 5],
-            ['name' => 'أَنْتُنَّ', 'type' => 'detached', 'person' => 'second', 'number' => 'plural', 'gender' => 'f', 'parsing_id' => 5],
-            ['name' => 'كَ', 'type' => 'attached', 'person' => 'second', 'number' => 'single', 'gender' => 'm', 'parsing_id' => 3],
-            ['name' => 'كِ', 'type' => 'attached', 'person' => 'second', 'number' => 'single', 'gender' => 'f', 'parsing_id' => 3],
-            ['name' => 'كُمَا', 'type' => 'attached', 'person' => 'second', 'number' => 'dual', 'gender' => 'both', 'parsing_id' => 3],
-            ['name' => 'كُمْ', 'type' => 'attached', 'person' => 'second', 'number' => 'plural', 'gender' => 'm', 'parsing_id' => 3],
-            ['name' => 'كُنَّ', 'type' => 'attached', 'person' => 'second', 'number' => 'plural', 'gender' => 'f', 'parsing_id' => 3],
-        
+            ['name' => 'أَنْتَ', 'type' => 'detached', 'position' => 'start', 'person' => 'second', 'number' => 'single', 'gender' => 'm', 'parsing_id' => 5, 'definition' => 'أنت، تستخدم للمخاطب المفرد المذكر.'],
+            ['name' => 'أَنْتِ', 'type' => 'detached', 'position' => 'start', 'person' => 'second', 'number' => 'single', 'gender' => 'f', 'parsing_id' => 5, 'definition' => 'أنتِ، تستخدم للمخاطب المفرد المؤنث.'],
+            ['name' => 'أَنْتُمَا', 'type' => 'detached', 'position' => 'start', 'person' => 'second', 'number' => 'dual', 'gender' => 'both', 'parsing_id' => 5, 'definition' => 'أنتما، تستخدم للمخاطب المثنى (مذكرًا أو مؤنثًا).'],
+            ['name' => 'أَنْتُمْ', 'type' => 'detached', 'position' => 'start', 'person' => 'second', 'number' => 'plural', 'gender' => 'm', 'parsing_id' => 5, 'definition' => 'أنتم، تستخدم للمخاطب الجمع المذكر.'],
+            ['name' => 'أَنْتُنَّ', 'type' => 'detached', 'position' => 'start', 'person' => 'second', 'number' => 'plural', 'gender' => 'f', 'parsing_id' => 5, 'definition' => 'أنتن، تستخدم للمخاطب الجمع المؤنث.'],
+            ['name' => 'كَ', 'type' => 'attached', 'position' => 'end', 'person' => 'second', 'number' => 'single', 'gender' => 'm', 'parsing_id' => 3, 'definition' => 'ضمير متصل للمخاطب المفرد المذكر.'],
+            ['name' => 'كِ', 'type' => 'attached', 'position' => 'end', 'person' => 'second', 'number' => 'single', 'gender' => 'f', 'parsing_id' => 3, 'definition' => 'ضمير متصل للمخاطب المفرد المؤنث.'],
+            ['name' => 'كُمَا', 'type' => 'attached', 'position' => 'end', 'person' => 'second', 'number' => 'dual', 'gender' => 'both', 'parsing_id' => 3, 'definition' => 'ضمير متصل للمخاطب المثنى (مذكرًا أو مؤنثًا).'],
+            ['name' => 'كُمْ', 'type' => 'attached', 'position' => 'end', 'person' => 'second', 'number' => 'plural', 'gender' => 'm', 'parsing_id' => 3, 'definition' => 'ضمير متصل للمخاطب الجمع المذكر.'],
+            ['name' => 'كُنَّ', 'type' => 'attached', 'position' => 'end', 'person' => 'second', 'number' => 'plural', 'gender' => 'f', 'parsing_id' => 3, 'definition' => 'ضمير متصل للمخاطب الجمع المؤنث.'],
+            
             // Third-person pronouns
-            ['name' => 'هُوَ', 'type' => 'detached', 'person' => 'third', 'number' => 'single', 'gender' => 'm', 'parsing_id' => 5],
-            ['name' => 'هِيَ', 'type' => 'detached', 'person' => 'third', 'number' => 'single', 'gender' => 'f', 'parsing_id' => 5],
-            ['name' => 'هُمَا', 'type' => 'detached', 'person' => 'third', 'number' => 'dual', 'gender' => 'both', 'parsing_id' => 5],
-            ['name' => 'هُمْ', 'type' => 'detached', 'person' => 'third', 'number' => 'plural', 'gender' => 'm', 'parsing_id' => 5],
-            ['name' => 'هُنَّ', 'type' => 'detached', 'person' => 'third', 'number' => 'plural', 'gender' => 'f', 'parsing_id' => 5],
-            ['name' => 'هُ', 'type' => 'attached', 'person' => 'third', 'number' => 'single', 'gender' => 'm', 'parsing_id' => 3],
-            ['name' => 'هَا', 'type' => 'attached', 'person' => 'third', 'number' => 'single', 'gender' => 'f', 'parsing_id' => 3],
-            ['name' => 'هُمَا', 'type' => 'attached', 'person' => 'third', 'number' => 'dual', 'gender' => 'both', 'parsing_id' => 3],
-            ['name' => 'هُمْ', 'type' => 'attached', 'person' => 'third', 'number' => 'plural', 'gender' => 'm', 'parsing_id' => 3],
-            ['name' => 'هُنَّ', 'type' => 'attached', 'person' => 'third', 'number' => 'plural', 'gender' => 'f', 'parsing_id' => 3],
-            ['name' => '(مُسْتَتِرٌ تَقْدِيرُهُ هُوَ)', 'type' => 'hidden', 'person' => 'third', 'number' => 'single', 'gender' => 'm', 'parsing_id' => 5],
-            ['name' => '(مُسْتَتِرٌ تَقْدِيرُهُ هِيَ)', 'type' => 'hidden', 'person' => 'third', 'number' => 'single', 'gender' => 'f', 'parsing_id' => 5]
+            ['name' => 'هُوَ', 'type' => 'detached', 'position' => 'start', 'person' => 'third', 'number' => 'single', 'gender' => 'm', 'parsing_id' => 5, 'definition' => 'هو، يستخدم للمفرد المذكر.'],
+            ['name' => 'هِيَ', 'type' => 'detached', 'position' => 'start', 'person' => 'third', 'number' => 'single', 'gender' => 'f', 'parsing_id' => 5, 'definition' => 'هي، تستخدم للمفرد المؤنث.'],
+            ['name' => 'هُمَا', 'type' => 'detached', 'position' => 'start', 'person' => 'third', 'number' => 'dual', 'gender' => 'both', 'parsing_id' => 5, 'definition' => 'هما، يستخدم للمثنى (مذكرًا أو مؤنثًا).'],
+            ['name' => 'هُمْ', 'type' => 'detached', 'position' => 'start', 'person' => 'third', 'number' => 'plural', 'gender' => 'm', 'parsing_id' => 5, 'definition' => 'هم، يستخدم للجمع المذكر.'],
+            ['name' => 'هُنَّ', 'type' => 'detached', 'position' => 'start', 'person' => 'third', 'number' => 'plural', 'gender' => 'f', 'parsing_id' => 5, 'definition' => 'هن، يستخدم للجمع المؤنث.'],
+            ['name' => 'هُ', 'type' => 'attached', 'position' => 'end', 'person' => 'third', 'number' => 'single', 'gender' => 'm', 'parsing_id' => 3, 'definition' => 'ضمير متصل للمفرد المذكر.'],
+            ['name' => 'هَا', 'type' => 'attached', 'position' => 'end', 'person' => 'third', 'number' => 'single', 'gender' => 'f', 'parsing_id' => 3, 'definition' => 'ضمير متصل للمفرد المؤنث.'],
+            ['name' => 'هُمَا', 'type' => 'attached', 'position' => 'end', 'person' => 'third', 'number' => 'dual', 'gender' => 'both', 'parsing_id' => 3, 'definition' => 'ضمير متصل للمثنى (مذكرًا أو مؤنثًا).'],
+            ['name' => 'هُمْ', 'type' => 'attached', 'position' => 'end', 'person' => 'third', 'number' => 'plural', 'gender' => 'm', 'parsing_id' => 3, 'definition' => 'ضمير متصل للجمع المذكر.'],
+            ['name' => 'هُنَّ', 'type' => 'attached', 'position' => 'end', 'person' => 'third', 'number' => 'plural', 'gender' => 'f', 'parsing_id' => 3, 'definition' => 'ضمير متصل للجمع المؤنث.'],
+            ['name' => '(مُسْتَتِرٌ تَقْدِيرُهُ هُوَ)', 'type' => 'hidden', 'position' => 'middle', 'person' => 'third', 'number' => 'single', 'gender' => 'm', 'parsing_id' => 5, 'definition' => 'ضمير مستتر تقديره "هو" في سياق الجملة.'],
+            ['name' => '(مُسْتَتِرٌ تَقْدِيرُهُ هِيَ)', 'type' => 'hidden', 'position' => 'middle', 'person' => 'third', 'number' => 'single', 'gender' => 'f', 'parsing_id' => 5, 'definition' => 'ضمير مستتر تقديره "هي" في سياق الجملة.']
         ]);
-        
     }
 }

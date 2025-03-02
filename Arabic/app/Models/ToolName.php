@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class ToolName extends Model
 {
@@ -15,7 +16,8 @@ class ToolName extends Model
     // Define the fillable columns (these are the fields that can be mass-assigned)
     protected $fillable = [
         'name',
-        'connective_category_id',
+        'connective_id',
+        'connective_form',
         'arabic_table_id',
     ];
 
@@ -28,5 +30,14 @@ class ToolName extends Model
     public function arabicTable()
     {
         return $this->belongsTo(ArabicTable::class);
+    }
+
+    public function getAdditionalDataAttribute()
+    {
+        if ($this->connective_id === null && $this->arabic_table_id !== null) {
+            $tableName = ArabicTable::where('id', $this->arabic_table_id)->value('table_name');
+            return $tableName ? DB::table($tableName)->get() : [];
+        }
+        return [];
     }
 }

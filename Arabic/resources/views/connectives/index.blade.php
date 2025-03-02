@@ -461,29 +461,29 @@
     }
     </style>
     <style>
-        .all-connectives-list {
-            margin: 10px 0;
-            text-align: right;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start;
-            gap: 8px;
-        }
+    .all-connectives-list {
+        margin: 10px 0;
+        text-align: right;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 8px;
+    }
 
-        .connective-tag {
-            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
-            border-radius: 15px;
-            padding: 5px 10px;
-            font-size: 14px;
-            cursor: pointer;
-            color: var(--white);
-            transition: background-color 0.3s;
-        }
+    .connective-tag {
+        background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+        border-radius: 15px;
+        padding: 5px 10px;
+        font-size: 14px;
+        cursor: pointer;
+        color: var(--white);
+        transition: background-color 0.3s;
+    }
 
-        .connective-tag:hover {
-            background-color: #e0e0e0;
-        }
-        </style>
+    .connective-tag:hover {
+        background-color: #e0e0e0;
+    }
+    </style>
 </head>
 
 <body>
@@ -495,7 +495,7 @@
     <div class="main-content">
         <div class="content-section">
             <div class="section-header">
-                <h2>قائمة الروابط :  {{ $connectives[0]->category->arabic_name }}</h2>
+                <h2>قائمة الروابط : {{ $connectives[0]->category->arabic_name }}</h2>
                 <div class="all-connectives-list">
                     @foreach($connectives as $connective)
                     <span class="connective-tag">{{ $connective->name }}</span>
@@ -584,7 +584,7 @@
             </div>
         </div>
 
-        
+
 
 
     </div>
@@ -724,31 +724,57 @@
                     </div>
                 </div>
 
-                <!-- Effects Section -->
                 <div class="form-section">
                     <h3 class="form-section-title">التأثيرات</h3>
                     <div class="form-grid">
+                        <!-- Syntactic Effect -->
                         <div class="form-group">
                             <label for="add_syntactic_effect_id">التأثير النحوي</label>
                             <select class="form-control" id="add_syntactic_effect_id" name="syntactic_effect_id"
-                                required>
+                                onchange="toggleNewSyntacticEffect(this)">
+                                <option value="">اختر تأثير نحوي</option>
                                 @foreach ($syntacticEffects as $syntacticEffect)
                                 <option value="{{ $syntacticEffect->id }}">{{ $syntacticEffect->result_case }}</option>
                                 @endforeach
+                                <option value="new">+ إضافة جديد</option>
                             </select>
                         </div>
+                        <!-- Hidden New Syntactic Effect Fields -->
+                        <div id="new_syntactic_effect" style="display: none;">
+                            <label>تأثير نحوي جديد</label>
+                            <input type="text" class="form-control" name="new_applied_on" placeholder="المطبق على">
+                            <input type="text" class="form-control" name="new_result_case" placeholder="الحالة الناتجة">
+                            <textarea class="form-control" name="new_context_condition"
+                                placeholder="شرط السياق (اختياري)"></textarea>
+                        </div>
+
+
+                        <!-- Semantic Logical Effect -->
                         <div class="form-group">
                             <label for="add_semantic_logical_effect_id">التأثير الدلالي المنطقي</label>
                             <select class="form-control" id="add_semantic_logical_effect_id"
-                                name="semantic_logical_effect_id" required>
+                                name="semantic_logical_effect_id" onchange="toggleNewSemanticEffect(this)">
+                                <option value="">اختر تأثير دلالي</option>
                                 @foreach ($semanticEffects as $semanticEffect)
                                 <option value="{{ $semanticEffect->id }}">{{ $semanticEffect->typical_relation }}
                                 </option>
                                 @endforeach
+                                <option value="new">+ إضافة جديد</option>
                             </select>
                         </div>
+                        <!-- Hidden New Semantic Logical Effect Fields -->
+                        <div id="new_semantic_effect" style="display: none;">
+                            <label>تأثير دلالي جديد</label>
+                            <input type="text" class="form-control" name="new_typical_relation"
+                                placeholder="العلاقة النموذجية">
+                            <input type="text" class="form-control" name="new_nisbah_type" placeholder="نوع النسبة">
+                            <textarea class="form-control" name="new_semantic_roles"
+                                placeholder="الأدوار الدلالية"></textarea>
+                        </div>
+
                     </div>
                 </div>
+
 
                 <!-- Additional Information -->
                 <div class="form-section">
@@ -769,6 +795,25 @@
     </div>
 
     <script>
+    function toggleNewInput(select, inputId) {
+        var inputField = document.getElementById(inputId);
+        if (select.value === "new") {
+            inputField.style.display = "block";
+            inputField.required = true;
+        } else {
+            inputField.style.display = "none";
+            inputField.required = false;
+        }
+    }
+
+    function toggleNewSyntacticEffect(select) {
+        document.getElementById('new_syntactic_effect').style.display = (select.value === 'new') ? 'block' : 'none';
+    }
+
+    function toggleNewSemanticEffect(select) {
+        document.getElementById('new_semantic_effect').style.display = (select.value === 'new') ? 'block' : 'none';
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // Add click event for connective tags to filter
         const connectiveTags = document.querySelectorAll('.connective-tag');
