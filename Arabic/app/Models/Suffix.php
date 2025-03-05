@@ -23,7 +23,7 @@ class Suffix extends Model
 
     public function pronouns()
     {
-        return $this->belongsToMany(Pronoun::class, 'pronoun_suffix', 'suffix_id', 'pronoun_id');
+        return $this->belongsToMany(Pronoun_before::class, 'pronoun_suffix', 'suffix_id', 'pronoun_id');
     }
     
 }

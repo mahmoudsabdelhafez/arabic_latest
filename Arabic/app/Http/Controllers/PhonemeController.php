@@ -330,4 +330,69 @@ public function ruleDetails(Request $request)
 }
 
 
+public function show($id)
+    {
+        $phoneme = Phoneme::with([
+            'morphologicalFunction',
+            'phonemeRootEffect',
+            'phonemeSemanticFeature.harakat',
+            'semanticFunction'
+        ])->findOrFail($id);
+        return view('phonemes.show', compact('phoneme'));
+    }
+    public function edit($id)
+    {
+        $phoneme = Phoneme::with([
+            'morphologicalFunction',
+            'phonemeRootEffect',
+            'phonemeSemanticFeature.harakat',
+            'semanticFunction'
+        ])->findOrFail($id);
+
+        $harakats = ArabicDiacritic::all(); // Fetch all harakats for dropdown
+
+        return view('phonemes.edit', compact('phoneme', 'harakats'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $phoneme = Phoneme::with([
+            'morphologicalFunction',
+            'phonemeRootEffect',
+            'phonemeSemanticFeature.harakat',
+            'semanticFunction'
+        ])->findOrFail($id);
+        // Validate and update Phoneme
+        $validatedData = $request->validate([
+            'Symbol' => 'required|string',
+            'unicode_hex' => 'nullable|string',
+            'Voicing' => 'nullable|string',
+            'PlaceManner' => 'nullable|string',
+            'Duration' => 'nullable|string',
+        ]);
+        $phoneme->update($validatedData);
+
+        // Update Morphological Functions
+        foreach ($request->morphological_functions as $morphId => $data) {
+            $phoneme->morphologicalFunction()->where('id', $morphId)->update($data);
+        }
+
+        // Update Phoneme Root Effects
+        foreach ($request->phoneme_root_effects as $rootId => $data) {
+            $phoneme->phonemeRootEffect()->where('id', $rootId)->update($data);
+        }
+
+        // Update Phoneme Semantic Features
+        foreach ($request->phoneme_semantic_features as $semanticId => $data) {
+            $phoneme->phonemeSemanticFeature()->where('id', $semanticId)->update($data);
+        }
+
+        // Update Semantic Functions
+        foreach ($request->semantic_functions as $semanticFuncId => $data) {
+            $phoneme->semanticFunction()->where('id', $semanticFuncId)->update($data);
+        }
+
+        return redirect()->route('phonemes.show', $phoneme->id)->with('success', 'Phoneme updated successfully!');
+    }
+
 }

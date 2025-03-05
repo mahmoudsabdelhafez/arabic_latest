@@ -217,7 +217,7 @@ Route::get('/words', [RootController::class, 'indexWords']);
 Route::get('/verb-suffix', [SuffixController::class, 'index']);
 Route::post('/process-verb', [SuffixController::class, 'processVerb']);
 Route::post('/apply-prefixes', [SuffixController::class, 'applyPrefixesToVerb'])->name('apply-prefixes');
-Route::get('/apply-prefixes-suffixes', [SuffixController::class, 'applyPrefixesAndSuffixesToVerb'])->name('apply-prefixes-suffixes');
+Route::post('/apply-prefixes-suffixes', [SuffixController::class, 'applyPrefixesAndSuffixesToVerb'])->name('apply-prefixes-suffixes');
 
 // Route for displaying Tajweed rules letters
 Route::get('/tajweed/rules-letters', [TajweedController::class, 'showRulesLetters'])->name('tajweed.rules.letters');
@@ -383,3 +383,8 @@ Route::get('/get-phoneme-details', [QuranController::class, 'getPhonemeDetailsFo
 Route::get('/word/{name}', [TreeController::class, 'wordDetails'])->name('word.details');
 
 
+Route::get('/phonemes/{id}/edit', [PhonemeController::class, 'edit'])->name('phonemes.edit');
+Route::post('/phonemes/{id}/update', [PhonemeController::class, 'update'])->name('phonemes.update');
+
+// Route::get('/phonemes', [PhonemeController::class, 'index'])->name('phonemes.index');
+Route::get('/phonemes/{id}', [PhonemeController::class, 'show'])->name('phonemes.show');

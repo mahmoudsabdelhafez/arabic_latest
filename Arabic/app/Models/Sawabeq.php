@@ -12,6 +12,6 @@ class Sawabeq extends Model
     // العلاقة مع جدول الضمائر
     public function pronouns()
     {
-        return $this->belongsToMany(Pronoun::class, 'pronoun_sawabeq', 'sawabeq_id', 'pronoun_id');
+        return $this->belongsToMany(Pronoun_before::class, 'pronoun_sawabeq', 'sawabeq_id', 'pronoun_id');
     }
 }

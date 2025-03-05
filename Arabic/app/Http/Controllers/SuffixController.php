@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pronoun;
+use App\Models\Pronoun_before;
 
 class SuffixController extends Controller
 {
@@ -61,9 +62,9 @@ class SuffixController extends Controller
         $request->validate([
             'verb' => 'required|string|max:255',
         ]);
-
-        $pronouns = Pronoun::with(['sawabeqs', 'suffixes'])->get();
-        dd($pronouns);
+        // $request->verb = 'كتب';
+        $pronouns = Pronoun_before::with(['sawabeqs', 'suffixes'])->get();
+        // dd($pronouns);
         $results = [];
 
         foreach ($pronouns as $pronoun) {
@@ -74,7 +75,7 @@ class SuffixController extends Controller
 
                 if (in_array('حروف مضارعة', $types)) {
                     $suffix = $pronoun->suffixes->first(fn($s) => str_contains($s->type, 'مضارع'));
-                    $modaraResult = $sawabeq->name . $this->present($request->verb, $pronoun->id) . ($suffix ? $suffix->formula : '');
+                    $modaraResult = $sawabeq->name . $this->present($request->verb, $pronoun->id) . ($suffix ? $suffix->name : '');
                 }
 
                 if (in_array('أمر', $types)) {
@@ -85,13 +86,13 @@ class SuffixController extends Controller
                         $letters[5] = 'ْ'; // Apply sukun
                         $varb = implode('', $letters);
                     }
-                    $amrResult = mb_substr($request->verb, 0, 1) === 'و' ? $varb . ($suffix ? $suffix->formula : '') : $sawabeq->name . $varb . ($suffix ? $suffix->formula : '');
+                    $amrResult = mb_substr($request->verb, 0, 1) === 'و' ? $varb . ($suffix ? $suffix->name : '') : $sawabeq->name . $varb . ($suffix ? $suffix->name : '');
                 }
             }
 
             $suffix = $pronoun->suffixes->first(fn($s) => str_contains($s->type, 'ماضي'));
-            $madiResult = $this->past($request->verb, $pronoun->id) . ($suffix ? $suffix->formula : '');
-
+            $madiResult = $this->past($request->verb, $pronoun->id) . ($suffix ? $suffix->name : '');
+// dd($suffix);
             $results[] = [
                 'pronoun' => $pronoun->name,
                 'modara' => $modaraResult ?? '-',
