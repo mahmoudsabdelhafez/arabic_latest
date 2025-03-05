@@ -48,6 +48,7 @@ use App\Http\Controllers\DialectController;
 use App\Http\Controllers\SemanticDomainController;
 use App\Http\Controllers\NameTypeController;
 use App\Http\Controllers\FunctionalWordController;
+use App\Http\Controllers\NamePronounController;
 use App\Http\Controllers\RelativePronounController;
 use App\Http\Controllers\ToolNameController;
 
@@ -134,7 +135,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/sentences', SentenceController::class); // إضافة جملة جديدة
 
-    Route::get('/connectives/{id}/edit', [ConnectiveController::class, 'update']);
+    // Route::get('/connectives/{id}/edit', [ConnectiveController::class, 'update']);
     Route::put('/connectives/{connective}', [ConnectiveController::class, 'update'])->name('connectives.update');
     
     
@@ -147,6 +148,7 @@ require __DIR__.'/auth.php';
 
 Route::resource('connective_categories', ConnectiveCategoryController::class);
 Route::resource('connectives', ConnectiveController::class);
+Route::resource('pronouns', NamePronounController::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -244,7 +246,7 @@ Route::post('/update-phoneme-diacritic', [PhonemeController::class, 'updatePhone
 
 
 
-Route::get('/pronouns', [PronounController::class, 'show']);
+Route::get('/pronouns2', [PronounController::class, 'show']);
 
 
 Route::get('/show', [ImageController::class, 'index'])->name('images.show');
@@ -281,10 +283,6 @@ Route::get('/refuge-basmala', [RefugeBasmalaController::class, 'index']);
 
 
 
-
-
-Route::get('/check', [PhonemeController::class, 'check']);
-Route::post('/check', [PhonemeController::class, 'checkStore'])->name('check.phoneme');
 
 
 Route::get('/check', [PhonemeController::class, 'check']);
@@ -385,3 +383,8 @@ Route::get('/get-phoneme-details', [QuranController::class, 'getPhonemeDetailsFo
 Route::get('/word/{name}', [TreeController::class, 'wordDetails'])->name('word.details');
 
 
+Route::get('/phonemes/{id}/edit', [PhonemeController::class, 'edit'])->name('phonemes.edit');
+Route::post('/phonemes/{id}/update', [PhonemeController::class, 'update'])->name('phonemes.update');
+
+// Route::get('/phonemes', [PhonemeController::class, 'index'])->name('phonemes.index');
+Route::get('/phonemes/{id}', [PhonemeController::class, 'show'])->name('phonemes.show');

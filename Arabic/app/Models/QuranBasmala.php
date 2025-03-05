@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Basmala extends Model
+class QuranBasmala extends Model
 {
     use HasFactory;
 
-    protected $table = 'basmalas';
 
     // Define the fillable attributes for mass assignment
     protected $fillable = [

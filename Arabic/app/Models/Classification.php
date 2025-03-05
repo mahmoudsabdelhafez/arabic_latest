@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Classification extends Model
 {
     use HasFactory;
+    protected $table = 'connective_classifications';
 
     protected $fillable = [
         'name',

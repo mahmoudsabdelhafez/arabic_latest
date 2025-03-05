@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BeautyOfLanguage extends Model
+class Parsing extends Model
 {
     use HasFactory;
-
+    // protected $table = 'parsing';
     protected $fillable = [
-        'aspect_name',
-        'description'
+        'status',
+        'rule',
+        'example',
     ];
 }

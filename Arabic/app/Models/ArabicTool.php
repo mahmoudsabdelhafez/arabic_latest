@@ -9,7 +9,7 @@ class ArabicTool extends Model
 {
     use HasFactory;
 
-    protected $table = 'arabic_tools';
+    protected $table = 'deleted_arabic_tools';
 
     protected $fillable = [
         'name',

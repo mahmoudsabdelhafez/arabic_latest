@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('quran_basmalas', function (Blueprint $table) {
+        Schema::create('word_three_letter_tests', function (Blueprint $table) {
             $table->id();
-            $table->text('formula'); // Formula of Bismillah
-            $table->text('placement'); // Placement of Bismillah
-            $table->text('forms_of_bismillah'); // Forms of Bismillah
+            $table->string('word', 3)->unique(); // تخزين الكلمات الثلاثية
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('quran_basmalas');
+        Schema::dropIfExists('word_three_letter_tests');
     }
 };

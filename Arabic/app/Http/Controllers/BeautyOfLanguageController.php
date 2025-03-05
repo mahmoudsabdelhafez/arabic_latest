@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BeautyOfLanguage;
+use App\Models\ArabicBeautyOfLanguage;
 use Illuminate\Http\Request;
 
 class BeautyOfLanguageController extends Controller
 {
     public function index()
     {
-        $beautyOfLanguage = BeautyOfLanguage::all();
+        $beautyOfLanguage = ArabicBeautyOfLanguage::all();
         return view('arabic_discrption.beauty_of_language', compact('beautyOfLanguage'));
     }
 
     public function show($id)
     {
-        $beauty = BeautyOfLanguage::find($id);
+        $beauty = ArabicBeautyOfLanguage::find($id);
         if ($beauty) {
             return response()->json($beauty);
         }
@@ -29,7 +29,7 @@ class BeautyOfLanguageController extends Controller
             'description' => 'required|string'
         ]);
 
-        $beauty = BeautyOfLanguage::create($validated);
+        $beauty = ArabicBeautyOfLanguage::create($validated);
         return back()->with('success', 'Beauty aspect added successfully!');
     }
 
@@ -40,7 +40,7 @@ class BeautyOfLanguageController extends Controller
             'description' => 'required|string'
         ]);
 
-        $beauty = BeautyOfLanguage::find($id);
+        $beauty = ArabicBeautyOfLanguage::find($id);
         if ($beauty) {
             $beauty->update($validated);
             return response()->json($beauty);
@@ -50,7 +50,7 @@ class BeautyOfLanguageController extends Controller
 
     public function destroy($id)
     {
-        $beauty = BeautyOfLanguage::find($id);
+        $beauty = ArabicBeautyOfLanguage::find($id);
         if ($beauty) {
             $beauty->delete();
             return response()->json(['message' => 'Beauty aspect deleted successfully']);

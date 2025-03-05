@@ -9,6 +9,8 @@ class ContextualCondition extends Model
 {
     use HasFactory;
 
+    protected $table = 'connective_contextual_conditions';
+
     protected $fillable = [
         'linking_tool_id',
         'tool_id',

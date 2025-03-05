@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class QuranAll extends Model
+class QuranSimplePlain extends Model
 {
     use HasFactory;
 
-    protected $table = 'quran_all'; // Define the table name
+    protected $table = 'quran_simple_plain'; // Define the table name
 
     protected $fillable = ['index','sura', 'sura_name', 'aya', 'text']; // Mass assignable fields
 }

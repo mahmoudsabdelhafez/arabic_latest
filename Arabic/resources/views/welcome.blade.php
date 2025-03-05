@@ -235,7 +235,7 @@
         font-family: 'Amiri', serif;
         font-size: 1.1rem;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        
+
     }
 
     @media (max-width: 768px) {
@@ -289,6 +289,7 @@
     a {
         text-decoration: none;
     }
+
     .overlay.active {
         display: block;
     }
@@ -764,16 +765,26 @@
         <button class="menu-toggle" onclick="toggleSidebar()">القائمة</button>
         <div class="main-container">
             <aside class="sidebar">
-                <div class="nav-item active" onclick="showSection('basics')"> <span class="nav-icon">📚 </span> اللغة العربية</div>
-                <div class="nav-item" onclick="showSection('tajweed')"> <span class="nav-icon">📖</span> القرآن الكريم</div>
+                <div class="nav-item active" onclick="showSection('basics')"> <span class="nav-icon">📚 </span> اللغة
+                    العربية</div>
+                <div class="nav-item" onclick="showSection('tajweed')"> <span class="nav-icon">📖</span> القرآن الكريم
+                </div>
                 <div class="nav-item" onclick="showSection('phoneme')"> <span class="nav-icon">🔊</span> الصوتيات</div>
-                <div class="nav-item" onclick="showSection('words')"><span class="nav-icon">📝</span> تركيب الكلمات</div>
-                <a href="/connective_categories"><div class="nav-item"><span class="nav-icon">📝</span>  الأدوات في اللغة العربية</div>
+                <div class="nav-item" onclick="showSection('words')"><span class="nav-icon">📝</span> تركيب الكلمات
+                </div>
+                <a href="/connective_categories">
+                    <div class="nav-item"><span class="nav-icon">📝</span> الأدوات في اللغة العربية</div>
+                </a>
                 <div class="nav-item" onclick="showSection('roots')"><span class="nav-icon">🌱</span> الجذور</div>
-                <div class="nav-item" onclick="showSection('affixes')"><span class="nav-icon">🔄</span> السوابق واللواحق</div>
-                <a href="/tree"><div class="nav-item" ><span class="nav-icon">🌳</span> الخطة الشجرية</div></a>
+                <div class="nav-item" onclick="showSection('affixes')"><span class="nav-icon">🔄</span> السوابق واللواحق
+                </div>
+                <a href="/tree">
+                    <div class="nav-item"><span class="nav-icon">🌳</span> الخطة الشجرية</div>
+                </a>
                 <div class="nav-item" onclick="showSection('mekdad')"><span class="nav-icon">🔄</span> جدوال مقداد</div>
-                <div class="nav-item" onclick="showSection('analysis')"><span class="nav-icon">🔄</span>المحلل الصرفي</div>
+                <div class="nav-item" onclick="showSection('arabic-letters')"><span class="nav-icon">📚</span>الأحرف العربية</div>
+                <div class="nav-item" onclick="showSection('analysis')"><span class="nav-icon">🔄</span>المحلل الصرفي
+                </div>
 
 
                 @if (auth()->check())
@@ -1127,39 +1138,61 @@
                     <a href="{{ url('/emphatic-arabic-letters') }}" class="button">أحرف القلقلة</a> -->
                     </div>
                 </section>
+                <section id="arabic-letters" class="section">
+                    <div class="section-header">
+                        <h2>الأحرف العربية</h2>
+                    </div>
 
+                    <div class="button-container">
+                        @foreach($arabicLetters as $letter)
+                        <a href="{{ url('/phonemes/' . $letter->id) }}" class="button">
+                            {{ $letter->letter }}
+                            <span style="margin-right: 10px; font-size: 0.9em;">{{ $letter->transliteration }}</span>
+                        </a>
+                        @endforeach
+                    </div>
+
+                    <div class="content-section">
+                        <h3 class="content-title">معلومات عن الأحرف العربية</h3>
+                        <p class="content-text">
+                            اللغة العربية تتكون من 28 حرفًا أبجديًا. كل حرف له مخرج صوتي وخصائص فريدة. يمكنك النقر على
+                            أي حرف للتعرف على تفاصيله الدقيقة.
+                        </p>
+                    </div>
+                </section>
 
                 <section id="mekdad" class="section">
-    <h2>Mekdad Phonemes Tables</h2>
-    <div class="button-container">
-        <a href="{{ url('/phoneme-syllabic-changes') }}" class="button">phoneme_syllabic_changes</a>
-        <a href="{{ url('/phoneme-substitutions') }}" class="button">phoneme_substitutions</a>
-        <a href="{{ url('/phoneme-structural-roles') }}" class="button">phoneme_structural_roles</a>
-        <a href="{{ url('/phoneme-semantic-features') }}" class="button">phoneme_semantic_features</a>
-        <a href="{{ url('/phoneme-root-effects') }}" class="button">phoneme_root_effects</a>
-        <a href="{{ url('/phoneme-replacements') }}" class="button">phoneme_replacements</a>
-        <a href="{{ url('/phoneme-phonetic-features') }}" class="button">phoneme_phonetic_features</a>
-        <a href="{{ url('/phoneme-origins') }}" class="button">phoneme_origins</a>
-        <a href="{{ url('/phoneme-natures') }}" class="button">phoneme_natures</a>
-        <a href="{{ url('/phoneme-morphemes') }}" class="button">phoneme_morphemes</a>
-        <a href="{{ url('/phoneme-harakats') }}" class="button">phoneme_harakats</a>
-        <a href="{{ url('/phoneme-grammatical-roles') }}" class="button">phoneme_grammatical_roles</a>
-        <a href="{{ url('/phoneme-functions') }}" class="button">phoneme_functions</a>
-        <a href="{{ url('/phoneme-embeddings') }}" class="button">phoneme_embeddings</a>
-        <a href="{{ url('/phoneme-deletions') }}" class="button">phoneme_deletions</a>
-        <a href="{{ url('/phoneme-contextual-features') }}" class="button">phoneme_contextual_features</a>
-        <a href="{{ url('/phoneme-characteristics') }}" class="button">phoneme_characteristics</a>
-        <a href="{{ url('/phoneme-activities') }}" class="button">phoneme_activities</a>
-    </div>
-</section>
+                    <h2>Mekdad Phonemes Tables</h2>
+                    <div class="button-container">
+                        <a href="{{ url('/phoneme-syllabic-changes') }}" class="button">phoneme_syllabic_changes</a>
+                        <a href="{{ url('/phoneme-substitutions') }}" class="button">phoneme_substitutions</a>
+                        <a href="{{ url('/phoneme-structural-roles') }}" class="button">phoneme_structural_roles</a>
+                        <a href="{{ url('/phoneme-semantic-features') }}" class="button">phoneme_semantic_features</a>
+                        <a href="{{ url('/phoneme-root-effects') }}" class="button">phoneme_root_effects</a>
+                        <a href="{{ url('/phoneme-replacements') }}" class="button">phoneme_replacements</a>
+                        <a href="{{ url('/phoneme-phonetic-features') }}" class="button">phoneme_phonetic_features</a>
+                        <a href="{{ url('/phoneme-origins') }}" class="button">phoneme_origins</a>
+                        <a href="{{ url('/phoneme-natures') }}" class="button">phoneme_natures</a>
+                        <a href="{{ url('/phoneme-morphemes') }}" class="button">phoneme_morphemes</a>
+                        <a href="{{ url('/phoneme-harakats') }}" class="button">phoneme_harakats</a>
+                        <a href="{{ url('/phoneme-grammatical-roles') }}" class="button">phoneme_grammatical_roles</a>
+                        <a href="{{ url('/phoneme-functions') }}" class="button">phoneme_functions</a>
+                        <a href="{{ url('/phoneme-embeddings') }}" class="button">phoneme_embeddings</a>
+                        <a href="{{ url('/phoneme-deletions') }}" class="button">phoneme_deletions</a>
+                        <a href="{{ url('/phoneme-contextual-features') }}"
+                            class="button">phoneme_contextual_features</a>
+                        <a href="{{ url('/phoneme-characteristics') }}" class="button">phoneme_characteristics</a>
+                        <a href="{{ url('/phoneme-activities') }}" class="button">phoneme_activities</a>
+                    </div>
+                </section>
 
 
 
-<section id="analysis" class="section">
+                <section id="analysis" class="section">
                     <h2>التجويد والصوتيات</h2>
                     <div class="button-container">
                         <a href="{{ url('/quran') }}" class="button">البحث في المصحف</a>
-                    
+
                     </div>
                 </section>
 

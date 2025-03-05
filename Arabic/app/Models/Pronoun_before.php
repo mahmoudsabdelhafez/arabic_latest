@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Sawabeq;
 use App\Models\Suffix;
 
-class Pronoun extends Model
+class Pronoun_before extends Model
 {
     use HasFactory;
-    protected $table = 'name_pronouns'; // Define the table name
+    protected $table = 'pronouns'; // Define the table name
 
     // protected $fillable = ['pronoun'];
 

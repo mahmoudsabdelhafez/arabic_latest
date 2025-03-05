@@ -4,15 +4,23 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::rename('beauty_of_language', 'beauty_of_languages');
+        Schema::rename('parsing', 'parsings');
+
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::rename('beauty_of_languages', 'beauty_of_language');
+        Schema::rename('parsings', 'parsing');
+
     }
 };
-

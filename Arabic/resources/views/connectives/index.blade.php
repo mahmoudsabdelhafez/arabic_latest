@@ -460,18 +460,47 @@
         border-radius: 4px;
     }
     </style>
+    <style>
+    .all-connectives-list {
+        margin: 10px 0;
+        text-align: right;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 8px;
+    }
+
+    .connective-tag {
+        background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+        border-radius: 15px;
+        padding: 5px 10px;
+        font-size: 14px;
+        cursor: pointer;
+        color: var(--white);
+        transition: background-color 0.3s;
+    }
+
+    .connective-tag:hover {
+        background-color: #e0e0e0;
+    }
+    </style>
 </head>
 
 <body>
     <header>
-        <h1>إدارة الروابط العربية</h1>
+        <h1> الروابط {{ $connectives[0]->category->arabic_name }}</h1>
     </header>
 
 
     <div class="main-content">
         <div class="content-section">
             <div class="section-header">
-                <h2>قائمة الروابط</h2>
+                <h2>قائمة الروابط : {{ $connectives[0]->category->arabic_name }}</h2>
+                <div class="all-connectives-list">
+                    @foreach($connectives as $connective)
+                    <span class="connective-tag">{{ $connective->name }}</span>
+                    @endforeach
+                </div>
                 <button class="btn btn-edit" onclick="openAddModal()">إضافة رابط جديد</button>
             </div>
 
@@ -481,7 +510,8 @@
                     <h3>{{ $connective->name }}</h3>
                     <div class="main-description">
                         <p><strong>النطق:</strong> {{ $connective->pronunciation }}</p>
-                        <p><strong>المعنى:</strong> {{ isset($connective->meaning)? $connective->meaning : $connective->definition}}</p>
+                        <p><strong>المعنى:</strong>
+                            {{ isset($connective->meaning)? $connective->meaning : $connective->definition}}</p>
                         <p><strong>الأدوات:</strong> {{ $connective->category->arabic_name }}</p>
                         <p><strong>التعريف:</strong> {{ $connective->definition }}</p>
 
@@ -553,6 +583,10 @@
                 @endforeach
             </div>
         </div>
+
+
+
+
     </div>
 
     <div id="editModal" class="modal">
@@ -629,164 +663,238 @@
         </div>
     </div>
 
-   <!-- Add Modal -->
-<div id="addModal" class="modal">
-    <div class="modal-content">
-        <h2 class="modal-title">إضافة رابط جديد</h2>
-        <form id="addForm" method="POST">
-            @csrf
-            
-            <!-- Basic Information Section -->
-            <div class="form-section">
-                <h3 class="form-section-title">المعلومات الأساسية</h3>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="add_name">الاسم</label>
-                        <input type="text" class="form-control" id="add_name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="add_pronunciation">النطق</label>
-                        <input type="text" class="form-control" id="add_pronunciation" name="pronunciation">
-                    </div>
-                    <div class="form-group">
-                        <label for="add_meaning">المعنى</label>
-                        <input type="text" class="form-control" id="add_meaning" name="meaning" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="add_meaning">التعريف</label>
-                        <input type="text" class="form-control" id="add_meaning" name="definition" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="add_category_id">الفئة</label>
-                        <select class="form-control" id="add_category_id" name="category_id" required>
-                            @foreach ($categories as $category)
+    <!-- Add Modal -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <h2 class="modal-title">إضافة رابط جديد</h2>
+            <form id="addForm" method="POST">
+                @csrf
+
+                <!-- Basic Information Section -->
+                <div class="form-section">
+                    <h3 class="form-section-title">المعلومات الأساسية</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="add_name">الاسم</label>
+                            <input type="text" class="form-control" id="add_name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_pronunciation">النطق</label>
+                            <input type="text" class="form-control" id="add_pronunciation" name="pronunciation">
+                        </div>
+                        <div class="form-group">
+                            <label for="add_meaning">المعنى</label>
+                            <input type="text" class="form-control" id="add_meaning" name="meaning" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_meaning">التعريف</label>
+                            <input type="text" class="form-control" id="add_meaning" name="definition" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_category_id">الفئة</label>
+                            <select class="form-control" id="add_category_id" name="category_id" required>
+                                @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->arabic_name }}</option>
-                            @endforeach
-                        </select>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Position and Form Section -->
-            <div class="form-section">
-                <h3 class="form-section-title">الموقع والشكل</h3>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="add_position">الموقع</label>
-                        <select class="form-control" id="add_position" name="position" required>
-                            <option value="start">بداية</option>
-                            <option value="middle">وسط</option>
-                            <option value="end">نهاية</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="add_connective_form">شكل الرابط</label>
-                        <select class="form-control" id="add_connective_form" name="connective_form" required>
-                            <option value="standalone">مستقل</option>
-                            <option value="connected">متصل</option>
-                            <option value="hybrid">هجين</option>
-                        </select>
+                <!-- Position and Form Section -->
+                <div class="form-section">
+                    <h3 class="form-section-title">الموقع والشكل</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="add_position">الموقع</label>
+                            <select class="form-control" id="add_position" name="position" required>
+                                <option value="start">بداية</option>
+                                <option value="middle">وسط</option>
+                                <option value="end">نهاية</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_connective_form">شكل الرابط</label>
+                            <select class="form-control" id="add_connective_form" name="connective_form" required>
+                                <option value="standalone">مستقل</option>
+                                <option value="connected">متصل</option>
+                                <option value="hybrid">هجين</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Effects Section -->
-            <div class="form-section">
-                <h3 class="form-section-title">التأثيرات</h3>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="add_syntactic_effect_id">التأثير النحوي</label>
-                        <select class="form-control" id="add_syntactic_effect_id" name="syntactic_effect_id" required>
-                            @foreach ($syntacticEffects as $syntacticEffect)
+                <div class="form-section">
+                    <h3 class="form-section-title">التأثيرات</h3>
+                    <div class="form-grid">
+                        <!-- Syntactic Effect -->
+                        <div class="form-group">
+                            <label for="add_syntactic_effect_id">التأثير النحوي</label>
+                            <select class="form-control" id="add_syntactic_effect_id" name="syntactic_effect_id"
+                                onchange="toggleNewSyntacticEffect(this)">
+                                <option value="">اختر تأثير نحوي</option>
+                                @foreach ($syntacticEffects as $syntacticEffect)
                                 <option value="{{ $syntacticEffect->id }}">{{ $syntacticEffect->result_case }}</option>
-                            @endforeach
-                        </select>
+                                @endforeach
+                                <option value="new">+ إضافة جديد</option>
+                            </select>
+                        </div>
+                        <!-- Hidden New Syntactic Effect Fields -->
+                        <div id="new_syntactic_effect" style="display: none;">
+                            <label>تأثير نحوي جديد</label>
+                            <input type="text" class="form-control" name="new_applied_on" placeholder="المطبق على">
+                            <input type="text" class="form-control" name="new_result_case" placeholder="الحالة الناتجة">
+                            <textarea class="form-control" name="new_context_condition"
+                                placeholder="شرط السياق (اختياري)"></textarea>
+                        </div>
+
+
+                        <!-- Semantic Logical Effect -->
+                        <div class="form-group">
+                            <label for="add_semantic_logical_effect_id">التأثير الدلالي المنطقي</label>
+                            <select class="form-control" id="add_semantic_logical_effect_id"
+                                name="semantic_logical_effect_id" onchange="toggleNewSemanticEffect(this)">
+                                <option value="">اختر تأثير دلالي</option>
+                                @foreach ($semanticEffects as $semanticEffect)
+                                <option value="{{ $semanticEffect->id }}">{{ $semanticEffect->typical_relation }}
+                                </option>
+                                @endforeach
+                                <option value="new">+ إضافة جديد</option>
+                            </select>
+                        </div>
+                        <!-- Hidden New Semantic Logical Effect Fields -->
+                        <div id="new_semantic_effect" style="display: none;">
+                            <label>تأثير دلالي جديد</label>
+                            <input type="text" class="form-control" name="new_typical_relation"
+                                placeholder="العلاقة النموذجية">
+                            <input type="text" class="form-control" name="new_nisbah_type" placeholder="نوع النسبة">
+                            <textarea class="form-control" name="new_semantic_roles"
+                                placeholder="الأدوار الدلالية"></textarea>
+                        </div>
+
                     </div>
+                </div>
+
+
+                <!-- Additional Information -->
+                <div class="form-section">
+                    <h3 class="form-section-title">معلومات إضافية</h3>
                     <div class="form-group">
-                        <label for="add_semantic_logical_effect_id">التأثير الدلالي المنطقي</label>
-                        <select class="form-control" id="add_semantic_logical_effect_id" name="semantic_logical_effect_id" required>
-                            @foreach ($semanticEffects as $semanticEffect)
-                                <option value="{{ $semanticEffect->id }}">{{ $semanticEffect->typical_relation }}</option>
-                            @endforeach
-                        </select>
+                        <label for="add_status">الحالة</label>
+                        <input type="text" class="form-control" id="add_status" name="status">
                     </div>
                 </div>
-            </div>
 
-            <!-- Additional Information -->
-            <div class="form-section">
-                <h3 class="form-section-title">معلومات إضافية</h3>
-                <div class="form-group">
-                    <label for="add_status">الحالة</label>
-                    <input type="text" class="form-control" id="add_status" name="status">
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-edit">إضافة الرابط</button>
+                    <button type="button" class="btn btn-delete" onclick="closeAddModal()">إلغاء</button>
                 </div>
-            </div>
-
-            <!-- Form Actions -->
-            <div class="form-actions">
-                <button type="submit" class="btn btn-edit">إضافة الرابط</button>
-                <button type="button" class="btn btn-delete" onclick="closeAddModal()">إلغاء</button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 
+    <script>
+    function toggleNewInput(select, inputId) {
+        var inputField = document.getElementById(inputId);
+        if (select.value === "new") {
+            inputField.style.display = "block";
+            inputField.required = true;
+        } else {
+            inputField.style.display = "none";
+            inputField.required = false;
+        }
+    }
 
+    function toggleNewSyntacticEffect(select) {
+        document.getElementById('new_syntactic_effect').style.display = (select.value === 'new') ? 'block' : 'none';
+    }
+
+    function toggleNewSemanticEffect(select) {
+        document.getElementById('new_semantic_effect').style.display = (select.value === 'new') ? 'block' : 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add click event for connective tags to filter
+        const connectiveTags = document.querySelectorAll('.connective-tag');
+        connectiveTags.forEach(tag => {
+            tag.addEventListener('click', function() {
+                const name = this.textContent.trim();
+                filterConnectives(name);
+            });
+        });
+    });
+
+    function filterConnectives(name) {
+        const cards = document.querySelectorAll('.content-card');
+
+        cards.forEach(card => {
+            const cardName = card.querySelector('h3').textContent.trim();
+
+            if (name === 'all' || cardName === name) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+    </script>
     <script>
     // Modal handling functions
     // Add Modal handling functions
-function openAddModal() {
-    const modal = document.getElementById('addModal');
-    const form = document.getElementById('addForm');
-    form.reset();
-    modal.style.display = 'block';
-}
+    function openAddModal() {
+        const modal = document.getElementById('addModal');
+        const form = document.getElementById('addForm');
+        form.reset();
+        modal.style.display = 'block';
+    }
 
-function closeAddModal() {
-    const modal = document.getElementById('addModal');
-    modal.style.display = 'none';
-}
+    function closeAddModal() {
+        const modal = document.getElementById('addModal');
+        modal.style.display = 'none';
+    }
 
-// Form submission handler for add form
-document.getElementById('addForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+    // Form submission handler for add form
+    document.getElementById('addForm').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-    const formData = new FormData(this);
+        const formData = new FormData(this);
 
-    fetch('/connectives', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('تم إضافة الرابط بنجاح');
-            window.location.reload();
-        } else {
-            alert('حدث خطأ أثناء إضافة الرابط');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('حدث خطأ أثناء إضافة الرابط');
+        fetch('/connectives', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('تم إضافة الرابط بنجاح');
+                    window.location.reload();
+                } else {
+                    alert('حدث خطأ أثناء إضافة الرابط');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء إضافة الرابط');
+            });
     });
-});
 
-// Close add modal when clicking outside
-window.onclick = function(event) {
-    const addModal = document.getElementById('addModal');
-    const editModal = document.getElementById('editModal');
-    if (event.target == addModal) {
-        closeAddModal();
+    // Close add modal when clicking outside
+    window.onclick = function(event) {
+        const addModal = document.getElementById('addModal');
+        const editModal = document.getElementById('editModal');
+        if (event.target == addModal) {
+            closeAddModal();
+        }
+        if (event.target == editModal) {
+            closeModal();
+        }
     }
-    if (event.target == editModal) {
-        closeModal();
-    }
-}
+
     function openEditModal(id) {
         // جلب بيانات الرابط عبر AJAX
         fetch(`/connectives/${id}/edit`)
@@ -888,7 +996,7 @@ window.onclick = function(event) {
             closeModal();
         }
     }
-   </script>
+    </script>
 </body>
 
 </html>

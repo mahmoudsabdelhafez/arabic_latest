@@ -1,21 +1,24 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\ArabicLetterAdjective;
 
 use App\Models\ArabicFeature;
-use App\Models\BeautyOfLanguage;
+use App\Models\ArabicBeautyOfLanguage;
 use App\Models\Conditional;
-use App\Models\Example;
-use App\Models\GrammarRule;
+use App\Models\ArabicWordTypeExample;
+use App\Models\ArabicGrammarRule;
+use App\Models\ArabicLetter;
 use App\Models\LanguageContent;
 use App\Models\Linking_tool;
-use App\Models\Sentence;
-use App\Models\SentencesPart;
+use App\Models\ArabicSentence;
+use App\Models\ArabicSentencesPart;
+use App\Models\Phoneme;
 use App\Models\ToolsInformation;
 use App\Models\WordType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\WordThreeLetterTest;
 class ArabicLanguageController extends Controller
 {
     public function index()
@@ -23,17 +26,81 @@ class ArabicLanguageController extends Controller
         // Fetch content from database
         $languageContents = LanguageContent::where('language', 'arabic')->get();
         $wordType = WordType::all();
-        $examples = Example::all();
+        $examples = ArabicWordTypeExample::all();
         $tools = Linking_tool::all();
         $features = ArabicFeature::all();
-        $beautyOfLanguage = BeautyOfLanguage::all();
-        $grammarRules = GrammarRule::all();
-        $sentences = Sentence::all();
-        $sentences_parts = SentencesPart::all();
+        $beautyOfLanguage = ArabicBeautyOfLanguage::all();
+        $grammarRules = ArabicGrammarRule::all();
+        $sentences = ArabicSentence::all();
+        $sentences_parts = ArabicSentencesPart::all();
+        $arabicLetters = ArabicLetter::all();
+        
 
+        
+            // جلب الأحرف مع مخارجها كمصفوفة
+
+                // جلب جميع الأحرف مع بيانات النطق
+
+
+    // // جلب جميع الحروف مع بيانات الفونيم (مخرج الحرف) والتصنيف (category_id)
+    // $phonemes = Phoneme::with('arabicLetter')->get();
+    // $adjectives = ArabicLetterAdjective::all()->groupBy('arabic_letter_id');
+    // $words = [];
+
+    // // توليد جميع الكلمات الثلاثية الممكنة مع مراعاة القيود
+    // foreach ($phonemes as $first) {
+        
+    //     if ($first->arabicLetter->letter == 'ا') {
+    //         continue;
+    //     }
+
+    //     foreach ($phonemes as $second) {
+    //         // التحقق من عدم تطابق مخرج الحرف
+    //         if ($first->place_of_articulation === $second->place_of_articulation) {
+    //             continue;
+    //         }
+
+            
+            
+    //         // التحقق من عدم تطابق category_id بين الحرفين الأول والثاني
+    //         if (isset($adjectives[$first->arabic_letter_id]) && isset($adjectives[$second->arabic_letter_id])) {
+    //             $categories1 = $adjectives[$first->arabic_letter_id]->pluck('category_id')->toArray();
+    //             $categories2 = $adjectives[$second->arabic_letter_id]->pluck('category_id')->toArray();
+    //             if (array_intersect($categories1, $categories2)) {
+    //                 continue;
+    //             }
+    //         }
+
+    //         foreach ($phonemes as $third) {
+    //             // تكوين الكلمة وإضافتها إلى القائمة
+    //             if($first->arabicLetter->letter  == 'ء') {
+    //                 $first_letter = 'أ';
+    //             }else{
+    //                 $first_letter = $first->arabicLetter->letter;
+    //             }
+
+    //             $word = $first_letter . $second->arabicLetter->letter . $third->arabicLetter->letter;
+    //             $words[] = $word;
+    //         }
+    //     }
+    // }
+
+    
+
+            
+    //             // إزالة التكرارات ثم تخزين النتائج في جدول الكلمات
+    //         foreach (array_unique($words) as $word) {
+    //             WordThreeLetterTest::firstOrCreate(['word' => $word]);
+    //         } // إزالة التكرارات
+            
+            
+          
+            
+        
+        
 
         // Pass data to view
-        return view('welcome', compact(['languageContents','tools','wordType','examples','features','beautyOfLanguage','grammarRules','sentences','sentences_parts']));
+        return view('welcome', compact(['languageContents','tools','wordType','examples','features','arabicLetters','beautyOfLanguage','grammarRules','sentences','sentences_parts']));
     }
 
 
