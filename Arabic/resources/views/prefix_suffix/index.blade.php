@@ -196,7 +196,7 @@
                 @foreach ($suffixes as $suffix)
                     <tr>
                         <td>{{ $suffix->id }}</td>
-                        <td>{{ $suffix->formula }}</td>
+                        <td>{{ $suffix->name }}</td>
                         <td>{{ $suffix->usage_meaning }}</td>
                         <td>{{ $suffix->examples_from_quran }}</td>
                     </tr>

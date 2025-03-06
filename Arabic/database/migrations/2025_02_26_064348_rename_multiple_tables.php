@@ -5,9 +5,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up() {
-        Schema::rename('classifications', 'connective_classifications');
-        Schema::rename('beauty_of_languages', 'arabic_beauty_of_languages');
-        Schema::rename('basmalas', 'quran_basmalas');
+        // Schema::rename('classifications', 'connective_classifications');
+        // Schema::rename('beauty_of_languages', 'arabic_beauty_of_languages');
+        // Schema::rename('basmalas', 'quran_basmalas');
         Schema::rename('contextual_conditions', 'connective_contextual_conditions');
         Schema::rename('dialects', 'arabic_dialects');
         Schema::rename('emphatic_arabic_letters', 'tajweed_emphatic_arabic_letters');

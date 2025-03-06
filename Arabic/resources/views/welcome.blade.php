@@ -758,9 +758,6 @@
         <h1>موارد اللغة العربية</h1>
     </header>
     <div class="body">
-
-
-        <!-- Rest of the HTML structure remains the same as in the original -->
         <div class="overlay" onclick="toggleSidebar()"></div>
         <button class="menu-toggle" onclick="toggleSidebar()">القائمة</button>
         <div class="main-container">
@@ -782,7 +779,8 @@
                     <div class="nav-item"><span class="nav-icon">🌳</span> الخطة الشجرية</div>
                 </a>
                 <div class="nav-item" onclick="showSection('mekdad')"><span class="nav-icon">🔄</span> جدوال مقداد</div>
-                <div class="nav-item" onclick="showSection('arabic-letters')"><span class="nav-icon">📚</span>الأحرف العربية</div>
+                <div class="nav-item" onclick="showSection('arabic-letters')"><span class="nav-icon">📚</span>الأحرف
+                    العربية</div>
                 <div class="nav-item" onclick="showSection('analysis')"><span class="nav-icon">🔄</span>المحلل الصرفي
                 </div>
 
@@ -1109,6 +1107,7 @@
                     <div class="button-container">
                         <a href="{{ url('/root-words') }}" class="button">الجذور الثلاثية د. حسين</a>
                         <a href="{{ url('/roots') }}" class="button">الجذور الثلاثة 2 - د حسين</a>
+                        <a href="{{ url('/roots/tree') }}" class="button">الخطة الشجريةللجذور</a>
                     </div>
                 </section>
 
@@ -1142,7 +1141,13 @@
                     <div class="section-header">
                         <h2>الأحرف العربية</h2>
                     </div>
-
+                    <div class="content-section">
+                        <h3 class="content-title">معلومات عن الأحرف العربية</h3>
+                        <p class="content-text">
+                            اللغة العربية تتكون من 28 حرفًا أبجديًا. كل حرف له مخرج صوتي وخصائص فريدة. يمكنك النقر على
+                            أي حرف للتعرف على تفاصيله الدقيقة.
+                        </p>
+                    </div>
                     <div class="button-container">
                         @foreach($arabicLetters as $letter)
                         <a href="{{ url('/phonemes/' . $letter->id) }}" class="button">
@@ -1152,13 +1157,7 @@
                         @endforeach
                     </div>
 
-                    <div class="content-section">
-                        <h3 class="content-title">معلومات عن الأحرف العربية</h3>
-                        <p class="content-text">
-                            اللغة العربية تتكون من 28 حرفًا أبجديًا. كل حرف له مخرج صوتي وخصائص فريدة. يمكنك النقر على
-                            أي حرف للتعرف على تفاصيله الدقيقة.
-                        </p>
-                    </div>
+
                 </section>
 
                 <section id="mekdad" class="section">

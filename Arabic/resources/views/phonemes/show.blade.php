@@ -53,6 +53,10 @@
         border-bottom-right-radius: 30px;
     }
 
+    a {
+        text-decoration: none;
+    }
+
     header::before {
         content: '';
         position: absolute;
@@ -600,9 +604,15 @@
     </header>
 
     <div class="container">
+        <div style="display: flex; justify-content: space-between;">
+        <button class="back-button">
+            <a href="/phonemes/{{ $phoneme->id }}/edit" ><span style="color:#ffffff;"> التعديل</span></a>
+        </button>
         <button class="back-button" onclick="window.history.back()">
             <span>&#8592;</span> العودة للخلف
         </button>
+        </div>
+       
 
         <section class="section">
             <div class="card">

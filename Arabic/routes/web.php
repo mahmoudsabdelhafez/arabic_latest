@@ -358,6 +358,9 @@ Route::get('tool_information/show-table/{toolName}', [ToolsInformationController
 Route::get('/tree', [TreeController::class, 'index']);
 Route::get('/tree/branch/{parentId}', [TreeController::class, 'getBranchData']);
 
+Route::get('/root/tree', [RootController::class, 'treeIndex']);
+Route::get('/root/tree/{parentId}', [RootController::class, 'getBranchData']);
+
 
 
 // =========================== Mekdad Tables ===========================================
@@ -381,6 +384,7 @@ Route::get('/get-arabic-letter-id', [QuranController::class, 'getArabicLetterId'
 Route::get('/get-phoneme-details', [QuranController::class, 'getPhonemeDetailsForLetter']);
 
 Route::get('/word/{name}', [TreeController::class, 'wordDetails'])->name('word.details');
+Route::get('/verb/{id}', [RootController::class, 'verbDetails'])->name('verb.details');
 
 
 Route::get('/phonemes/{id}/edit', [PhonemeController::class, 'edit'])->name('phonemes.edit');
