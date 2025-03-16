@@ -11,7 +11,7 @@ class PronounController extends Controller
    public function show(Request $request)
    {
 
-   //  dd($request->all());
+    // dd($request->all());
        $pronouns = Pronoun::all();
        return view('pronouns.index',compact('pronouns')); // You will create this view
    }

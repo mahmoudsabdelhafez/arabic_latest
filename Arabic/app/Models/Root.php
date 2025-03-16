@@ -9,14 +9,39 @@ class Root extends Model
 {
     use HasFactory;
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'roots';
 
-    protected $fillable = ['root'];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'root',
+        'type_id',
+        'sensual_moral_type_id',
+        'example',
+        'notes',
+    ];
 
-
-    public function words()
+    /**
+     * Get the verb type associated with the root.
+     */
+    public function type()
     {
-        // One root can have many words
-        return $this->hasMany(Word::class);
+        return $this->belongsTo(VerbType::class, 'type_id');
     }
 
+    /**
+     * Get the sensual/moral type associated with the root.
+     */
+    // public function sensualMoralType()
+    // {
+    //     return $this->belongsTo(SensualMoralType::class, 'sensual_moral_type_id');
+    // }
 }

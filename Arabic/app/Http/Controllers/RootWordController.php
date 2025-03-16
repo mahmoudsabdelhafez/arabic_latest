@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\RootWord;
 use App\Imports\RootWordsImport;
 use App\Models\Prefix;
+use App\Models\Prefixe;
 use App\Models\Suffix;
 use Illuminate\Support\Facades\DB;
 
@@ -62,7 +63,7 @@ class RootWordController extends Controller
             });
 
             $suffixes = $rootWord->suffixes->map(function ($suffix) use ($rootWord) {
-                return $rootWord->root . $suffix->formula;  // Concatenate suffix to root
+                return $rootWord->root . $suffix->name;  // Concatenate suffix to root
             });
 
             return [
@@ -86,7 +87,7 @@ class RootWordController extends Controller
         // Loop through each root word
         foreach ($rootWords as $rootWord) {
             // Get all the prefixes and suffixes (or choose specific ones based on your logic)
-            $prefixes = Prefix::all();
+            $prefixes = Prefixe::all();
             $suffixes = Suffix::all();
 
             // Attach prefixes to the root word

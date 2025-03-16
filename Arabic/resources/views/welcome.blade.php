@@ -767,6 +767,8 @@
                 <div class="nav-item" onclick="showSection('tajweed')"> <span class="nav-icon">📖</span> القرآن الكريم
                 </div>
                 <div class="nav-item" onclick="showSection('phoneme')"> <span class="nav-icon">🔊</span> الصوتيات</div>
+                <div class="nav-item" onclick="showSection('augmented')"><span class="nav-icon">📝</span> الأوزان الصرفية 
+                </div>
                 <div class="nav-item" onclick="showSection('words')"><span class="nav-icon">📝</span> تركيب الكلمات
                 </div>
                 <a href="/connective_categories">
@@ -907,6 +909,14 @@
                     </div>
                 </section>
 
+                <section id="augmented" class="section">
+                    <h2>الأوزان الصرفية</h2>
+                    <div class="button-container">
+                        <a href="{{ url('/augmented/roots') }}" class="button">اشتقاق أشكال الفعل الثلاثي</a>
+                        <a href="{{ url('/augmented') }}" class="button">اشتقاق أشكال الفعل الثلاثي المزيدة</a>
+                        <a href="{{ url('/verb-phoneme-positions') }}" class="button">مواقع أحرف الزيادة في الأفعال</a>
+                    </div>
+                </section>
                 <section id="words" class="section">
                     <h2>تركيب الكلمات</h2>
                     <div class="button-container">

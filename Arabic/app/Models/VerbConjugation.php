@@ -5,20 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PhonemeActivity extends Model
+class VerbConjugation extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'phoneme_id',
-        'type',
-        'is_active',
-        'grammatical_effect',
-        'examples',
-    ];
 
-    public function phoneme() {
-        return $this->belongsTo(Phoneme::class);
+    protected $fillable = ['root'];
+
+
+    public function words()
+    {
+        // One root can have many words
+        return $this->hasMany(Word::class);
     }
 
     public function phonemePositions()
@@ -26,4 +24,3 @@ class PhonemeActivity extends Model
         return $this->hasMany(VerbPhonemePosition::class);
     }
 }
-

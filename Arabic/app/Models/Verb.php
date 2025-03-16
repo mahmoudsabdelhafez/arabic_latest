@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,20 +8,11 @@ class Verb extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'verb',
-        'type_id',
-        'has_block',
-        'has_place',
-        'has_tool_name',
-        'perception'
-    ];
+    protected $fillable = ['verb'];
 
-    /**
-     * العلاقة مع نوع الفعل (VerbType)
-     */
-    public function type()
+    // Relationship with VerbAdjective model
+    public function verbAdjectives()
     {
-        return $this->belongsTo(VerbType::class, 'type_id');
+        return $this->belongsToMany(VerbAdjective::class, 'verb_verb_adjective', 'verb_id', 'verb_adjective_id');
     }
 }
