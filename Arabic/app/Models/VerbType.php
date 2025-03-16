@@ -15,4 +15,9 @@ class VerbType extends Model
     {
         return $this->belongsTo(WordType::class, 'word_type_id');
     }
+
+    public function augmentedVerbs()
+    {
+        return $this->hasMany(AugmentedThreeLetterVerb::class, 'verb_type_id');
+    }
 }

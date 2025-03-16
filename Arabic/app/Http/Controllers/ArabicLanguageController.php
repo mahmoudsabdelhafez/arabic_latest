@@ -14,6 +14,8 @@ use App\Models\Linking_tool;
 use App\Models\ArabicSentence;
 use App\Models\ArabicSentencesPart;
 use App\Models\Phoneme;
+use App\Models\Phoneme_before;
+use App\Models\Root;
 use App\Models\ToolsInformation;
 use App\Models\WordType;
 use Illuminate\Http\Request;
@@ -42,8 +44,8 @@ class ArabicLanguageController extends Controller
                 // جلب جميع الأحرف مع بيانات النطق
 
 
-    // // جلب جميع الحروف مع بيانات الفونيم (مخرج الحرف) والتصنيف (category_id)
-    // $phonemes = Phoneme::with('arabicLetter')->get();
+    // // // جلب جميع الحروف مع بيانات الفونيم (مخرج الحرف) والتصنيف (category_id)
+    // $phonemes = Phoneme_before::with('arabicLetter')->get();
     // $adjectives = ArabicLetterAdjective::all()->groupBy('arabic_letter_id');
     // $words = [];
 
@@ -95,7 +97,20 @@ class ArabicLanguageController extends Controller
             
             
           
-            
+    // Root::all()->each(function ($root) {
+    //     // Remove spaces from the root
+    //     $root->root = str_replace(' ', '', $root->root);
+    //     $root->save();
+    
+    //     // Insert the root into the root_words table
+    //     DB::table('root_words')->insert([
+    //         'root' => $root->root,
+    //         // Add other necessary fields here if needed (e.g., 'created_at', 'updated_at')
+    //         'created_at' => now(),
+    //         'updated_at' => now(),
+    //     ]);
+    // });
+    
         
         
 
@@ -103,7 +118,7 @@ class ArabicLanguageController extends Controller
         return view('welcome', compact(['languageContents','tools','wordType','examples','features','arabicLetters','beautyOfLanguage','grammarRules','sentences','sentences_parts']));
     }
 
-
+    
     public function tools($id)
     {
         $tableName = Linking_tool::findOrFail($id);

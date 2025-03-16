@@ -6,20 +6,20 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('name_pronouns', function (Blueprint $table) {
-            $table->id();
-            $table->string('name'); // اسم الضمير
-            $table->enum('type', ['attached', 'detached', 'hidden']); // نوع الضمير من حيث الاتصال والانفصال
-            $table->enum('person', ['first', 'second', 'third']); // الشخص
-            $table->enum('number', ['single', 'dual', 'plural']); // العدد
-            $table->enum('gender', ['m', 'f', 'both']); // الجنس
-            $table->unsignedBigInteger('parsing_id')->nullable(); // العلاقة بجدول الإعراب
-            $table->unsignedBigInteger('syntactic_effects_id')->nullable();
-            $table->unsignedBigInteger('semantic_logical_effects_id')->nullable();
-            $table->unsignedBigInteger('attached_type_id')->nullable();
-            $table->string('estimated_for_hidden')->nullable(); // التقدير للمستتر
-            $table->timestamps();
-        });
+        // Schema::create('name_pronouns', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('name'); // اسم الضمير
+        //     $table->enum('type', ['attached', 'detached', 'hidden']); // نوع الضمير من حيث الاتصال والانفصال
+        //     $table->enum('person', ['first', 'second', 'third']); // الشخص
+        //     $table->enum('number', ['single', 'dual', 'plural']); // العدد
+        //     $table->enum('gender', ['m', 'f', 'both']); // الجنس
+        //     $table->unsignedBigInteger('parsing_id')->nullable(); // العلاقة بجدول الإعراب
+        //     $table->unsignedBigInteger('syntactic_effects_id')->nullable();
+        //     $table->unsignedBigInteger('semantic_logical_effects_id')->nullable();
+        //     $table->unsignedBigInteger('attached_type_id')->nullable();
+        //     $table->string('estimated_for_hidden')->nullable(); // التقدير للمستتر
+        //     $table->timestamps();
+        // });
 
         Schema::create('attached_types', function (Blueprint $table) {
             $table->id();

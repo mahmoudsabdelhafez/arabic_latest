@@ -43,6 +43,7 @@ use App\Http\Controllers\MekdadPhonemeController;
 use App\Http\Controllers\SentenceController;
 use App\Http\Controllers\TreeController;
 use App\Http\Controllers\ArabicFeatureController;
+use App\Http\Controllers\AugmentedVerbDerivedExampleController;
 use App\Http\Controllers\ConnectiveController;
 use App\Http\Controllers\DialectController;
 use App\Http\Controllers\SemanticDomainController;
@@ -51,7 +52,8 @@ use App\Http\Controllers\FunctionalWordController;
 use App\Http\Controllers\NamePronounController;
 use App\Http\Controllers\RelativePronounController;
 use App\Http\Controllers\ToolNameController;
-
+use App\Http\Controllers\VerbPhonemePositionController;
+use App\Http\Controllers\WordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -196,7 +198,12 @@ Route::get('/phonemes/place-of-articulation', [PhonemeController::class, 'getPla
 Route::get('/phonemes/show-letter-by-place/{place}', [PhonemeController::class, 'showByPlace'])->name('phonemes.showByPlace'); // Filtered view
 
 
+// Add these routes to your routes/web.php file
 
+
+Route::resource('verb-phoneme-positions', VerbPhonemePositionController::class);
+
+Route::get('/phoneme-activities/{phoneme_id}', [VerbPhonemePositionController::class, 'getActivities']);
 
 Route::get('/root-words', [RootWordController::class, 'index'])->name('root-words.index');
 
@@ -205,6 +212,8 @@ Route::get('/root-words-view2', [RootWordController::class, 'index2'])->name('ro
 Route::get('/info', [RootWordController::class, 'info']);
 
 
+Route::get('roots/create', [RootController::class, 'create']);
+Route::post('roots/create', [RootController::class, 'store'])->name('roots.store');
 Route::get('roots/import', [RootController::class, 'showForm']);
 Route::post('roots/import', [RootController::class, 'import'])->name('roots.import');
 
@@ -358,6 +367,9 @@ Route::get('tool_information/show-table/{toolName}', [ToolsInformationController
 Route::get('/tree', [TreeController::class, 'index']);
 Route::get('/tree/branch/{parentId}', [TreeController::class, 'getBranchData']);
 
+Route::get('/root/tree', [RootController::class, 'treeIndex']);
+Route::get('/root/tree/{parentId}', [RootController::class, 'getBranchData']);
+
 
 
 // =========================== Mekdad Tables ===========================================
@@ -366,8 +378,15 @@ Route::get('/{tableName}', [MekdadPhonemeController::class, 'renderTable'])->whe
 
 
 // =========================== Mekdad Tables ===========================================
+Route::get('/augmented/roots', [AugmentedVerbDerivedExampleController::class, 'augmented']);
+
+Route::post('/analyze', [WordController::class, 'analyze'])->name('verb.analyze');
+
+// Verb derivation route
+Route::post('/derive', [WordController::class, 'derive'])->name('verb.derive');
 
 
+Route::resource('augmented', AugmentedVerbDerivedExampleController::class);
 
 
 
@@ -381,6 +400,7 @@ Route::get('/get-arabic-letter-id', [QuranController::class, 'getArabicLetterId'
 Route::get('/get-phoneme-details', [QuranController::class, 'getPhonemeDetailsForLetter']);
 
 Route::get('/word/{name}', [TreeController::class, 'wordDetails'])->name('word.details');
+Route::get('/verb/{id}', [RootController::class, 'verbDetails'])->name('verb.details');
 
 
 Route::get('/phonemes/{id}/edit', [PhonemeController::class, 'edit'])->name('phonemes.edit');

@@ -18,6 +18,7 @@ use App\Models\Phoneme;
 use App\Models\Image;
 use App\Models\Linking_tool;
 use App\Models\Negative;
+use App\Models\Phoneme_before;
 use App\Models\PhonemeCategory;
 use App\Models\Preposition;
 use App\Models\Sawabeq;
@@ -35,7 +36,7 @@ class PhonemeController extends Controller
     public function index()
     {
         // Fetch all phonemes
-        $phonemes = Phoneme::all();
+        $phonemes = Phoneme_before::all();
         // dd($phonemes[0]->arabicLetter);
         // Pass phonemes to the view
         return view('phonemes.index', compact('phonemes'));
@@ -44,7 +45,7 @@ class PhonemeController extends Controller
     public function getPlacesOfArticulation()
     {
         // Fetch distinct "place_of_articulation" values along with phoneme_category_id
-        $places = Phoneme::select(['place_of_articulation', 'phoneme_category_id','articulation_arabic_name'])->distinct()->get();
+        $places =Phoneme_before::select(['place_of_articulation', 'phoneme_category_id','articulation_arabic_name'])->distinct()->get();
         
         // Fetch images with related phoneme categories
         $images = Image::with('phonemeCategory')->orderBy('id', 'asc')->get();
@@ -62,7 +63,7 @@ class PhonemeController extends Controller
         $validatedPlace = filter_var($place, FILTER_SANITIZE_STRING);
     
         // جلب البيانات مع العلاقة
-        $letters = Phoneme::with('arabicLetter')
+        $letters =Phoneme_before::with('arabicLetter')
                           ->where('place_of_articulation', $validatedPlace)
                           ->get();
     
@@ -78,7 +79,7 @@ class PhonemeController extends Controller
         return view('phonemes.phonemes-menu');
     }
 
-    public function details(Phoneme $phoneme)
+    public function details(Phoneme_before $phoneme)
     {
         $tools = Linking_tool::all();
         // $letter = ArabicTool::with('arabicLetters')->findOrFail(2);
@@ -332,7 +333,7 @@ public function ruleDetails(Request $request)
 
 public function show($id)
     {
-        $phoneme = Phoneme::with([
+        $phoneme =Phoneme::with([
             'morphologicalFunction',
             'phonemeRootEffect',
             'phonemeSemanticFeature.harakat',
@@ -342,7 +343,7 @@ public function show($id)
     }
     public function edit($id)
     {
-        $phoneme = Phoneme::with([
+        $phoneme =Phoneme::with([
             'morphologicalFunction',
             'phonemeRootEffect',
             'phonemeSemanticFeature.harakat',
@@ -356,7 +357,7 @@ public function show($id)
 
     public function update(Request $request, $id)
     {
-        $phoneme = Phoneme::with([
+        $phoneme =Phoneme::with([
             'morphologicalFunction',
             'phonemeRootEffect',
             'phonemeSemanticFeature.harakat',

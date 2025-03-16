@@ -10,7 +10,7 @@ class Suffix extends Model
     use HasFactory;
 
     protected $fillable = [
-        'form', 
+        'name', 
         'meaning_usage', 
         'examples_from_quran'
     ];

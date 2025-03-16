@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Prefix extends Model
+class Prefixe extends Model
 {
     use HasFactory;
 
      // Define the fillable attributes
      protected $fillable = [
-        'form', 
+        'formula', 
         'meaning_usage', 
         'examples_from_quran'
     ];

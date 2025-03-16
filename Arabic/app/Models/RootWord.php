@@ -15,7 +15,7 @@ class RootWord extends Model
      // Many-to-many relationship with Prefix
      public function prefixes()
      {
-         return $this->belongsToMany(Prefix::class, 'root_word_prefixes')
+         return $this->belongsToMany(Prefixe::class, 'root_word_prefixes')
                      ->withTimestamps(); // Automatically handles created_at and updated_at timestamps
      }
  
