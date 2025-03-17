@@ -543,16 +543,18 @@
                     url: '/root/tree/' + parentId,
                     method: 'GET',
                     success: function(data) {
+                        console.log(data);
                         if (Array.isArray(data) && data.length > 0) {
                             let branchHtml = '<ul>';
                             data.forEach(item => {
-                                const isLeafNode = !item.parent_id || item.is_parent === 0;
+                                const isLeafNode = !item.parent_id ;
+                                const isParentNode = item.is_parent === 0;
                                 const uniqueId =
                                     `${item.id}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
                                 branchHtml += `<li class="new-branch">`;
 
-                                if (isLeafNode) {
+                                if (isLeafNode && isParentNode) {
                                     branchHtml += `
                                     <a href="/verb/${item.id}" class="branch" data-branch-id="${uniqueId}">
                                         ${item.arabic_name || item.type_name}

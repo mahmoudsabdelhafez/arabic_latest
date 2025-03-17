@@ -71,7 +71,7 @@ public function treeIndex()
     {
         // Fetch the root word type (الكلمة)
         $roots = RootType::whereNull('parent_id')->get();
-        // dd($root);
+        // dd($roots);
         $root = $roots[0];
         return view('roots.tree', compact('root'));
     }
