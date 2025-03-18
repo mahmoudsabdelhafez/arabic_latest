@@ -10,7 +10,7 @@ class RelativePronounController extends Controller
 {
     public function index()
     {
-        $relativePronouns = RelativePronoun::with('dialect')->get();
+        $relativePronouns = RelativePronoun::all();
         return view('relative_pronouns.index', compact('relativePronouns'));
     }
 

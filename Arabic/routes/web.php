@@ -54,7 +54,7 @@ use App\Http\Controllers\RelativePronounController;
 use App\Http\Controllers\ToolNameController;
 use App\Http\Controllers\VerbPhonemePositionController;
 use App\Http\Controllers\WordController;
-
+use App\Http\Controllers\BasicTrilateralVerbController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -66,12 +66,44 @@ use App\Http\Controllers\WordController;
 |
 */
 
+
+use App\Http\Controllers\HarakatFunctionController;
+use App\Http\Controllers\HarakatFunctionDetailController;
+
+// Harakat Functions Routes
+Route::resource('harakat-functions', HarakatFunctionController::class);
+
+// Harakat Function Details Nested Routes
+Route::get('harakat-functions/{harakatFunction}/details', [HarakatFunctionDetailController::class, 'index'])
+    ->name('harakat-functions.details.index');
+
+Route::get('harakat-functions/{harakatFunction}/details/create', [HarakatFunctionDetailController::class, 'create'])
+    ->name('harakat-functions.details.create');
+
+Route::post('harakat-functions/{harakatFunction}/details', [HarakatFunctionDetailController::class, 'store'])
+    ->name('harakat-functions.details.store');
+
+Route::get('harakat-functions/{harakatFunction}/details/{detail}', [HarakatFunctionDetailController::class, 'show'])
+    ->name('harakat-functions.details.show');
+
+Route::get('harakat-functions/{harakatFunction}/details/{detail}/edit', [HarakatFunctionDetailController::class, 'edit'])
+    ->name('harakat-functions.details.edit');
+
+Route::put('harakat-functions/{harakatFunction}/details/{detail}', [HarakatFunctionDetailController::class, 'update'])
+    ->name('harakat-functions.details.update');
+
+Route::delete('harakat-functions/{harakatFunction}/details/{detail}', [HarakatFunctionDetailController::class, 'destroy'])
+    ->name('harakat-functions.details.destroy');
+
 Route::resource('name_types', NameTypeController::class);
 Route::resource('functional_words', FunctionalWordController::class);
 Route::resource('relative_pronouns', RelativePronounController::class);
 
 Route::resource('dialects', DialectController::class);
 Route::resource('semantic_domains', SemanticDomainController::class);
+
+
+Route::resource('basic-trilateral-verbs', BasicTrilateralVerbController::class);
 
 
 Route::get('/', function () {

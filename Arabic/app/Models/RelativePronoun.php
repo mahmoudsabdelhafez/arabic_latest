@@ -11,8 +11,8 @@ class RelativePronoun extends Model
 
     protected $fillable = ['surface_form', 'gender', 'number', 'case', 'dialect_id', 'notes'];
 
-    public function dialect()
-    {
-        return $this->belongsTo(Dialect::class);
-    }
+    // public function dialect()
+    // {
+    //     return $this->belongsTo(Dialect::class);
+    // }
 }
