@@ -10,12 +10,13 @@ class GrammaticalHarakatController extends Controller
 {
     public function index()
     {
-        // Retrieve all records
-        $records = GrammaticalHarakat::all();
-        
+        // Retrieve all records where 'is_deleted' is 0
+        $records = GrammaticalHarakat::where('is_deleted', 0)->get();
+    
         // Return the view with records
         return view('grammatical_harakat.index', compact('records'));
     }
+    
 
     public function store(Request $request)
     {
@@ -58,13 +59,20 @@ class GrammaticalHarakatController extends Controller
 
     public function destroy(GrammaticalHarakat $grammaticalHarakat)
     {
-        // Soft delete: mark the record as deleted by setting 'is_deleted' to 1
-        $grammaticalHarakat->update([
-            'is_deleted' => 1,
+        \Log::info("Attempting to delete: ", $grammaticalHarakat->toArray());
+    
+        // Mark the record as deleted
+        $updated = $grammaticalHarakat->update([
+            'is_deleted' => true,  // Set is_deleted to true
             'edit_by' => Auth::id(),
         ]);
-
+    
+        // Log if the update was successful
+        \Log::info("Update result: ", ['updated' => $updated]);
+    
         // Redirect to index page with success message
         return redirect()->route('grammatical_harakat.index')->with('success', 'تم الحذف بنجاح');
     }
+    
+    
 }

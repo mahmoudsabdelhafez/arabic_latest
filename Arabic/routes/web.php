@@ -7,6 +7,7 @@ use App\Http\Controllers\DerivedWordController;
 use App\Http\Controllers\GrammaticalHarakatController;
 use App\Http\Controllers\InflectedAdverbController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SecondaryGrammaticalHarakatController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ArabicDiacriticController;
@@ -438,3 +439,6 @@ Route::resource('inflected_adverbs', InflectedAdverbController::class);
 
 // Route grammatical harakat
 Route::resource('grammatical_harakat', GrammaticalHarakatController::class);
+
+// Route secondary grammatical harakat
+Route::resource('secondary_grammatical_harakat', SecondaryGrammaticalHarakatController::class);

@@ -873,6 +873,10 @@
                         <span class="nav-icon">✍️ الحركات النحوية</span>
 
                     </div>
+                    <div class="nav-item" onclick="showSection('secondary_grammatical_harakat')">
+                        <span class="nav-icon">✍️ الحركات النحوية الفرعية </span>
+
+                    </div>
 
 
                 </div>
@@ -1069,6 +1073,12 @@
                     <h2>الحركات النحوية</h2>
                     <div class="button-container">
                         <a href="{{ url('/grammatical_harakat') }}" class="button">الحركات النحوية</a>
+                    </div>
+                </section>
+                <section id="secondary_grammatical_harakat" class="section">
+                    <h2>الحركات النحوية الفرعية</h2>
+                    <div class="button-container">
+                        <a href="{{ url('/secondary_grammatical_harakat') }}" class="button">الحركات النحوية الفرعية</a>
                     </div>
                 </section>
 
