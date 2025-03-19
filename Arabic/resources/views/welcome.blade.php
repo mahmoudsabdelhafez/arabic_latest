@@ -789,96 +789,102 @@
 
 
 
-<style>
+                <style>
+                    .dropdown-menu {
+                        display: none;
+                    }
 
-    .dropdown-menu {
-        display: none;
-    }
-    <style>
-    /* Base styles for nav items */
-    .nav-item {
-        cursor: pointer;
-        padding: 10px 15px;
-        background-color: #f7f7f7;
-        border-radius: 5px;
-        margin-bottom: 5px;
-        display: flex;
-        align-items: center;
-        transition: background-color 0.3s ease, padding-left 0.3s ease;
-    }
+                    <style>
 
-    .nav-item:hover {
-        background-color: #e0e0e0;
-        padding-left: 20px;
-    }
+                    /* Base styles for nav items */
+                    .nav-item {
+                        cursor: pointer;
+                        padding: 10px 15px;
+                        background-color: #f7f7f7;
+                        border-radius: 5px;
+                        margin-bottom: 5px;
+                        display: flex;
+                        align-items: center;
+                        transition: background-color 0.3s ease, padding-left 0.3s ease;
+                    }
 
-    .nav-icon {
-        margin-right: 10px;
-    }
+                    .nav-item:hover {
+                        background-color: #e0e0e0;
+                        padding-left: 20px;
+                    }
 
-    /* Styles for the dropdown */
-    .unique-dropdown-menu {
-        display: none;
-        background-color: #f4f4f4;
-        border-radius: 5px;
-        padding: 5px 0;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-    }
+                    .nav-icon {
+                        margin-right: 10px;
+                    }
 
-    .unique-dropdown-menu .nav-item {
-        background-color: #ffffff;
-        margin: 0;
-        padding: 10px 15px;
-        border-bottom: 1px solid #ddd;
-    }
+                    /* Styles for the dropdown */
+                    .unique-dropdown-menu {
+                        display: none;
+                        background-color: #f4f4f4;
+                        border-radius: 5px;
+                        padding: 5px 0;
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                        transition: all 0.3s ease;
+                    }
 
-    .unique-dropdown-menu .nav-item:last-child {
-        border-bottom: none;
-    }
+                    .unique-dropdown-menu .nav-item {
+                        background-color: #ffffff;
+                        margin: 0;
+                        padding: 10px 15px;
+                        border-bottom: 1px solid #ddd;
+                    }
 
-    .unique-dropdown-menu .nav-item:hover {
-        background-color: #f0f0f0;
-    }
-</style>
-  
-</style>
-<div class="nav-item" onclick="toggleDropdown()">
-    <span class="nav-icon">📝</span> التدقيق
-</div>
+                    .unique-dropdown-menu .nav-item:last-child {
+                        border-bottom: none;
+                    }
 
-<div id="dropdownMenu" class="unique-dropdown-menu">
-    <div class="nav-item" onclick="showSection('built_verbs')">
-        <span class="nav-icon">🔨</span> المبنيات
-    </div>
-    <div class="nav-item" onclick="showSection('analyzing_weakening')">
-        <span class="nav-icon">🧐</span> تحليل الضعف
-    </div>
-    <div class="nav-item" onclick="showSection('demonstrative_pronouns')">
-        <span class="nav-icon">👉</span> الإشارة
-    </div>
-    <div class="nav-item" onclick="showSection('derived_words')">
-        <span class="nav-icon">🔤</span> الكلمات المشتقة
-    </div>
-    <div class="nav-item" onclick="showSection('built_in_adverbs')">
-        <span class="nav-icon">📚الظروف المبنية
-        </span>
-    </div>
-    <div class="nav-item" onclick="showSection('inflected_adverbs')">
-    <span class="nav-icon">📖 الظروف المتشقة</span>
+                    .unique-dropdown-menu .nav-item:hover {
+                        background-color: #f0f0f0;
+                    }
+                </style>
 
-    </div>
-    
-</div>
+                </style>
+                <div class="nav-item" onclick="toggleDropdown()">
+                    <span class="nav-icon">📝</span> التدقيق
+                </div>
+
+                <div id="dropdownMenu" class="unique-dropdown-menu">
+                    <div class="nav-item" onclick="showSection('built_verbs')">
+                        <span class="nav-icon">🔨</span> المبنيات
+                    </div>
+                    <div class="nav-item" onclick="showSection('analyzing_weakening')">
+                        <span class="nav-icon">🧐</span> تحليل الضعف
+                    </div>
+                    <div class="nav-item" onclick="showSection('demonstrative_pronouns')">
+                        <span class="nav-icon">👉</span> الإشارة
+                    </div>
+                    <div class="nav-item" onclick="showSection('derived_words')">
+                        <span class="nav-icon">🔤</span> الكلمات المشتقة
+                    </div>
+                    <div class="nav-item" onclick="showSection('built_in_adverbs')">
+                        <span class="nav-icon">📚الظروف المبنية
+                        </span>
+                    </div>
+                    <div class="nav-item" onclick="showSection('inflected_adverbs')">
+                        <span class="nav-icon">📖 الظروف المتشقة</span>
+
+                    </div>
+                    <div class="nav-item" onclick="showSection('grammatical_harakat')">
+                        <span class="nav-icon">✍️ الحركات النحوية</span>
+
+                    </div>
+
+
+                </div>
 
 
 
-<script>
-    function toggleDropdown() {
-        let menu = document.getElementById("dropdownMenu");
-        menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "block" : "none";
-    }
-</script>
+                <script>
+                    function toggleDropdown() {
+                        let menu = document.getElementById("dropdownMenu");
+                        menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "block" : "none";
+                    }
+                </script>
 
 
 
@@ -1052,11 +1058,17 @@
                     <div class="button-container">
                         <a href="{{ url('/built_in_adverbs') }}" class="button">الظروف المبنية</a>
                     </div>
-                </section>  
+                </section>
                 <section id="inflected_adverbs" class="section">
                     <h2>الظروف المتشقة</h2>
                     <div class="button-container">
                         <a href="{{ url('/inflected_adverbs') }}" class="button">الظروف المتشقة</a>
+                    </div>
+                </section>
+                <section id="grammatical_harakat" class="section">
+                    <h2>الحركات النحوية</h2>
+                    <div class="button-container">
+                        <a href="{{ url('/grammatical_harakat') }}" class="button">الحركات النحوية</a>
                     </div>
                 </section>
 
