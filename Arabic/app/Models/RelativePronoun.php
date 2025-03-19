@@ -11,6 +11,7 @@ class RelativePronoun extends Model
 
     protected $table = 'relative_pronouns'; // Explicitly defining the table name
 
+
     protected $fillable = [
         'name',
         'number',

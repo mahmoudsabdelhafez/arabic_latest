@@ -1,6 +1,13 @@
 <?php
 
+use App\Http\Controllers\AnalyzingWeakeningController;
+use App\Http\Controllers\BuiltInAdverbController;
+use App\Http\Controllers\DemonstrativePronounController;
+use App\Http\Controllers\DerivedWordController;
+use App\Http\Controllers\GrammaticalHarakatController;
+use App\Http\Controllers\InflectedAdverbController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SecondaryGrammaticalHarakatController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ArabicDiacriticController;
@@ -55,6 +62,8 @@ use App\Http\Controllers\RelativePronounController;
 use App\Http\Controllers\ToolNameController;
 use App\Http\Controllers\VerbPhonemePositionController;
 use App\Http\Controllers\WordController;
+use App\Http\Controllers\BuiltVerbController;
+
 use App\Http\Controllers\BasicTrilateralVerbController;
 use App\Http\Controllers\DeletionRuleController;
 /*
@@ -471,3 +480,29 @@ Route::post('/phonemes/{id}/update', [PhonemeController::class, 'update'])->name
 
 // Route::get('/phonemes', [PhonemeController::class, 'index'])->name('phonemes.index');
 Route::get('/phonemes/{id}', [PhonemeController::class, 'show'])->name('phonemes.show');
+
+// Route built verbs 
+
+Route::resource('built_verbs', BuiltVerbController::class);
+
+// Route analyzing weakening
+
+Route::resource('analyzing_weakening', AnalyzingWeakeningController::class);
+
+// Route derived words
+Route::resource('derived_words', DerivedWordController::class);
+
+// Route demonstrative pronouns
+Route::resource('demonstrative_pronouns', DemonstrativePronounController::class);
+
+// Route built-in adverbs
+Route::resource('built_in_adverbs', BuiltInAdverbController::class);
+
+// Route inflected adverbs
+Route::resource('inflected_adverbs', InflectedAdverbController::class);
+
+// Route grammatical harakat
+Route::resource('grammatical_harakat', GrammaticalHarakatController::class);
+
+// Route secondary grammatical harakat
+Route::resource('secondary_grammatical_harakat', SecondaryGrammaticalHarakatController::class);
