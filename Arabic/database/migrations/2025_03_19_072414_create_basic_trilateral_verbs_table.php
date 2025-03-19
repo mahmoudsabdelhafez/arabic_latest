@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->text('syntactic_analysis')->nullable();
             $table->string('example_sentence');
-            $table->boolean('is_deletes')->default(false); // Boolean to indicate if it is deleted
+            $table->boolean('is_deleted')->default(false); // Boolean to indicate if it is deleted
             $table->unsignedBigInteger('edit_by')->nullable(); // تم التعديل بواسطة
             $table->foreign('edit_by')->references('id')->on('users')->onDelete('cascade'); // ربط 
             $table->timestamps();

@@ -7,7 +7,7 @@
             <h2 class="card-title">عرض تفاصيل الوظيفة</h2>
             <div>
                 <a href="{{ route('harakat-functions.details.edit', [$harakatFunction, $detail]) }}" class="btn btn-edit">تعديل</a>
-                <a href="{{ route('harakat-functions.details.index', $harakatFunction) }}" class="btn">العودة إلى القائمة</a>
+                <a href="{{ route('harakat-functions.show', $harakatFunction) }}" class="btn">العودة إلى القائمة</a>
             </div>
         </div>
 

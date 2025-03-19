@@ -10,9 +10,14 @@ class AugmentedThreeLetterVerb extends Model
     use HasFactory;
     
     protected $fillable = [
-        'root_id', 'word_type_id', 'addition_type', 'pattern', 'pattern_name', 'example', 'notes','verb_type_id'
+        'root_id', 'word_type_id', 'addition_type', 'pattern', 'pattern_name', 'example', 'notes','verb_type_id','is_deleted',
+        'edit_by'
     ];
 
+    public function editor()
+    {
+        return $this->belongsTo(User::class, 'edit_by');
+    }
     public function root()
     {
         return $this->belongsTo(VerbConjugation::class, 'root_id');

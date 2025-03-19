@@ -35,14 +35,14 @@
                             <td>{{ $function->morphological_function }}</td>
                             <td>{{ $function->editor->name ?? 'غير محدد' }}</td>
                             <td class="actions">
-                                <a href="{{ route('harakat-functions.show', $function) }}" class="btn btn-sm btn-info">عرض</a>
+                                <!-- <a href="{{ route('harakat-functions.show', $function) }}" class="btn btn-sm btn-info">عرض</a> -->
                                 <a href="{{ route('harakat-functions.edit', $function) }}" class="btn btn-sm btn-edit">تعديل</a>
                                 <form action="{{ route('harakat-functions.destroy', $function) }}" method="POST" style="display: inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-delete" onclick="return confirm('هل أنت متأكد من الحذف؟')">حذف</button>
                                 </form>
-                                <a href="{{ route('harakat-functions.details.index', $function) }}" class="btn btn-sm">التفاصيل</a>
+                                <a href="{{ route('harakat-functions.show', $function) }}" class="btn btn-sm">التفاصيل</a>
                             </td>
                         </tr>
                     @empty

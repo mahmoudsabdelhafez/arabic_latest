@@ -144,6 +144,12 @@
             color: var(--secondary-color);
         }
 
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.1);
+            border-right: 4px solid #dc3545;
+            color: #dc3545;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -291,7 +297,7 @@
 </head>
 <body>
     <header>
-        <h1>نظام إدارة قاعدة البيانات</h1>
+        <h1>نظام إدارة الحركات</h1>
     </header>
     
     <main>
@@ -301,5 +307,5 @@
         <p>جميع الحقوق محفوظة &copy; {{ date('Y') }}</p>
     </footer>
 
-    </body>
+</body>
 </html>

@@ -3,55 +3,107 @@
 namespace App\Http\Controllers;
 
 use App\Models\RelativePronoun;
-use App\Models\Dialect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RelativePronounController extends Controller
 {
+    /**
+     * Constructor to apply middleware
+     */
+    public function __construct()
+    {
+        // Apply auth middleware to create, edit, update, and delete methods
+        $this->middleware('auth')->only(['create', 'store', 'edit', 'update', 'destroy']);
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $relativePronouns = RelativePronoun::all();
-        return view('relative_pronouns.index', compact('relativePronouns'));
+        $relativePronouns = RelativePronoun::where('is_deleted', false)->paginate(10);
+        return view('relative-pronouns.index', compact('relativePronouns'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        $dialects = Dialect::all();
-        $relativePronouns = RelativePronoun::with('dialect')->get();
-        return view('relative_pronouns.create', compact('dialects'));
+        return view('relative-pronouns.create');
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'surface_form' => 'required',
-            'dialect_id' => 'nullable|exists:dialects,id',
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'number' => 'required|string|max:255',
+            'gender' => 'required|string|max:255',
+            'example' => 'required|string',
+            'grammatical_analysis' => 'required|string',
         ]);
 
-        RelativePronoun::create($request->all());
-        return redirect()->route('relative_pronouns.index')->with('success', 'تمت إضافة الاسم الموصول بنجاح');
+        $validated['edit_by'] = Auth::id();
+        $validated['is_deleted'] = false;
+
+        RelativePronoun::create($validated);
+
+        return redirect()->route('relative-pronouns.index')
+            ->with('success', 'تم إضافة اسم الموصول بنجاح');
     }
 
+    /**
+     * Display the specified resource.
+     */
+    public function show(RelativePronoun $relativePronoun)
+    {
+        return view('relative-pronouns.show', compact('relativePronoun'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit(RelativePronoun $relativePronoun)
     {
-        $dialects = Dialect::all();
-        return view('relative_pronouns.edit', compact('relativePronoun', 'dialects'));
+        return view('relative-pronouns.edit', compact('relativePronoun'));
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, RelativePronoun $relativePronoun)
     {
-        $request->validate([
-            'surface_form' => 'required',
-            'dialect_id' => 'nullable|exists:dialects,id',
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'number' => 'required|string|max:255',
+            'gender' => 'required|string|max:255',
+            'example' => 'required|string',
+            'grammatical_analysis' => 'required|string',
         ]);
 
-        $relativePronoun->update($request->all());
-        return redirect()->route('relative_pronouns.index')->with('success', 'تم تحديث الاسم الموصول بنجاح');
+        $validated['edit_by'] = Auth::id();
+
+        $relativePronoun->update($validated);
+
+        return redirect()->route('relative-pronouns.index')
+            ->with('success', 'تم تحديث اسم الموصول بنجاح');
     }
 
+    /**
+     * Remove the specified resource from storage (soft delete).
+     */
     public function destroy(RelativePronoun $relativePronoun)
     {
-        $relativePronoun->delete();
-        return redirect()->route('relative_pronouns.index')->with('success', 'تم حذف الاسم الموصول بنجاح');
+        $relativePronoun->update([
+            'is_deleted' => true,
+            'edit_by' => Auth::id()
+        ]);
+
+        return redirect()->route('relative-pronouns.index')
+            ->with('success', 'تم حذف اسم الموصول بنجاح');
     }
 }
