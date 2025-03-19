@@ -9,7 +9,7 @@ class RelativePronoun extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['surface_form', 'gender', 'number', 'case', 'dialect_id', 'notes'];
+    protected $fillable = ['name', 'example', 'gender', 'number_classification', 'distance', 'grammatical_status', 'semantic_analysis','contextual_analysis'];
 
     // public function dialect()
     // {
