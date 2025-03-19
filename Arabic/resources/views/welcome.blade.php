@@ -860,6 +860,11 @@
     <div class="nav-item" onclick="showSection('derived_words')">
         <span class="nav-icon">🔤</span> الكلمات المشتقة
     </div>
+    <div class="nav-item" onclick="showSection('built_in_adverbs')">
+        <span class="nav-icon">📚الظروف المبنية
+        </span>
+    </div>
+    
 </div>
 
 
@@ -1038,6 +1043,12 @@
                         <a href="{{ url('/derived_words') }}" class="button">الكلمات المشتقة</a>
                     </div>
                 </section>
+                <section id="built_in_adverbs" class="section">
+                    <h2>الظروف المبنية</h2>
+                    <div class="button-container">
+                        <a href="{{ url('/built_in_adverbs') }}" class="button">الظروف المبنية</a>
+                    </div>
+                </section>  
 
                 <section id="harf" class="section harf-section">
                     <div class="section-header">
