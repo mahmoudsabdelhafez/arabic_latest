@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnalyzingWeakeningController;
+use App\Http\Controllers\BuiltInAdverbController;
 use App\Http\Controllers\DemonstrativePronounController;
 use App\Http\Controllers\DerivedWordController;
 use App\Http\Controllers\ProfileController;
@@ -426,3 +427,6 @@ Route::resource('derived_words', DerivedWordController::class);
 
 // Route demonstrative pronouns
 Route::resource('demonstrative_pronouns', DemonstrativePronounController::class);
+
+// Route built-in adverbs
+Route::resource('built_in_adverbs', BuiltInAdverbController::class);
