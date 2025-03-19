@@ -4,6 +4,7 @@ use App\Http\Controllers\AnalyzingWeakeningController;
 use App\Http\Controllers\BuiltInAdverbController;
 use App\Http\Controllers\DemonstrativePronounController;
 use App\Http\Controllers\DerivedWordController;
+use App\Http\Controllers\InflectedAdverbController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -430,3 +431,6 @@ Route::resource('demonstrative_pronouns', DemonstrativePronounController::class)
 
 // Route built-in adverbs
 Route::resource('built_in_adverbs', BuiltInAdverbController::class);
+
+// Route inflected adverbs
+Route::resource('inflected_adverbs', InflectedAdverbController::class);

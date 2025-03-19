@@ -864,6 +864,10 @@
         <span class="nav-icon">📚الظروف المبنية
         </span>
     </div>
+    <div class="nav-item" onclick="showSection('inflected_adverbs')">
+    <span class="nav-icon">📖 الظروف المتشقة</span>
+
+    </div>
     
 </div>
 
@@ -1049,6 +1053,12 @@
                         <a href="{{ url('/built_in_adverbs') }}" class="button">الظروف المبنية</a>
                     </div>
                 </section>  
+                <section id="inflected_adverbs" class="section">
+                    <h2>الظروف المتشقة</h2>
+                    <div class="button-container">
+                        <a href="{{ url('/inflected_adverbs') }}" class="button">الظروف المتشقة</a>
+                    </div>
+                </section>
 
                 <section id="harf" class="section harf-section">
                     <div class="section-header">
