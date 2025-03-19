@@ -43,6 +43,7 @@ use App\Http\Controllers\MekdadPhonemeController;
 use App\Http\Controllers\SentenceController;
 use App\Http\Controllers\TreeController;
 use App\Http\Controllers\ArabicFeatureController;
+use App\Http\Controllers\AugmentedThreeLetterVerbController;
 use App\Http\Controllers\AugmentedVerbDerivedExampleController;
 use App\Http\Controllers\ConnectiveController;
 use App\Http\Controllers\DialectController;
@@ -55,6 +56,7 @@ use App\Http\Controllers\ToolNameController;
 use App\Http\Controllers\VerbPhonemePositionController;
 use App\Http\Controllers\WordController;
 use App\Http\Controllers\BasicTrilateralVerbController;
+use App\Http\Controllers\DeletionRuleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -72,38 +74,51 @@ use App\Http\Controllers\HarakatFunctionDetailController;
 
 // Harakat Functions Routes
 Route::resource('harakat-functions', HarakatFunctionController::class);
+// Add these routes to your web.php file
+Route::resource('augmented-three-letter-verbs', AugmentedThreeLetterVerbController::class);
+// Add this to your routes/web.php file
+Route::get('basic-trilateral-verbs', [BasicTrilateralVerbController::class, 'index'])
+    ->name('basic-trilateral-verbs.index');
 
+Route::get('basic-trilateral-verbs/{basicTrilateralVerb}', [BasicTrilateralVerbController::class, 'show'])
+    ->name('basic-trilateral-verbs.show');
+
+// Protected routes that require authentication
+Route::middleware(['auth'])->group(function () {
+    Route::get('basic-trilateral-verbs/create/new', [BasicTrilateralVerbController::class, 'create'])
+        ->name('basic-trilateral-verbs.create');
+    
+    Route::post('basic-trilateral-verbs', [BasicTrilateralVerbController::class, 'store'])
+        ->name('basic-trilateral-verbs.store');
+    
+    Route::get('basic-trilateral-verbs/{basicTrilateralVerb}/edit', [BasicTrilateralVerbController::class, 'edit'])
+        ->name('basic-trilateral-verbs.edit');
+    
+    Route::put('basic-trilateral-verbs/{basicTrilateralVerb}', [BasicTrilateralVerbController::class, 'update'])
+        ->name('basic-trilateral-verbs.update');
+    
+    Route::delete('basic-trilateral-verbs/{basicTrilateralVerb}', [BasicTrilateralVerbController::class, 'destroy'])
+        ->name('basic-trilateral-verbs.destroy');
+});
 // Harakat Function Details Nested Routes
-Route::get('harakat-functions/{harakatFunction}/details', [HarakatFunctionDetailController::class, 'index'])
-    ->name('harakat-functions.details.index');
+// Route::get('harakat-functions/{harakatFunction}/details', [HarakatFunctionDetailController::class, 'index'])
+//     ->name('harakat-functions.details.index');
 
-Route::get('harakat-functions/{harakatFunction}/details/create', [HarakatFunctionDetailController::class, 'create'])
-    ->name('harakat-functions.details.create');
-
-Route::post('harakat-functions/{harakatFunction}/details', [HarakatFunctionDetailController::class, 'store'])
-    ->name('harakat-functions.details.store');
 
 Route::get('harakat-functions/{harakatFunction}/details/{detail}', [HarakatFunctionDetailController::class, 'show'])
     ->name('harakat-functions.details.show');
 
-Route::get('harakat-functions/{harakatFunction}/details/{detail}/edit', [HarakatFunctionDetailController::class, 'edit'])
-    ->name('harakat-functions.details.edit');
-
-Route::put('harakat-functions/{harakatFunction}/details/{detail}', [HarakatFunctionDetailController::class, 'update'])
-    ->name('harakat-functions.details.update');
-
-Route::delete('harakat-functions/{harakatFunction}/details/{detail}', [HarakatFunctionDetailController::class, 'destroy'])
-    ->name('harakat-functions.details.destroy');
 
 Route::resource('name_types', NameTypeController::class);
 Route::resource('functional_words', FunctionalWordController::class);
-Route::resource('relative_pronouns', RelativePronounController::class);
-
+Route::resource('relative-pronouns', RelativePronounController::class);
+// Deletion Rules Routes
+Route::resource('deletion-rules', DeletionRuleController::class);
 Route::resource('dialects', DialectController::class);
 Route::resource('semantic_domains', SemanticDomainController::class);
 
 
-Route::resource('basic-trilateral-verbs', BasicTrilateralVerbController::class);
+// Route::resource('basic-trilateral-verbs', BasicTrilateralVerbController::class);
 
 
 Route::get('/', function () {
@@ -118,6 +133,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+    Route::get('harakat-functions/{harakatFunction}/details/create', [HarakatFunctionDetailController::class, 'create'])
+    ->name('harakat-functions.details.create');
+
+    Route::post('harakat-functions/{harakatFunction}/details', [HarakatFunctionDetailController::class, 'store'])
+    ->name('harakat-functions.details.store');
+
+    Route::put('harakat-functions/{harakatFunction}/details/{detail}', [HarakatFunctionDetailController::class, 'update'])
+    ->name('harakat-functions.details.update');
+
+    Route::delete('harakat-functions/{harakatFunction}/details/{detail}', [HarakatFunctionDetailController::class, 'destroy'])
+    ->name('harakat-functions.details.destroy');
+    
+    Route::get('harakat-functions/{harakatFunction}/details/{detail}/edit', [HarakatFunctionDetailController::class, 'edit'])
+    ->name('harakat-functions.details.edit');
 
 
     Route::resource('phonemecategories', PhonemeCategoryController::class);
